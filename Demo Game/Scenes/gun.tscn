@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://c2f83xjw1td0l"]
+
+[ext_resource type="Script" uid="uid://bda5d0mbwxedj" path="res://Demo Game/Scripts/gun.gd" id="1_dk5gl"]
+[ext_resource type="Texture2D" uid="uid://bsg0iljs1mtrn" path="res://Demo Game/The assets/sprites/image (9).png" id="2_kw0bs"]
+
+[node name="Gun" type="Node2D"]
+z_index = 5
+script = ExtResource("1_dk5gl")
+
+[node name="Image(9)" type="Sprite2D" parent="."]
+position = Vector2(4, 2)
+scale = Vector2(0.0605769, 0.0605769)
+texture = ExtResource("2_kw0bs")
+
+[node name="Node2D" type="Node2D" parent="."]
+script = ExtResource("1_dk5gl")
