@@ -1,0 +1,4 @@
+res://Demo Game/Scenes/game.tscn
+res://Assets for the acual game/Scenes/player.tscn
+res://Assets for the acual game/Scenes/killzone.tscn
+res://Demo Game/Scripts/theplayer.gd

@@ -1,0 +1,25 @@
+[gd_scene load_steps=2 format=3 uid="uid://dr1fsle17larj"]
+
+[sub_resource type="GDScript" id="GDScript_lasao"]
+script/source = "extends Area2D
+
+@onready var timer = $Timer
+
+func _ready():
+	self.body_entered.connect(Callable(self, \"_on_body_entered\"))
+
+func _on_body_entered(body):
+	print(\"You Died\")
+	timer.start()
+
+func _on_timer_timeout():
+	get_tree().reload_current_scene() 
+"
+
+[node name="killzone" type="Area2D"]
+script = SubResource("GDScript_lasao")
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
