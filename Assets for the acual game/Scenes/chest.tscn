@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://d1mkdm54ef6sl"]
+
+[ext_resource type="Script" uid="uid://0lxj4k642akl" path="res://Demo Game/Scripts/chest.gd" id="1_5chet"]
+[ext_resource type="Texture2D" uid="uid://dnhwroiv86tlm" path="res://Assets for the acual game/Assets/Sprites/Player Animation/idle/15.png" id="1_u3aih"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_t1hi0"]
+
+[node name="chest" type="Area2D"]
+script = ExtResource("1_5chet")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.027, 0.0153519)
+texture = ExtResource("1_u3aih")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_t1hi0")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

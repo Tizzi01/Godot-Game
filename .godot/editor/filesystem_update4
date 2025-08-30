@@ -1,7 +1,5 @@
-res://Demo Game/Scenes/game.tscn
+res://Assets for the acual game/Scenes/game.tscn
 res://Assets for the acual game/Scenes/player.tscn
+res://Assets for the acual game/Scenes/chest.tscn
 res://Assets for the acual game/Scenes/killzone.tscn
-res://Demo Game/Scenes/chestform_1s.tscn
-res://Demo Game/Scenes/enemy.tscn
-res://Demo Game/Scenes/m_1.tscn
-res://Demo Game/Scenes/chest.tscn
+res://Demo Game/Scripts/chest.gd
