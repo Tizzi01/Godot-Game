@@ -14,6 +14,12 @@ script/source = "extends CharacterBody2D
 @export var jump_force = -300.0
 @export_range(0,1) var deccelerate_on_jump_release = 0.5
 
+#slash
+@onready var m1_node = $m1
+@onready var slash_anim: AnimationPlayer = m1_node.get_node(\"AnimationPlayer\")
+@onready var hitbox: Area2D = m1_node.get_node(\"MyHitBox\")
+
+
 # dashing
 @export var dash_speed = 500.0
 @export var dash_max_distance = 75.0
@@ -40,9 +46,8 @@ var teleport_hovering = false
 var gravity = ProjectSettings.get_setting(\"physics/2d/default_gravity\")
 var last_facing_dir = 1
 
-#slash
-@onready var m1_node = $m1  # or whatever name it shows in the scene tree
-@onready var anim_player: AnimationPlayer = m1_node.get_node(\"AnimationPlayer\")
+
+
 
 
 func _physics_process(delta):
@@ -167,9 +172,15 @@ func _physics_process(delta):
 	move_and_slide() 
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		if not anim_player.is_playing():
-			anim_player.play(\"slash\")
+	if m1_node.visible and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		if not slash_anim.is_playing():
+			slash_anim.play(\"slash\")
+			
+func _ready():
+	m1_node.visible = false
+	m1_node.set_process(false)  # Optional: disables any logic if needed
+
+
 
 
 	

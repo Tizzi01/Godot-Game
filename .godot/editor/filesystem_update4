@@ -10,3 +10,4 @@ res://Demo Game/Scripts/m_1.gd
 res://Demo Game/Scripts/enemy.gd
 res://Assets for the acual game/Scenes/enemy.tscn
 res://Demo Game/Scripts/my_hurt_box.gd
+res://Demo Game/Scripts/my_hit_box.gd
