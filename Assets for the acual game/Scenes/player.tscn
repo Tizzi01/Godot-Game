@@ -1,6 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://dikfgaeqdng3d"]
+[gd_scene load_steps=13 format=3 uid="uid://dikfgaeqdng3d"]
 
 [ext_resource type="Texture2D" uid="uid://canfsqyqpe8qy" path="res://Assets for the acual game/Assets/Sprites/Player Animation/idle/0.png" id="1_i7wno"]
+[ext_resource type="PackedScene" uid="uid://0315re7v6cka" path="res://Demo Game/Scenes/m_1.tscn" id="2_qjmxq"]
 
 [sub_resource type="GDScript" id="GDScript_vxcno"]
 script/source = "extends CharacterBody2D
@@ -438,3 +439,6 @@ root_node = NodePath("../..")
 libraries = {
 &"": SubResource("AnimationLibrary_kn884")
 }
+
+[node name="m1" parent="." instance=ExtResource("2_qjmxq")]
+position = Vector2(10.33, 0)

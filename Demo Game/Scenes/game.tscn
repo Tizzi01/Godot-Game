@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://17ihev8gmx8p"]
+[gd_scene load_steps=9 format=3 uid="uid://17ihev8gmx8p"]
 
 [ext_resource type="PackedScene" uid="uid://dikfgaeqdng3d" path="res://Assets for the acual game/Scenes/player.tscn" id="2_8i32r"]
 [ext_resource type="Texture2D" uid="uid://bnmfh85lwxuid" path="res://Demo Game/The assets/sprites/world_tileset.png" id="2_ebgsb"]
 [ext_resource type="PackedScene" uid="uid://dr1fsle17larj" path="res://Assets for the acual game/Scenes/killzone.tscn" id="3_8i32r"]
+[ext_resource type="PackedScene" uid="uid://b66swtrjmap3t" path="res://Demo Game/Scenes/chest.tscn" id="4_wtn8l"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8i32r"]
 texture = ExtResource("2_ebgsb")
@@ -204,3 +205,6 @@ rotation_smoothing_enabled = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="killzone"]
 position = Vector2(352, 225)
 shape = SubResource("WorldBoundaryShape2D_8i32r")
+
+[node name="chest" parent="." instance=ExtResource("4_wtn8l")]
+position = Vector2(-345, 42)
