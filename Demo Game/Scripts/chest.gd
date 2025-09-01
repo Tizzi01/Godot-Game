@@ -1,7 +1,8 @@
 extends Area2D
+signal item_acquired
 
 @onready var chest_gone_sfx: AudioStreamPlayer2D = $ChestGoneSFX
-
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 func _ready() -> void:
 	if not is_connected("body_entered", Callable(self, "_on_body_entered")):
@@ -14,17 +15,17 @@ func _on_body_entered(body: Node) -> void:
 			sword.visible = true
 			sword.set_process(true)
 			print("Sword unlocked.")
+
+			# ✅ Get the camera from the player and connect the signal
+			var camera := body.get_node_or_null("Camera2D")
+			if camera:
+				if not is_connected("item_acquired", Callable(camera, "_on_item_acquired")):
+					connect("item_acquired", Callable(camera, "_on_item_acquired"))
+				emit_signal("item_acquired")
+			else:
+				push_warning("Player has no Camera2D node.")
+
 		else:
 			push_warning("Player has no 'm1' node.")
 
-		# Play the ChestGone animation
-		$AnimationPlayer.play("ChestGone")
-
-		# Connect to animation_finished signal
-		$AnimationPlayer.connect("animation_finished", Callable(self, "_on_animation_finished"))
-
-func _on_animation_finished(anim_name: String) -> void:
-	if anim_name == "ChestGone":
-		chest_gone_sfx.play() 
-		queue_free()
-		
+		animation_player.play("ChestGone")
