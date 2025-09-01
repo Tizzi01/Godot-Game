@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://bii3f327cynxf"]
 
 [ext_resource type="Script" uid="uid://h3tl7q2vaikq" path="res://Demo Game/Scripts/m_1.gd" id="1_5s6qe"]
-[ext_resource type="Texture2D" uid="uid://bwxtf2ovl5jr1" path="res://Assets for the acual game/Assets/Sprites/Player Animation/idle/1.png" id="2_27qaj"]
+[ext_resource type="Texture2D" uid="uid://cybirb8iqk7eq" path="res://Assets for the acual game/Assets/Sprites/Elegant Turquoise Spear Design.png" id="2_avajm"]
 
 [sub_resource type="GDScript" id="GDScript_avajm"]
 script/source = "extends Area2D
@@ -23,8 +23,8 @@ func deactivate_hitbox():
 "
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_08bd2"]
-radius = 286.439
-height = 856.706
+radius = 87.7126
+height = 1025.98
 
 [sub_resource type="Animation" id="Animation_ogb12"]
 length = 0.001
@@ -38,7 +38,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [-0.895354]
+"values": [0.0]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -50,7 +50,71 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(0.0147222, 0.035)]
+"values": [Vector2(0.0266298, 0.0247127)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:skew")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 2.38419e-07)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Sprite2D/MyHitBox/CollisionShape2D:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_y56xs"]
+resource_name = "slash"
+length = 0.11
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0606645, 0.105295),
+"transitions": PackedFloat32Array(-2, -2, -2),
+"update": 0,
+"values": [0.0, -1.17112, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.0386111, 0.0286572)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -83,70 +147,6 @@ tracks/4/path = NodePath("Sprite2D/MyHitBox/CollisionShape2D:disabled")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-
-[sub_resource type="Animation" id="Animation_y56xs"]
-resource_name = "slash"
-length = 0.11
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.0666667, 0.1),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [-0.895354, -4.68097, -5.46812]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:scale")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.0666667, 0.1),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector2(0.0147222, 0.035), Vector2(0.0147222, 0.035), Vector2(0.0147222, 0.035)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Sprite2D:skew")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.0666667, 0.1),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [0.0, 1.36659, 0.171042]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Sprite2D:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.0666667, 0.1),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector2(-2.98023e-08, 1), Vector2(-2.98023e-08, 1), Vector2(-2.98023e-08, 1)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Sprite2D/MyHitBox/CollisionShape2D:disabled")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
 "times": PackedFloat32Array(0, 0.1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
@@ -163,10 +163,9 @@ _data = {
 script = ExtResource("1_5s6qe")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(-2.98023e-08, 1)
-rotation = -0.895354
-scale = Vector2(0.0147222, 0.035)
-texture = ExtResource("2_27qaj")
+position = Vector2(0, 2.38419e-07)
+scale = Vector2(0.0266298, 0.0247127)
+texture = ExtResource("2_avajm")
 offset = Vector2(0, -355)
 
 [node name="MyHitBox" type="Area2D" parent="Sprite2D"]
@@ -174,6 +173,7 @@ collision_layer = 2
 script = SubResource("GDScript_avajm")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/MyHitBox"]
+visible = false
 position = Vector2(-0.610344, -365.893)
 shape = SubResource("CapsuleShape2D_08bd2")
 disabled = true

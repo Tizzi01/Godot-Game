@@ -2,10 +2,10 @@ res://addons/godot_super-wakatime/api_key_prompt.tscn::a6988a5ba43d5aa92a08f216c
 res://addons/godot_super-wakatime/counter.tscn::7f13ad35960e259f6de719f9785ce249::1755579418::res://.godot/exported/133200997/export-4af6c9115c1c285af5925fa1ce6a526e-counter.scn
 res://Demo Game/Scenes/gun.tscn::c4a3341c57486dfc4f01ea171d1553cb::1756414277::res://.godot/exported/133200997/export-25a76ebc202c67581a17fed778698032-gun.scn
 res://Demo Game/Scenes/Bullet.tscn::074e330d2662848dbc8dc3e01d9b4857::1756414277::res://.godot/exported/133200997/export-c4573e4fd041e35e89ed049fa5757fbb-Bullet.scn
-res://Assets for the acual game/Scenes/player.tscn::5da17ec03bbab0c16b4e4df3290a1436::1756600458::res://.godot/exported/133200997/export-4d6f3b0e1e77b0a446d816ee434eaf64-player.scn
 res://Assets for the acual game/Scenes/killzone.tscn::f96c0253e78312e53d88cfb28d8746b3::1756588819::res://.godot/exported/133200997/export-d76b7c04a361b2f7bdb4ac8f3da1971f-killzone.scn
 res://Demo Game/Scripts/dash_curve.tres::5849044644817b09204b7f1481230787::1756422510::res://.godot/exported/133200997/export-f5a14ef88ceea1c1451c922b16b0cec9-dash_curve.res
-res://Assets for the acual game/Scenes/chest.tscn::8b70d8043e26e6d0435a4d166a96426f::1756600458::res://.godot/exported/133200997/export-cc80dfdc7c1a86c5bf6201443842eb17-chest.scn
-res://Assets for the acual game/Scenes/game.tscn::c7c8cfc95ec7442e2ad56106aaa66038::1756600458::res://.godot/exported/133200997/export-7a1a744401533ea8086a700f2c791544-game.scn
-res://Assets for the acual game/Scenes/m_1.tscn::8a44bbcddaba9da52632db9112ba2a3a::1756600458::res://.godot/exported/133200997/export-e9b02aca181e003047cf307111b652be-m_1.scn
-res://Assets for the acual game/Scenes/enemy.tscn::b9ba2888acc5475f983e4841e978b067::1756600458::res://.godot/exported/133200997/export-5167f13e63e22fb2dcc891e937249467-enemy.scn
+res://Assets for the acual game/Scenes/chest.tscn::8b70d8043e26e6d0435a4d166a96426f::1756746111::res://.godot/exported/133200997/export-cc80dfdc7c1a86c5bf6201443842eb17-chest.scn
+res://Assets for the acual game/Scenes/game.tscn::ed807ce0fe453e700e84ca42920316b6::1756746111::res://.godot/exported/133200997/export-7a1a744401533ea8086a700f2c791544-game.scn
+res://Assets for the acual game/Scenes/m_1.tscn::1e55166c5dcb705ca5492a4e7dbfd8b6::1756746111::res://.godot/exported/133200997/export-e9b02aca181e003047cf307111b652be-m_1.scn
+res://Assets for the acual game/Scenes/enemy.tscn::6118816e9b7b8426f8d85376d7aa2d0f::1756746111::res://.godot/exported/133200997/export-5167f13e63e22fb2dcc891e937249467-enemy.scn
+res://Demo Game/Scenes/player.tscn::2b16f2def48bcc10d130d0359494e274::1756746111::res://.godot/exported/133200997/export-2384bb0f84424c23fb40f38de3b114d2-player.scn

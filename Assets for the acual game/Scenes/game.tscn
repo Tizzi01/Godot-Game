@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://17ihev8gmx8p"]
+[gd_scene load_steps=11 format=3 uid="uid://17ihev8gmx8p"]
 
 [ext_resource type="Texture2D" uid="uid://bnmfh85lwxuid" path="res://Demo Game/The assets/sprites/world_tileset.png" id="1_wi88m"]
 [ext_resource type="PackedScene" uid="uid://dikfgaeqdng3d" path="res://Demo Game/Scenes/player.tscn" id="2_s1uwp"]
 [ext_resource type="PackedScene" uid="uid://dr1fsle17larj" path="res://Assets for the acual game/Scenes/killzone.tscn" id="3_221o8"]
 [ext_resource type="PackedScene" uid="uid://d1mkdm54ef6sl" path="res://Assets for the acual game/Scenes/chest.tscn" id="4_naqcg"]
 [ext_resource type="PackedScene" uid="uid://dj4qjq0vtdg6k" path="res://Assets for the acual game/Scenes/enemy.tscn" id="5_s1uwp"]
+[ext_resource type="PackedScene" uid="uid://cp4njmyyguaww" path="res://Demo Game/Scenes/boss.tscn" id="6_221o8"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8i32r"]
 texture = ExtResource("1_wi88m")
@@ -213,3 +214,6 @@ position = Vector2(-183, 35)
 
 [node name="enemy" parent="." instance=ExtResource("5_s1uwp")]
 position = Vector2(-348, 21)
+
+[node name="Boss" parent="." instance=ExtResource("6_221o8")]
+position = Vector2(-544, 30)

@@ -5,3 +5,7 @@ res://Assets for the acual game/Scenes/enemy.tscn
 res://Assets for the acual game/Scenes/chest.tscn
 res://Demo Game/Scripts/enemy.gd
 res://Demo Game/Scripts/m_1.gd
+res://Demo Game/Scripts/m_1.gdshader
+res://Demo Game/Scripts/vision_area.gd
+res://Demo Game/Scripts/boss.gd
+res://Demo Game/Scenes/boss.tscn

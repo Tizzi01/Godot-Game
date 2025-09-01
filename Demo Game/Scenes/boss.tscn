@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://cp4njmyyguaww"]
+
+[ext_resource type="Script" uid="uid://ds0jqqcoxqspb" path="res://Demo Game/Scripts/boss.gd" id="1_0sh1y"]
+[ext_resource type="Texture2D" uid="uid://b0niybdmwwcls" path="res://Assets for the acual game/Assets/Sprites/Player Animation/idle/10.png" id="2_ieyib"]
+[ext_resource type="Script" uid="uid://8xd1oa0g1es3" path="res://Demo Game/Scripts/vision_area.gd" id="3_bk0wg"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pykt6"]
+radius = 193.003
+
+[node name="Boss" type="CharacterBody2D"]
+script = ExtResource("1_0sh1y")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = -1.65283
+scale = Vector2(0.044, 0.044)
+texture = ExtResource("2_ieyib")
+
+[node name="VisionArea" type="Area2D" parent="."]
+script = ExtResource("3_bk0wg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VisionArea"]
+visible = false
+shape = SubResource("CircleShape2D_pykt6")
+
+[node name="SightRay" type="RayCast2D" parent="."]
+
+[node name="BossTpTimer" type="Timer" parent="."]
+
+[connection signal="body_entered" from="VisionArea" to="VisionArea" method="_on_body_entered"]
