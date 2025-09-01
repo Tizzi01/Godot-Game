@@ -1,18 +1,126 @@
-[gd_scene load_steps=4 format=3 uid="uid://d1mkdm54ef6sl"]
+[gd_scene load_steps=10 format=3 uid="uid://d1mkdm54ef6sl"]
 
 [ext_resource type="Script" uid="uid://0lxj4k642akl" path="res://Demo Game/Scripts/chest.gd" id="1_5chet"]
-[ext_resource type="Texture2D" uid="uid://dnhwroiv86tlm" path="res://Assets for the acual game/Assets/Sprites/Player Animation/idle/15.png" id="1_u3aih"]
+[ext_resource type="Texture2D" uid="uid://bsrsm6rgvt86a" path="res://Assets for the acual game/Assets/Sprites/Adobe Express - file.png" id="2_t1hi0"]
+[ext_resource type="AudioStream" uid="uid://bqoruvypp1n0l" path="res://Demo Game/The assets/sounds/rumble1.MP3" id="3_llhw8"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_t1hi0"]
+
+[sub_resource type="Gradient" id="Gradient_3hhu8"]
+offsets = PackedFloat32Array(0, 0.171371, 0.516129)
+colors = PackedColorArray(0.847401, 0.925059, 1, 1, 0.228527, 0.62113, 1, 1, 0.0342742, 0.0342742, 0.0342742, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_sq82o"]
+gradient = SubResource("Gradient_3hhu8")
+fill = 1
+fill_from = Vector2(0.5, 0.49359)
+
+[sub_resource type="Animation" id="Animation_t1hi0"]
+resource_name = "ChestGone"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PointLight2D:texture:fill_to")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.025, 0.05, 0.075, 0.1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 0), Vector2(1.3, 0), Vector2(1, 0.5), Vector2(1.3, 0), Vector2(1.3, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PointLight2D:texture:width")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.075, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [64, 1]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PointLight2D:texture:height")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.075, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [64, 1]
+}
+
+[sub_resource type="Animation" id="Animation_llhw8"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PointLight2D:texture:fill_to")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PointLight2D:texture:width")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [64]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PointLight2D:texture:height")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [64]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3hhu8"]
+_data = {
+&"ChestGone": SubResource("Animation_t1hi0"),
+&"RESET": SubResource("Animation_llhw8")
+}
 
 [node name="chest" type="Area2D"]
 script = ExtResource("1_5chet")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.027, 0.0153519)
-texture = ExtResource("1_u3aih")
+scale = Vector2(0.022, 0.022)
+texture = ExtResource("2_t1hi0")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource("CircleShape2D_t1hi0")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+texture = SubResource("GradientTexture2D_sq82o")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_3hhu8")
+}
+
+[node name="ChestGoneSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_llhw8")
+bus = &"SFX"
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

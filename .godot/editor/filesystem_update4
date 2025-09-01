@@ -9,3 +9,5 @@ res://Demo Game/Scripts/m_1.gdshader
 res://Demo Game/Scripts/vision_area.gd
 res://Demo Game/Scripts/boss.gd
 res://Demo Game/Scenes/boss.tscn
+res://Demo Game/Scripts/chest.gd
+res://default_bus_layout.tres

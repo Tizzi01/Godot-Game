@@ -38,4 +38,4 @@ func _on_TeleportTimer_timeout():
 		randf_range(-teleport_distance, teleport_distance)
 	)
 	global_position = player.global_position + offset
-	$TeleportTimer.stop()
+	$TeleportTimer.stop() 
