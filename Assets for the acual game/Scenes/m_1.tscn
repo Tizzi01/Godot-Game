@@ -4,6 +4,23 @@
 [ext_resource type="Texture2D" uid="uid://bwxtf2ovl5jr1" path="res://Assets for the acual game/Assets/Sprites/Player Animation/idle/1.png" id="2_27qaj"]
 
 [sub_resource type="GDScript" id="GDScript_avajm"]
+script/source = "extends Area2D
+
+@export var damage: int = 30
+
+func _ready() -> void:
+	collision_layer = 2
+	collision_mask = 1
+	monitoring = false
+
+func activate_hitbox():
+	monitoring = true
+	$CollisionShape2D.disabled = false
+
+func deactivate_hitbox():
+	monitoring = false
+	$CollisionShape2D.disabled = true
+"
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_08bd2"]
 radius = 286.439
@@ -59,6 +76,18 @@ tracks/3/keys = {
 "update": 0,
 "values": [Vector2(-2.98023e-08, 1)]
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Sprite2D/MyHitBox/CollisionShape2D:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="Animation" id="Animation_y56xs"]
 resource_name = "slash"
@@ -111,6 +140,18 @@ tracks/3/keys = {
 "update": 0,
 "values": [Vector2(-2.98023e-08, 1), Vector2(-2.98023e-08, 1), Vector2(-2.98023e-08, 1)]
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Sprite2D/MyHitBox/CollisionShape2D:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_u7wno"]
 _data = {
@@ -129,18 +170,15 @@ texture = ExtResource("2_27qaj")
 offset = Vector2(0, -355)
 
 [node name="MyHitBox" type="Area2D" parent="Sprite2D"]
-collision_mask = 2
-monitoring = false
+collision_layer = 2
 script = SubResource("GDScript_avajm")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/MyHitBox"]
 position = Vector2(-0.610344, -365.893)
-scale = Vector2(1, 1)
 shape = SubResource("CapsuleShape2D_08bd2")
+disabled = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_u7wno")
 }
-
-[connection signal="area_entered" from="Sprite2D/MyHitBox" to="." method="_on_my_hit_box_area_entered"]

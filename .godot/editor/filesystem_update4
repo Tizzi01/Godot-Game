@@ -1,15 +1,7 @@
-res://Assets for the acual game/Scenes/enemy.tscn
 res://Assets for the acual game/Scenes/game.tscn
-res://Assets for the acual game/Scenes/player.tscn
-res://Assets for the acual game/Scenes/m_1.tscn
-res://Assets for the acual game/Scenes/chest.tscn
-res://Demo Game/Scripts/chest.gd
-res://Demo Game/Scripts/my_hit_box.gd
-res://Demo Game/Scripts/enemy.gd
-res://player.tscn
 res://Demo Game/Scenes/player.tscn
-res://Demo Game/Scripts/sprite_2d.gd
-res://Demo Game/Scripts/my_hurt_box.gd
+res://Assets for the acual game/Scenes/m_1.tscn
+res://Assets for the acual game/Scenes/enemy.tscn
+res://Assets for the acual game/Scenes/chest.tscn
+res://Demo Game/Scripts/enemy.gd
 res://Demo Game/Scripts/m_1.gd
-res://MyHitBox.gd
-res://MyHurtBox.gd

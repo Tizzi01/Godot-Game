@@ -1,31 +1,20 @@
 extends Node2D
-class_name Enemy
 
-@export var max_health: int = 250
-var current_health: int
-
-@onready var animation_player: AnimationPlayer = $AnimationPlayer
-
-func _ready() -> void:
-	current_health = max_health
-	var hurtbox = $MyHurtBox
-	if hurtbox:
-		hurtbox.enemy = self
+@export var health: int = 100
 
 func take_damage(amount: int) -> void:
-	current_health -= amount
-	print("Enemy took", amount, "damage. HP:", current_health)
-	animation_player.play("hit1")
-	if current_health <= 0:
-		die()
+	if health <= 0:
+		return  # Already dead, ignore further damage
 
-func die() -> void:
-	print("💀 Enemy died")
-	if animation_player.has_animation("death"):
-		animation_player.play("death")
-		await animation_player.animation_finished
-	queue_free()
+	health -= amount
+	print("Enemy took damage:", amount)
+	print("Remaining health:", health)
 
-
-func _on_my_hurt_box_area_entered(area: Area2D) -> void:
-	pass # Replace with function body.
+	if health > 0:
+		if $AnimationPlayer.has_animation("hit1"):
+			$AnimationPlayer.play("hit1")
+	else:
+		print("Enemy defeated!")
+		if $AnimationPlayer.has_animation("death"):
+			$AnimationPlayer.play("death")
+		queue_free()  # Remove enemy from scene
