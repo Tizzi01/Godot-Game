@@ -1,11 +1,53 @@
-[gd_scene load_steps=8 format=3 uid="uid://dj4qjq0vtdg6k"]
+[gd_scene load_steps=9 format=3 uid="uid://dj4qjq0vtdg6k"]
 
 [ext_resource type="Texture2D" uid="uid://bwxtf2ovl5jr1" path="res://Assets for the acual game/Assets/Sprites/Player Animation/idle/1.png" id="1_13mw6"]
 [ext_resource type="Script" uid="uid://32amlbwir0by" path="res://Demo Game/Scripts/enemy.gd" id="1_eluwm"]
-[ext_resource type="Script" uid="uid://8ybxlp5fe50x" path="res://Demo Game/Scripts/my_hurt_box.gd" id="3_eluwm"]
+
+[sub_resource type="GDScript" id="GDScript_eluwm"]
+
+[sub_resource type="GDScript" id="GDScript_13mw6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tyqhh"]
 size = Vector2(22, 42)
+
+[sub_resource type="Animation" id="Animation_7bc4s"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-3.11018]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.055, 0.055)]
+}
 
 [sub_resource type="Animation" id="Animation_tyqhh"]
 resource_name = "hit1"
@@ -47,45 +89,6 @@ tracks/2/keys = {
 "values": [Vector2(0.055, 0.055), Vector2(0.055, 0.055), Vector2(0.055, 0.055)]
 }
 
-[sub_resource type="Animation" id="Animation_7bc4s"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [-3.11018]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:scale")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0.055, 0.055)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_k1sdq"]
 _data = {
 &"RESET": SubResource("Animation_7bc4s"),
@@ -99,11 +102,13 @@ script = ExtResource("1_eluwm")
 rotation = -3.11018
 scale = Vector2(0.055, 0.055)
 texture = ExtResource("1_13mw6")
+script = SubResource("GDScript_eluwm")
 
-[node name="MyHurtBox" type="Area2D" parent="Sprite2D"]
-script = ExtResource("3_eluwm")
+[node name="MyHurtBox" type="Area2D" parent="Sprite2D" groups=["hurtbox"]]
+collision_layer = 2
+script = SubResource("GDScript_13mw6")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/MyHurtBox"]
 position = Vector2(17.6017, -18.744)
 rotation = 3.11018
 scale = Vector2(18.1818, 18.1818)
@@ -114,3 +119,5 @@ root_node = NodePath("../Sprite2D")
 libraries = {
 &"": SubResource("AnimationLibrary_k1sdq")
 }
+
+[connection signal="area_entered" from="Sprite2D/MyHurtBox" to="." method="_on_my_hurt_box_area_entered"]

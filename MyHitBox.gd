@@ -1,8 +1,11 @@
-class_name MyHitBox
 extends Area2D
+class_name MyHitBox
 
-@export var damage := 10
+func _ready() -> void:
+	monitoring = true
+	set_deferred("monitoring", true)
+	connect("area_entered", Callable(self, "_on_area_entered"))
 
-func _init() -> void: 
-	collision_layer = 2
-	collision_mask = 0 
+func _on_area_entered(area: Area2D) -> void:
+	if area.is_in_group("hurtbox"):
+		print("✅ MyHitBox touched a HurtBox!")

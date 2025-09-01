@@ -5,6 +5,7 @@
 
 [sub_resource type="GDScript" id="GDScript_vxcno"]
 script/source = "extends CharacterBody2D
+class_name Player 
 
 @export var walk_speed = 150.0
 @export var run_speed = 250.0
@@ -17,7 +18,10 @@ script/source = "extends CharacterBody2D
 #slash
 @onready var m1_node = $m1
 @onready var slash_anim: AnimationPlayer = m1_node.get_node(\"AnimationPlayer\")
-@onready var hitbox: Area2D = m1_node.get_node(\"MyHitBox\")
+@onready var hitbox: Area2D = $m1/Sprite2D/MyHitBox
+
+
+
 
 
 # dashing
@@ -39,14 +43,37 @@ var jump_count = 0
 
 @onready var sprite: Sprite2D = $PlayerSprite
 
-# teleport hover
+
+
+# teleport hover 
 var teleporting = false
-var teleport_hovering = false
+var teleport_hovering = false 
 
 var gravity = ProjectSettings.get_setting(\"physics/2d/default_gravity\")
 var last_facing_dir = 1
 
+#damage taking and giving
+@onready var texture_progress_bar: TextureProgressBar = $TextureProgressBar
+@export var HP : int = 100 
 
+func _ready() -> void: 
+	set_health()  # for hp
+	
+	#for the slash 
+	m1_node.visible = false
+	m1_node.set_process(false)
+	if hitbox:
+		hitbox.monitoring = false
+
+	
+	
+func set_health() -> void: 
+	texture_progress_bar.max_value = HP
+	texture_progress_bar.value = HP 
+	
+func update_health(Amount : int) -> void: 
+	HP += Amount 
+	texture_progress_bar.value = HP 
 
 
 
@@ -78,7 +105,6 @@ func _physics_process(delta):
 	if Input.is_action_pressed(\"right\"):
 		direction += 1
 
-	print(\"Direction: \", direction)
 
 	if direction != 0:
 		last_facing_dir = direction
@@ -173,12 +199,16 @@ func _physics_process(delta):
 
 func _input(event: InputEvent) -> void:
 	if m1_node.visible and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		if not slash_anim.is_playing():
+		if slash_anim and not slash_anim.is_playing():
 			slash_anim.play(\"slash\")
+
 			
-func _ready():
-	m1_node.visible = false
-	m1_node.set_process(false)  # Optional: disables any logic if needed
+				# Cancel hover if attacking during teleport
+			if teleporting:
+				teleport_hovering = false
+				teleporting = false
+
+			
 
 
 
@@ -464,3 +494,7 @@ shape = SubResource("CapsuleShape2D_guesk")
 [node name="m1" parent="." instance=ExtResource("2_qjmxq")]
 z_index = -1
 position = Vector2(-1, 1)
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
