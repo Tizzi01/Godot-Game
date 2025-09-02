@@ -1,15 +1,8 @@
 res://Assets for the acual game/Scenes/game.tscn
+res://Demo Game/Scripts/m_1.gdshader
+res://Assets for the acual game/Scenes/chest.tscn
 res://Demo Game/Scenes/player.tscn
 res://Assets for the acual game/Scenes/m_1.tscn
 res://Assets for the acual game/Scenes/enemy.tscn
-res://Assets for the acual game/Scenes/chest.tscn
-res://Demo Game/Scripts/enemy.gd
-res://Demo Game/Scripts/m_1.gd
-res://Demo Game/Scripts/m_1.gdshader
-res://Demo Game/Scripts/vision_area.gd
-res://Demo Game/Scripts/boss.gd
 res://Demo Game/Scenes/boss.tscn
-res://Demo Game/Scripts/chest.gd
-res://default_bus_layout.tres
-res://Demo Game/Scripts/camera_2d.gd
-res://Demo Game/Scripts/game.gd
+res://Assets for the acual game/Assets/Sprites/Player Animation/idle/m_1.tscn
