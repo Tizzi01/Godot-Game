@@ -1,5 +1,6 @@
-AudioStreamPlayer2D
+Node2D
 AnimationPlayer
+AudioStreamPlayer2D
 DirectionalLight2D
 PointLight2D
 WorldEnvironment

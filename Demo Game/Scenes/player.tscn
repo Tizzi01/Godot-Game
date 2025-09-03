@@ -1,11 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://dikfgaeqdng3d"]
+[gd_scene load_steps=16 format=3 uid="uid://dikfgaeqdng3d"]
 
 [ext_resource type="Texture2D" uid="uid://canfsqyqpe8qy" path="res://Assets for the acual game/Assets/Sprites/Player Animation/idle/0.png" id="1_i7wno"]
 [ext_resource type="PackedScene" uid="uid://bii3f327cynxf" path="res://Assets for the acual game/Assets/Sprites/Player Animation/idle/m_1.tscn" id="2_qjmxq"]
 
 [sub_resource type="GDScript" id="GDScript_vxcno"]
 script/source = "extends CharacterBody2D
-class_name Player 
+class_name Player
 
 @export var walk_speed = 150.0
 @export var run_speed = 250.0
@@ -15,20 +15,20 @@ class_name Player
 @export var jump_force = -300.0
 @export_range(0,1) var deccelerate_on_jump_release = 0.5
 
-#slash
+# slash
 @onready var m1_node = $m1
-@onready var slash_anim: AnimationPlayer = m1_node.get_node(\"AnimationPlayer\")
+@onready var anim_player: AnimationPlayer = $PlayerSprite/AnimationPlayer
 @onready var hitbox: Area2D = $m1/Sprite2D/MyHitBox
-
-
-
-
+@onready var slash_anim: AnimationPlayer = m1_node.get_node(\"AnimationPlayer\")
 
 # dashing
 @export var dash_speed = 500.0
 @export var dash_max_distance = 75.0
 @export var dash_curve : Curve
 @export var dash_cooldown = 0.5
+
+@export var m1_radius: float = 20.0
+@export var m1_follow_speed: float = 10.0
 
 var is_dashing = false
 var dash_start_position = 0
@@ -37,48 +37,47 @@ var dash_timer = 0
 
 var was_on_floor = true
 var is_jumping = false
-
 @export var max_jumps = 99
 var jump_count = 0
 
 @onready var sprite: Sprite2D = $PlayerSprite
 
-
-
-# teleport hover 
+# teleport hover
 var teleporting = false
-var teleport_hovering = false 
-
+var teleport_hovering = false
 var gravity = ProjectSettings.get_setting(\"physics/2d/default_gravity\")
 var last_facing_dir = 1
 
-#damage taking and giving
+# damage
 @onready var texture_progress_bar: TextureProgressBar = $TextureProgressBar
-@export var HP : int = 100 
+@export var HP : int = 100
 
-func _ready() -> void: 
-	set_health()  # for hp
-	
-	#for the slash 
+# m1 tracking
+var m1_mouse_pos: Vector2 = Vector2.ZERO
+
+func _ready() -> void:
+	set_health()
 	m1_node.visible = false
 	m1_node.set_process(false)
 	if hitbox:
 		hitbox.monitoring = false
 
-	
-	
-func set_health() -> void: 
+func set_health() -> void:
 	texture_progress_bar.max_value = HP
-	texture_progress_bar.value = HP 
-	
-func update_health(Amount : int) -> void: 
-	HP += Amount 
-	texture_progress_bar.value = HP 
+	texture_progress_bar.value = HP
 
-
+func update_health(Amount : int) -> void:
+	HP += Amount
+	texture_progress_bar.value = HP
 
 func _physics_process(delta):
 	var current_gravity = gravity
+	
+	if not teleporting:
+		m1_mouse_pos = get_global_mouse_position()
+		m1_node.player_position = global_position
+		m1_node.mouse_position = m1_mouse_pos
+
 
 	# Hover freeze
 	if teleport_hovering:
@@ -86,12 +85,10 @@ func _physics_process(delta):
 		current_gravity = 0
 		$PlayerSprite/AnimationPlayer.play(\"Idle\")
 
-		# Cancel hover on input
 		if Input.is_action_just_pressed(\"jump\") or Input.is_action_just_pressed(\"dash\") or Input.is_action_pressed(\"left\") or Input.is_action_pressed(\"right\"):
 			teleport_hovering = false
 			teleporting = false
 
-	# Apply gravity
 	if not is_on_floor():
 		velocity.y += current_gravity * delta
 
@@ -104,7 +101,6 @@ func _physics_process(delta):
 		direction -= 1
 	if Input.is_action_pressed(\"right\"):
 		direction += 1
-
 
 	if direction != 0:
 		last_facing_dir = direction
@@ -129,15 +125,13 @@ func _physics_process(delta):
 	if is_on_floor():
 		jump_count = 0
 
-	if direction != 0:
-		sprite.flip_h = direction < 0
+	sprite.flip_h = last_facing_dir < 0
 
 	if Input.is_action_just_pressed(\"dash\") and not is_dashing and dash_timer <= 0:
 		is_dashing = true
 		dash_start_position = position.x
 		dash_direction = last_facing_dir
-		dash_timer = dash_cooldown 
-		
+		dash_timer = dash_cooldown
 
 		if teleporting:
 			teleport_hovering = false
@@ -154,7 +148,6 @@ func _physics_process(delta):
 	if dash_timer > 0:
 		dash_timer -= delta
 
-	#tp 
 	if Input.is_action_just_pressed(\"tp\"):
 		var target_pos = get_global_mouse_position()
 		var space_state = get_world_2d().direct_space_state
@@ -186,34 +179,24 @@ func _physics_process(delta):
 			else:
 				print(\"Collision has no normal — skipping safe push.\")
 
-		# Start hover
 		teleporting = true
 		teleport_hovering = true
 		velocity = Vector2.ZERO
 		$PlayerSprite/AnimationPlayer.play(\"Idle\")
 
 	if is_on_floor() and velocity.x == 0:
-		$PlayerSprite/AnimationPlayer.play(\"Idle\") 
-		
-	move_and_slide() 
+		$PlayerSprite/AnimationPlayer.play(\"Idle\")
+
+	move_and_slide()
 
 func _input(event: InputEvent) -> void:
 	if m1_node.visible and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		if slash_anim and not slash_anim.is_playing():
 			slash_anim.play(\"slash\")
 
-			
-				# Cancel hover if attacking during teleport
-			if teleporting:
-				teleport_hovering = false
-				teleporting = false
-
-			
-
-
-
-
-	
+		if teleporting:
+			teleport_hovering = false
+			teleporting = false
 "
 
 [sub_resource type="Animation" id="Animation_vxcno"]
@@ -474,6 +457,44 @@ _data = {
 radius = 4.0
 height = 28.0
 
+[sub_resource type="Animation" id="Animation_3h3w8"]
+resource_name = "Pentagonfloat"
+length = 1.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.775889, 0.777, 1.5),
+"transitions": PackedFloat32Array(-2, -2, -2, -2),
+"update": 0,
+"values": [Vector2(-16, 6), Vector2(-16, 4.18001), Vector2(-16, 4.18), Vector2(-16, 6)]
+}
+
+[sub_resource type="Animation" id="Animation_bijw4"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-12, 3)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_u23ib"]
+_data = {
+&"Pentagonfloat": SubResource("Animation_3h3w8"),
+&"RESET": SubResource("Animation_bijw4")
+}
+
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 script = SubResource("GDScript_vxcno")
 
@@ -493,8 +514,15 @@ shape = SubResource("CapsuleShape2D_guesk")
 
 [node name="m1" parent="." instance=ExtResource("2_qjmxq")]
 z_index = -1
-position = Vector2(-14, -9.53674e-07)
+position = Vector2(-12, 3)
 rotation = -0.0610865
+scale = Vector2(1, 1)
+
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="m1"]
+libraries = {
+&"": SubResource("AnimationLibrary_u23ib")
+}
+autoplay = "Pentagonfloat"
 
 [node name="TextureProgressBar" type="TextureProgressBar" parent="."]
 offset_right = 40.0

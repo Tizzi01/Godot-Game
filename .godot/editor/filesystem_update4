@@ -1,8 +1,8 @@
 res://Assets for the acual game/Scenes/game.tscn
 res://Demo Game/Scripts/m_1.gdshader
-res://Assets for the acual game/Scenes/chest.tscn
 res://Demo Game/Scenes/player.tscn
-res://Assets for the acual game/Scenes/m_1.tscn
+res://Assets for the acual game/Scenes/chest.tscn
+res://Assets for the acual game/Assets/Sprites/Player Animation/idle/m_1.tscn
 res://Assets for the acual game/Scenes/enemy.tscn
 res://Demo Game/Scenes/boss.tscn
-res://Assets for the acual game/Assets/Sprites/Player Animation/idle/m_1.tscn
+res://Demo Game/Scripts/m_1.gd
