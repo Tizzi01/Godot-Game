@@ -10,7 +10,7 @@ func _ready() -> void:
 
 func _on_body_entered(body: Node) -> void:
 	if body.name == "Player" or (body.has_method("is_in_group") and body.is_in_group("player")):
-		var sword := body.get_node_or_null("m1")
+		var sword := body.get_node_or_null("Game/m_1") 
 		if sword:
 			sword.visible = true
 			sword.set_process(true)

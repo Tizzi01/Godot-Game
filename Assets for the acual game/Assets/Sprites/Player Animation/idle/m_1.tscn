@@ -265,7 +265,7 @@ gradient = SubResource("Gradient_3hhu8")
 fill = 1
 fill_from = Vector2(0.5, 0.49359)
 
-[node name="m1" type="Node2D"]
+[node name="m1" type="Node2D" groups=["m1"]]
 script = ExtResource("1_0a0vt")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

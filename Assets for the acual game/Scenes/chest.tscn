@@ -9,12 +9,13 @@ radius = 12.0
 
 [sub_resource type="Gradient" id="Gradient_llhw8"]
 offsets = PackedFloat32Array(0, 0.171371, 0.516129)
-colors = PackedColorArray(0.847401, 0.925059, 1, 1, 0.228527, 0.62113, 1, 1, 0.0342742, 0.0342742, 0.0342742, 1)
+colors = PackedColorArray(0.847401, 0.925059, 1, 1, 0.228527, 0.62113, 1, 1, 0, 0.0352941, 0.0352941, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_sq82o"]
 gradient = SubResource("Gradient_llhw8")
 fill = 1
 fill_from = Vector2(0.5, 0.49359)
+metadata/_snap_count = 100
 
 [sub_resource type="Animation" id="Animation_t1hi0"]
 resource_name = "ChestGone"
