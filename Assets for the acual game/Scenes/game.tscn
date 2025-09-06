@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://17ihev8gmx8p"]
+[gd_scene load_steps=14 format=3 uid="uid://17ihev8gmx8p"]
 
 [ext_resource type="Script" uid="uid://be05spmmaewml" path="res://Demo Game/Scripts/game.gd" id="1_naqcg"]
 [ext_resource type="Texture2D" uid="uid://bnmfh85lwxuid" path="res://Demo Game/The assets/sprites/world_tileset.png" id="1_wi88m"]
@@ -7,7 +7,8 @@
 [ext_resource type="Script" uid="uid://bvjmot5d81tgk" path="res://Demo Game/Scripts/camera_2d.gd" id="3_naqcg"]
 [ext_resource type="PackedScene" uid="uid://d1mkdm54ef6sl" path="res://Assets for the acual game/Scenes/chest.tscn" id="4_naqcg"]
 [ext_resource type="PackedScene" uid="uid://dj4qjq0vtdg6k" path="res://Assets for the acual game/Scenes/enemy.tscn" id="5_s1uwp"]
-[ext_resource type="PackedScene" uid="uid://bii3f327cynxf" path="res://Assets for the acual game/Assets/Sprites/Player Animation/idle/m_1.tscn" id="8_4bs2y"]
+[ext_resource type="PackedScene" uid="uid://dbb6rc8vl0y7e" path="res://Assets for the acual game/Scenes/mob.tscn" id="8_4bs2y"]
+[ext_resource type="Texture2D" uid="uid://daq51b7c6g0cy" path="res://Assets for the acual game/Assets/Sprites/Player Animation/idle_right/Scripts/BGv7.png" id="10_14idw"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8i32r"]
 texture = ExtResource("1_wi88m")
@@ -189,13 +190,6 @@ point_count = 3
 script = ExtResource("1_naqcg")
 metadata/_edit_horizontal_guides_ = [-287.0]
 
-[node name="ColorRect" type="ColorRect" parent="."]
-offset_left = -745.0
-offset_top = -283.0
-offset_right = 683.0
-offset_bottom = 447.0
-color = Color(0.475661, 0.64681, 0.899262, 1)
-
 [node name="TileMap" type="TileMap" parent="."]
 z_index = -5
 tile_set = SubResource("TileSet_wtn8l")
@@ -217,6 +211,7 @@ script = ExtResource("3_naqcg")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="killzone"]
 position = Vector2(352, 225)
+rotation = -0.040491
 shape = SubResource("WorldBoundaryShape2D_8i32r")
 
 [node name="chest" parent="." instance=ExtResource("4_naqcg")]
@@ -225,5 +220,73 @@ position = Vector2(-183, 34)
 [node name="enemy" parent="." instance=ExtResource("5_s1uwp")]
 position = Vector2(-348, 21)
 
-[node name="m1" parent="." instance=ExtResource("8_4bs2y")]
-position = Vector2(-95, 41)
+[node name="Mob" parent="." instance=ExtResource("8_4bs2y")]
+position = Vector2(-78, 68)
+
+[node name="BG" type="Node" parent="."]
+
+[node name="BGv7" type="Sprite2D" parent="BG"]
+z_index = -55
+position = Vector2(-151, 32)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("10_14idw")
+
+[node name="BGv8" type="Sprite2D" parent="BG"]
+z_index = -55
+position = Vector2(1487, 32)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("10_14idw")
+flip_h = true
+
+[node name="BGv9" type="Sprite2D" parent="BG"]
+z_index = -55
+position = Vector2(-1789, 32)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("10_14idw")
+flip_h = true
+
+[node name="BGv13" type="Sprite2D" parent="BG"]
+z_index = -55
+position = Vector2(-151, 953)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("10_14idw")
+flip_v = true
+
+[node name="BGv14" type="Sprite2D" parent="BG"]
+z_index = -55
+position = Vector2(1487, 953)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("10_14idw")
+flip_h = true
+flip_v = true
+
+[node name="BGv15" type="Sprite2D" parent="BG"]
+z_index = -55
+position = Vector2(-1789, 953)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("10_14idw")
+flip_h = true
+flip_v = true
+
+[node name="BGv10" type="Sprite2D" parent="BG"]
+z_index = -55
+position = Vector2(-151, -889)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("10_14idw")
+flip_v = true
+
+[node name="BGv11" type="Sprite2D" parent="BG"]
+z_index = -55
+position = Vector2(1487.2, -889.2)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("10_14idw")
+flip_h = true
+flip_v = true
+
+[node name="BGv12" type="Sprite2D" parent="BG"]
+z_index = -55
+position = Vector2(-1789, -889)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("10_14idw")
+flip_h = true
+flip_v = true

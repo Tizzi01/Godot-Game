@@ -1,6 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://dikfgaeqdng3d"]
+[gd_scene load_steps=14 format=3 uid="uid://dikfgaeqdng3d"]
 
 [ext_resource type="Texture2D" uid="uid://canfsqyqpe8qy" path="res://Assets for the acual game/Assets/Sprites/Player Animation/idle/0.png" id="1_i7wno"]
+[ext_resource type="PackedScene" uid="uid://bii3f327cynxf" path="res://Assets for the acual game/Assets/Sprites/Player Animation/idle/m_1.tscn" id="2_qjmxq"]
+[ext_resource type="PackedScene" uid="uid://wj61kt8sa2wn" path="res://Assets for the acual game/Scenes/gun.tscn" id="3_bijw4"]
 
 [sub_resource type="GDScript" id="GDScript_vxcno"]
 script/source = "extends CharacterBody2D
@@ -15,10 +17,10 @@ class_name Player
 @export_range(0,1) var deccelerate_on_jump_release = 0.5
 
 # slash
-var m1_node: Node = null
-var hitbox: Area2D = null
-var slash_anim: AnimationPlayer = null
+@onready var m1_node = $m1
 @onready var anim_player: AnimationPlayer = $PlayerSprite/AnimationPlayer
+@onready var hitbox: Area2D = $m1/Sprite2D/MyHitBox
+@onready var slash_anim: AnimationPlayer = m1_node.get_node(\"AnimationPlayer\")
 
 # dashing
 @export var dash_speed = 500.0
@@ -57,21 +59,10 @@ var m1_mouse_pos: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
 	set_health()
-
-	# Find m_1 using group lookup
-	var group_members = get_tree().get_nodes_in_group(\"m1\")
-	if group_members.size() > 0:
-		m1_node = group_members[0]
-		m1_node.visible = false
-		m1_node.set_process(false)
-
-		hitbox = m1_node.get_node_or_null(\"Sprite2D/MyHitBox\")
-		slash_anim = m1_node.get_node_or_null(\"AnimationPlayer\")
-
-		if hitbox:
-			hitbox.monitoring = false
-	else:
-		push_warning(\"⚠️ No node found in group 'm1'\")
+	m1_node.visible = false
+	m1_node.set_process(false)
+	if hitbox:
+		hitbox.monitoring = false
 
 func set_health() -> void:
 	texture_progress_bar.max_value = HP
@@ -82,14 +73,13 @@ func update_health(Amount : int) -> void:
 	texture_progress_bar.value = HP
 
 func _physics_process(delta):
-	if not teleporting:
-		m1_mouse_pos = get_global_mouse_position()
+	
 
 	# Hover freeze
 	if teleport_hovering:
 		velocity = Vector2.ZERO
 		teleport_hover_timer += delta
-		anim_player.play(\"Idle\")
+		$PlayerSprite/AnimationPlayer.play(\"Idle\")
 
 		if teleport_hover_timer >= teleport_hover_max_time or Input.is_action_just_pressed(\"jump\") or Input.is_action_just_pressed(\"dash\") or Input.is_action_pressed(\"left\") or Input.is_action_pressed(\"right\"):
 			teleport_hovering = false
@@ -188,7 +178,7 @@ func _physics_process(delta):
 		teleport_hovering = true
 		teleport_hover_timer = 0.0
 		velocity = Vector2.ZERO
-		anim_player.play(\"Idle\")
+		$PlayerSprite/AnimationPlayer.play(\"Idle\")
 
 	if velocity == Vector2.ZERO and not teleporting and not is_dashing:
 		if Input.is_action_pressed(\"left\") or Input.is_action_pressed(\"right\") or Input.is_action_pressed(\"up\") or Input.is_action_pressed(\"down\"):
@@ -196,12 +186,12 @@ func _physics_process(delta):
 			print(\"✅ Unstuck player with input\")
 
 	if is_on_floor() and velocity.x == 0:
-		anim_player.play(\"Idle\")
+		$PlayerSprite/AnimationPlayer.play(\"Idle\")
 
 	move_and_slide()
 
 func _input(event: InputEvent) -> void:
-	if m1_node and m1_node.visible and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+	if m1_node.visible and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		if slash_anim and not slash_anim.is_playing():
 			slash_anim.play(\"slash\")
 
@@ -489,3 +479,9 @@ shape = SubResource("CapsuleShape2D_guesk")
 [node name="TextureProgressBar" type="TextureProgressBar" parent="."]
 offset_right = 40.0
 offset_bottom = 40.0
+
+[node name="m1" parent="." instance=ExtResource("2_qjmxq")]
+position = Vector2(0, -17)
+
+[node name="Gun" parent="." instance=ExtResource("3_bijw4")]
+position = Vector2(8, 1)

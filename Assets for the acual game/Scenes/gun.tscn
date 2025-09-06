@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=3 uid="uid://wj61kt8sa2wn"]
+
+[ext_resource type="Script" uid="uid://dvjuxe6egka52" path="res://Demo Game/Scripts/gun.gd" id="1_6j442"]
+[ext_resource type="Texture2D" uid="uid://canfsqyqpe8qy" path="res://Assets for the acual game/Assets/Sprites/Player Animation/idle/0.png" id="1_ko2r6"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6j442"]
+radius = 696.046
+
+[node name="Gun" type="Area2D"]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("1_6j442")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(11, -2)
+shape = SubResource("CircleShape2D_6j442")
+
+[node name="GunPivot" type="Marker2D" parent="."]
+
+[node name="0" type="Sprite2D" parent="GunPivot"]
+position = Vector2(6, -1)
+scale = Vector2(0.033, 0.00816667)
+texture = ExtResource("1_ko2r6")
+
+[node name="ShootingPoint" type="Marker2D" parent="GunPivot/0"]
+unique_name_in_owner = true
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.3
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

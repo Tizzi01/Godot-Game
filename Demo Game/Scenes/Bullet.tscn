@@ -1,25 +1,37 @@
-[gd_scene load_steps=4 format=3 uid="uid://c1dobiglcpm3i"]
+[gd_scene load_steps=5 format=3 uid="uid://c1dobiglcpm3i"]
 
+[ext_resource type="Script" uid="uid://cymurx1pvkyql" path="res://Demo Game/Scripts/bullet.gd" id="1_6hugp"]
 [ext_resource type="Texture2D" uid="uid://b2pudmnic1vpr" path="res://Demo Game/The assets/sprites/bulet.webp" id="1_t83es"]
-[ext_resource type="Script" uid="uid://ud8co32yftvj" path="res://Demo Game/Scripts/bulet.gd" id="2_6hugp"]
 
 [sub_resource type="GDScript" id="GDScript_5ydnh"]
 script/source = "extends Node2D
 
-const SPEED: int = 300 
 
-# Called when the node enters the scene tree for the first time.
-func _physics_process(delta: float) -> void:
-	position += transform.x * SPEED * delta
 	
 "
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_t83es"]
+radius = 1.0
 
 [node name="Bullet" type="Node2D"]
 script = SubResource("GDScript_5ydnh")
 
-[node name="Bulet" type="Sprite2D" parent="."]
+[node name="Bullet" type="Area2D" parent="."]
+top_level = true
+rotation = 0.628174
+collision_layer = 0
+collision_mask = 7
+script = ExtResource("1_6hugp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bullet"]
+position = Vector2(1, -1)
+rotation = -1.57079
+shape = SubResource("CircleShape2D_t83es")
+
+[node name="Projectile" type="Sprite2D" parent="Bullet"]
 z_index = -5
 position = Vector2(1, -1)
 scale = Vector2(0.0105168, 0.0105168)
 texture = ExtResource("1_t83es")
-script = ExtResource("2_6hugp")
+
+[connection signal="body_entered" from="Bullet" to="Bullet" method="_on_body_entered"]
