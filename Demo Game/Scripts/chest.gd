@@ -10,22 +10,26 @@ func _ready() -> void:
 
 func _on_body_entered(body: Node) -> void:
 	if body.name == "Player" or (body.has_method("is_in_group") and body.is_in_group("player")):
-		var sword := body.get_node_or_null("m1")
-		if sword:
-			sword.visible = true
-			sword.set_process(true)
-			print("Sword unlocked.")
+		var gun := body.get_node_or_null("Gun")  # ✅ Correct node name
+		if gun:
+			gun.show()  # ✅ Makes it visible
+			gun.set_process(true)  # ✅ Enables its logic
+			print("✅ Gun activated")
 
-			# ✅ Get the camera from the player and connect the signal
+			# Optional: trigger camera shake
 			var camera := body.get_node_or_null("Camera2D")
 			if camera:
 				if not is_connected("item_acquired", Callable(camera, "_on_item_acquired")):
 					connect("item_acquired", Callable(camera, "_on_item_acquired"))
 				emit_signal("item_acquired")
 			else:
-				push_warning("Player has no Camera2D node.")
+				push_warning("⚠️ Player has no Camera2D node")
 
 		else:
-			push_warning("Player has no 'm1' node.")
+			push_warning("⚠️ Player has no 'Gun' node")
 
+		# Play chest animation and sound
 		animation_player.play("ChestGone")
+		chest_gone_sfx.play()
+
+		# Optional: delay before removing chest

@@ -15,6 +15,10 @@ run/main_scene="uid://17ihev8gmx8p"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+Music="*res://Demo Game/Scenes/Music.tscn"
+
 [display]
 
 window/vsync/vsync_mode=0

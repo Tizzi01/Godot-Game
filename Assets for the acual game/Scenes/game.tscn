@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://17ihev8gmx8p"]
+[gd_scene load_steps=15 format=3 uid="uid://17ihev8gmx8p"]
 
 [ext_resource type="Script" uid="uid://be05spmmaewml" path="res://Demo Game/Scripts/game.gd" id="1_naqcg"]
 [ext_resource type="Texture2D" uid="uid://bnmfh85lwxuid" path="res://Demo Game/The assets/sprites/world_tileset.png" id="1_wi88m"]
@@ -180,11 +180,13 @@ texture = ExtResource("1_wi88m")
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_8i32r")
 
-[sub_resource type="Curve" id="Curve_naqcg"]
-_data = [Vector2(0, 0.380392), 0.0, 0.0, 0, 0, Vector2(0.103571, 0.92353), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+[sub_resource type="Curve" id="Curve_sfajg"]
+_data = [Vector2(0, 0.376471), 0.0, 0.0, 0, 0, Vector2(0.1, 0.92549), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 3
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_8i32r"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_sfajg"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_naqcg")
@@ -198,7 +200,7 @@ format = 2
 [node name="Player" parent="." instance=ExtResource("2_s1uwp")]
 z_index = 1
 position = Vector2(-134, 33)
-dash_curve = SubResource("Curve_naqcg")
+dash_curve = SubResource("Curve_sfajg")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2(0, -1)
@@ -210,7 +212,7 @@ script = ExtResource("3_naqcg")
 [node name="killzone" parent="." instance=ExtResource("3_221o8")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="killzone"]
-position = Vector2(352, 225)
+position = Vector2(274, 1560)
 rotation = -0.040491
 shape = SubResource("WorldBoundaryShape2D_8i32r")
 
@@ -221,7 +223,20 @@ position = Vector2(-183, 34)
 position = Vector2(-348, 21)
 
 [node name="Mob" parent="." instance=ExtResource("8_4bs2y")]
-position = Vector2(-78, 68)
+position = Vector2(-33, 130)
+collision_mask = 5
+
+[node name="Mob2" parent="." instance=ExtResource("8_4bs2y")]
+position = Vector2(0, 11)
+collision_mask = 5
+
+[node name="Mob3" parent="." instance=ExtResource("8_4bs2y")]
+position = Vector2(-285, -98)
+collision_mask = 5
+
+[node name="Mob4" parent="." instance=ExtResource("8_4bs2y")]
+position = Vector2(-461, 118)
+collision_mask = 5
 
 [node name="BG" type="Node" parent="."]
 
@@ -290,3 +305,25 @@ scale = Vector2(0.2, 0.2)
 texture = ExtResource("10_14idw")
 flip_h = true
 flip_v = true
+
+[node name="Borders" type="StaticBody2D" parent="." groups=["Borders"]]
+
+[node name="right" type="CollisionShape2D" parent="Borders"]
+position = Vector2(1978, -20)
+rotation = -1.57079
+shape = SubResource("WorldBoundaryShape2D_sfajg")
+
+[node name="left" type="CollisionShape2D" parent="Borders"]
+position = Vector2(-2252, 0)
+rotation = -4.71238
+shape = SubResource("WorldBoundaryShape2D_sfajg")
+
+[node name="top" type="CollisionShape2D" parent="Borders"]
+position = Vector2(-1, -1102)
+rotation = -3.14159
+shape = SubResource("WorldBoundaryShape2D_sfajg")
+
+[node name="down" type="CollisionShape2D" parent="Borders"]
+position = Vector2(5, 1158)
+rotation = -6.28318
+shape = SubResource("WorldBoundaryShape2D_sfajg")

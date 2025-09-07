@@ -140,7 +140,7 @@ tracks/8/keys = {
 
 [sub_resource type="Animation" id="Animation_y56xs"]
 resource_name = "slash"
-length = 0.15
+length = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -148,7 +148,7 @@ tracks/0/path = NodePath("Sprite2D/MyHitBox/CollisionShape2D:disabled")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.133333),
+"times": PackedFloat32Array(0, 0.1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [false, true]
@@ -160,7 +160,7 @@ tracks/1/path = NodePath("Sprite2D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.025, 0.04, 0.12, 0.125914, 0.130799),
+"times": PackedFloat32Array(0, 0.025, 0.04, 0.086667, 0.092581, 0.097466),
 "transitions": PackedFloat32Array(0.5, 2, 1, 1, 1, 1),
 "update": 0,
 "values": [Vector2(0, -3), Vector2(0, -2), Vector2(1.81899e-12, -4), Vector2(0, -3), Vector2(0, -3), Vector2(0, -3)]
@@ -172,7 +172,7 @@ tracks/2/path = NodePath("Sprite2D:rotation")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.025, 0.04, 0.12, 0.125914, 0.130799),
+"times": PackedFloat32Array(0, 0.025, 0.04, 0.086667, 0.092581, 0.097466),
 "transitions": PackedFloat32Array(0.5, 2, 1, 1, 1, 1),
 "update": 0,
 "values": [-6.28319, -6.28319, -6.28319, 0.322886, -0.324631, 0.0]
@@ -184,7 +184,7 @@ tracks/3/path = NodePath("Sprite2D:scale")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.025, 0.04, 0.12, 0.125914, 0.130799),
+"times": PackedFloat32Array(0, 0.025, 0.04, 0.086667, 0.092581, 0.097466),
 "transitions": PackedFloat32Array(0.5, 2, 1, 1, 1, 1),
 "update": 0,
 "values": [Vector2(0.044, 0.041), Vector2(0.044, 0.0255278), Vector2(0.044, 0.0507822), Vector2(0.044, 0.041), Vector2(0.044, 0.041), Vector2(0.044, 0.041)]
@@ -196,7 +196,7 @@ tracks/4/path = NodePath("PointLight2D:texture:fill_to")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.005, 0.01, 0.015, 0.02, 0.025, 0.133333),
+"times": PackedFloat32Array(0, 0.005, 0.01, 0.015, 0.02, 0.025, 0.1),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
 "update": 0,
 "values": [Vector2(1, 0), Vector2(1.3, 0), Vector2(0.5, 0), Vector2(1.3, 0), Vector2(1.3, 0), Vector2(1.3, 0), Vector2(0.5, 0)]
@@ -208,7 +208,7 @@ tracks/5/path = NodePath("PointLight2D:texture:fill_from")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.005, 0.01, 0.015, 0.02, 0.025, 0.133333),
+"times": PackedFloat32Array(0, 0.005, 0.01, 0.015, 0.02, 0.025, 0.1),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
 "update": 0,
 "values": [Vector2(0.5, 0.49359), Vector2(0.5, 0.49359), Vector2(0.5, 0.49359), Vector2(0.5, 0.49359), Vector2(0.5, 0.49359), Vector2(0.5, 0.49359), Vector2(0.5, 0.49359)]
@@ -220,7 +220,7 @@ tracks/6/path = NodePath("PointLight2D:texture:width")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
-"times": PackedFloat32Array(0, 0.005, 0.01, 0.015, 0.02, 0.025, 0.133333),
+"times": PackedFloat32Array(0, 0.005, 0.01, 0.015, 0.02, 0.025, 0.1),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [64, 64, 64, 64, 1, 55, 1]
@@ -232,7 +232,7 @@ tracks/7/path = NodePath("PointLight2D:texture:height")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
-"times": PackedFloat32Array(0, 0.005, 0.01, 0.015, 0.02, 0.025, 0.133333),
+"times": PackedFloat32Array(0, 0.005, 0.01, 0.015, 0.02, 0.025, 0.1),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [64, 64, 64, 64, 1, 55, 1]
@@ -256,12 +256,12 @@ _data = {
 &"slash": SubResource("Animation_y56xs")
 }
 
-[sub_resource type="Gradient" id="Gradient_3hhu8"]
-offsets = PackedFloat32Array(0, 0.171371, 0.516129)
-colors = PackedColorArray(0.847401, 0.925059, 1, 1, 0.228527, 0.62113, 1, 1, 0.0342742, 0.0342742, 0.0342742, 1)
+[sub_resource type="Gradient" id="Gradient_w2bsc"]
+offsets = PackedFloat32Array(0, 0.242857, 0.695918, 0.993878)
+colors = PackedColorArray(0.847401, 0.925059, 1, 1, 0.228527, 0.62113, 1, 1, 0.0352941, 0.0352941, 0.0352941, 0, 0.042272, 0.0564493, 0.0701307, 0.0361111)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_aw1fr"]
-gradient = SubResource("Gradient_3hhu8")
+gradient = SubResource("Gradient_w2bsc")
 fill = 1
 fill_from = Vector2(0.5, 0.49359)
 
@@ -272,12 +272,14 @@ script = ExtResource("1_0a0vt")
 position = Vector2(0, -3)
 scale = Vector2(0.044, 0.041)
 texture = ExtResource("2_w2bsc")
+offset = Vector2(-8.665, 14.38)
 
 [node name="MyHitBox" type="Area2D" parent="Sprite2D"]
 collision_layer = 2
 script = SubResource("GDScript_avajm")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/MyHitBox"]
+visible = false
 position = Vector2(-295.455, -24.3902)
 rotation = 1.58301
 shape = SubResource("CapsuleShape2D_w2bsc")
@@ -288,9 +290,11 @@ libraries = {
 }
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
+visible = false
 position = Vector2(0, -3)
 scale = Vector2(1, 0.931818)
 texture = SubResource("GradientTexture2D_aw1fr")
 
 [node name="SlashSFX" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_w2bsc")
+bus = &"SFX"

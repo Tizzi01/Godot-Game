@@ -13,4 +13,5 @@ func _on_body_entered(body: Node) -> void:
 		sword.set_process(true)  # Optional: re-enable logic
 		
 		# Optional: play pickup animation or sound
-		queue_free()  # Remove chest 
+		queue_free()  # Remove chest  
+		
