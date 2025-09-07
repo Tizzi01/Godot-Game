@@ -1,8 +1,8 @@
-PointLight2D
 CollisionShape2D
+Area2D
+PointLight2D
 AnimationPlayer
 StaticBody2D
-Area2D
 AudioStreamPlayer2D
 WorldEnvironment
 AnimatedSprite2D
@@ -12,4 +12,3 @@ Timer
 Marker2D
 CanvasLayer
 CanvasGroup
-CharacterBody2D

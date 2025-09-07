@@ -1,5 +1,11 @@
 extends Area2D
 
+const BULLET = preload("res://Assets for the acual game/Scenes/bullet_v_2.tscn")
+const ROTATION_OFFSET := PI / 2  # ✅ Correct offset for upward-facing gun
+
+@onready var gun_pivot = $GunPivot
+@onready var shooting_point = $GunPivot/Sprite2D/ShootingPoint
+
 func _ready():
 	connect("body_entered", Callable(self, "_on_body_entered"))
 	monitoring = true
@@ -7,26 +13,39 @@ func _ready():
 func _on_body_entered(body: Node) -> void:
 	if body.name == "Player":
 		print("Chest touched by:", body.name)
-		
-		var sword = body.get_node("gun")
-		sword.visible = true
-		sword.set_process(true)
-		
+		var gun = body.get_node("gun")
+		gun.visible = true
+		gun.set_process(true)
 		queue_free()
 
 func _physics_process(delta):
 	var mouse_pos = get_global_mouse_position()
-	var direction = (mouse_pos - global_position).normalized()
-	rotation = lerp_angle(rotation, direction.angle() - PI / 2, 10 * delta)
+	var target_angle = (mouse_pos - gun_pivot.global_position).angle() + ROTATION_OFFSET
+	gun_pivot.rotation = lerp_angle(gun_pivot.rotation, target_angle, 10 * delta)
 
 	if Input.is_action_just_pressed("slash"):
 		$AnimationPlayer.play("slash")
+		shoot()
 
 func shoot():
-	const BULLET = preload("res://Demo Game/Scenes/Bullet.tscn")
-	var new_bullet = BULLET.instantiate()
-	new_bullet.global_position = %ShootingPoint.global_position
-	get_tree().current_scene.add_child(new_bullet)
+	if shooting_point == null:
+		print("ERROR: ShootingPoint not found")
+		return
+	
+	var bullet_instance = BULLET.instantiate()
+	bullet_instance.top_level = true
+	bullet_instance.global_position = shooting_point.global_position
 
-func _on_timer_timeout() -> void:
-	shoot()
+	var mouse_pos = get_global_mouse_position()
+	var direction = (mouse_pos - shooting_point.global_position).normalized()
+	var angle_to_cursor = direction.angle()
+	bullet_instance.rotation = angle_to_cursor
+
+	get_tree().current_scene.add_child(bullet_instance)
+
+	print("Bullet spawned at:", bullet_instance.global_position)
+	print("Rotation (deg):", rad_to_deg(bullet_instance.rotation))
+
+	
+
+	

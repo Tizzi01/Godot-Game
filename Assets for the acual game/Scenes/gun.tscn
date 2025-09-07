@@ -216,7 +216,7 @@ unique_name_in_owner = true
 scale = Vector2(0.75, 0.199187)
 
 [node name="PointLight2D" type="PointLight2D" parent="GunPivot/Sprite2D"]
-position = Vector2(0.00131226, 0)
+position = Vector2(-5.36458e-05, -97.561)
 scale = Vector2(23.4342, 23.4342)
 texture = SubResource("GradientTexture2D_0ve7x")
 
