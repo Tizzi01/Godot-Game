@@ -1,37 +1,32 @@
-extends Area2D 
+extends Area2D
 
 func _ready():
 	connect("body_entered", Callable(self, "_on_body_entered"))
 	monitoring = true
+
 func _on_body_entered(body: Node) -> void:
-	if body.name == "Player":  # Or use group check
+	if body.name == "Player":
 		print("Chest touched by:", body.name)
 		
-		# Give sword
 		var sword = body.get_node("gun")
 		sword.visible = true
-		sword.set_process(true)  # Optional: re-enable logic
+		sword.set_process(true)
 		
-		# Optional: play pickup animation or sound
-		queue_free()  # Remove chest  
+		queue_free()
 
+func _physics_process(delta):
+	var mouse_pos = get_global_mouse_position()
+	var direction = (mouse_pos - global_position).normalized()
+	rotation = lerp_angle(rotation, direction.angle() - PI / 2, 10 * delta)
 
+	if Input.is_action_just_pressed("slash"):
+		$AnimationPlayer.play("slash")
 
-
-
-func _physics_process(delta): 
-	monitoring = true 
-	var enemies_in_range = get_overlapping_bodies() 
-	if enemies_in_range.size() > 0: 
-		var target_enemy = enemies_in_range.front()
-		look_at(target_enemy.global_position) 
-		
 func shoot():
 	const BULLET = preload("res://Demo Game/Scenes/Bullet.tscn")
 	var new_bullet = BULLET.instantiate()
 	new_bullet.global_position = %ShootingPoint.global_position
-	get_tree().current_scene.add_child(new_bullet) 
-
+	get_tree().current_scene.add_child(new_bullet)
 
 func _on_timer_timeout() -> void:
-	shoot() 
+	shoot()

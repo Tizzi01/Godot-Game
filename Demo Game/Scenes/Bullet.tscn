@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://c1dobiglcpm3i"]
+[gd_scene load_steps=7 format=3 uid="uid://c1dobiglcpm3i"]
 
 [ext_resource type="Script" uid="uid://cymurx1pvkyql" path="res://Demo Game/Scripts/bullet.gd" id="1_6hugp"]
 [ext_resource type="Texture2D" uid="uid://b54yvnr7t1rnf" path="res://Assets for the acual game/Assets/Sprites/bullet.png" id="2_6hugp"]
+[ext_resource type="Shader" uid="uid://crnuj5d5dtc0w" path="res://Demo Game/Scripts/bulletglow.gdshader" id="2_35kd2"]
 
 [sub_resource type="GDScript" id="GDScript_5ydnh"]
 script/source = "extends Node2D
@@ -9,6 +10,9 @@ script/source = "extends Node2D
 
 	
 "
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y0um8"]
+shader = ExtResource("2_35kd2")
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_t83es"]
 radius = 1.0
@@ -24,6 +28,7 @@ collision_mask = 7
 script = ExtResource("1_6hugp")
 
 [node name="Bullet" type="Sprite2D" parent="Bullet"]
+material = SubResource("ShaderMaterial_y0um8")
 position = Vector2(2.38419e-07, 2.38419e-07)
 rotation = 1.33518
 scale = Vector2(0.0108548, 0.0108548)
