@@ -1,7 +1,7 @@
 ea4bc82a6ad023ab7ee23ee620429895
-::res://::1757268284
+::res://::1757279337
 default_bus_layout.tres::AudioBusLayout/AudioBusLayout::4676613675494247684::1757214180::0::1::::<><><>0<>0<><>::
-export_presets.cfg::TextFile/TextFile::-1::1757210810::0::1::::<><><>0<>0<><>::
+export_presets.cfg::TextFile/TextFile::-1::1757276772::0::1::::<><><>0<>0<><>::
 icon.svg::CompressedTexture2D/CompressedTexture2D::8051779129406493805::1756147443::1756147454::1::::<><><>0<>0<>c577d769498ed3df0bfa290cc2bef523<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
 MyHitBox.gd::GDScript/GDScript::8686527118473625514::1756695498::0::1::::MyHitBox<>Area2D<><>0<>0<><>::
 MyHurtBox.gd::GDScript/GDScript::9107492879593522161::1756695498::0::1::::HurtBox<>Area2D<><>0<>0<><>::
@@ -30,7 +30,7 @@ h4.png::CompressedTexture2D/CompressedTexture2D::7302870260856422229::1757208740
 j2.png::CompressedTexture2D/CompressedTexture2D::6297875589267357616::1757207815::1757207797::1::::<><><>0<>0<>579cba84db6d56f4c52add208a85b243<>res://.godot/imported/j2.png-7ef545c97ec107e9b56aff4ae30e2e55.ctex::
 purple m1.png::CompressedTexture2D/CompressedTexture2D::7548977202073708998::1756750613::1756750614::1::::<><><>0<>0<>1d55e059585698472afeaf4a5f44b3bf<>res://.godot/imported/purple m1.png-914c17b2c2098c90d70fe796645d15ee.ctex::
 ::res://Assets for the acual game/Assets/Sprites/Player Animation/::1756336366
-::res://Assets for the acual game/Assets/Sprites/Player Animation/idle/::1757268845
+::res://Assets for the acual game/Assets/Sprites/Player Animation/idle/::1757268846
 0.png::CompressedTexture2D/CompressedTexture2D::4800014885639215692::1756336366::1756336366::1::::<><><>0<>0<>101d91989d19f5d227f4a82a5d82bdab<>res://.godot/imported/0.png-75f5fce0815cae9b02e035b2eb8304cd.ctex::
 1.png::CompressedTexture2D/CompressedTexture2D::3979219924633025088::1756336366::1756336366::1::::<><><>0<>0<>8293326809850b47ca22809a1f22c367<>res://.godot/imported/1.png-0e6a02a946be16d1b890f52398e306b5.ctex::
 2.png::CompressedTexture2D/CompressedTexture2D::8731845265667509215::1756336366::1756336366::1::::<><><>0<>0<>69eae9f84e72f9113fad3c4d96f13905<>res://.godot/imported/2.png-23eef7b13f46669625700a2ca602b2ed.ctex::
@@ -83,38 +83,44 @@ BGv5.png::CompressedTexture2D/CompressedTexture2D::672000655947082685::175719737
 BGv7.png::CompressedTexture2D/CompressedTexture2D::7194160137658434336::1757197908::1757197912::1::::<><><>0<>0<>bfb69d2b09143bfbda487ab54b782029<>res://.godot/imported/BGv7.png-0b826d00a1b02d2c9d6daa8fea75cb9b.ctex::
 ChatGPT Image Sep 6, 2025, 03_44_49 PM.png::CompressedTexture2D/CompressedTexture2D::118784085319527368::1757187938::1757187958::1::::<><><>0<>0<>c123c1df12de6dca930b34fabc109d0f<>res://.godot/imported/ChatGPT Image Sep 6, 2025, 03_44_49 PM.png-b1cc5f96c4bf11aa6811189b17de9433.ctex::
 ChatGPT Image Sep 6, 2025, 05_54_34 PM.png::CompressedTexture2D/CompressedTexture2D::4077384914777952648::1757196933::1757196934::1::::<><><>0<>0<>45be4b64f429399e002023301b575a7f<>res://.godot/imported/ChatGPT Image Sep 6, 2025, 05_54_34 PM.png-4a1118b4c62cde4180af3fa862df8eb0.ctex::
-::res://Assets for the acual game/Scenes/::1757268293
-chest.tscn::PackedScene::9009557723973781619::1757268292::0::1::::<><><>0<>0<><>::uid://0lxj4k642akl::::res://Demo Game/Scripts/chest.gd<>uid://bsrsm6rgvt86a::::res://Assets for the acual game/Assets/Sprites/Adobe Express - file.png<>uid://py2bwe3s613i::::res://Demo Game/The assets/sounds/Rumble1fixed .mp3
+::res://Assets for the acual game/Scenes/::1757279107
+chest.tscn::PackedScene::9009557723973781619::1757279107::0::1::::<><><>0<>0<><>::uid://0lxj4k642akl::::res://Demo Game/Scripts/chest.gd<>uid://bsrsm6rgvt86a::::res://Assets for the acual game/Assets/Sprites/Adobe Express - file.png<>uid://py2bwe3s613i::::res://Demo Game/The assets/sounds/Rumble1fixed .mp3
 enemy.tscn::PackedScene/PackedScene::7851817022692108520::1756945640::0::1::::<><><>0<>0<><>::uid://bwxtf2ovl5jr1::::res://Assets for the acual game/Assets/Sprites/Player Animation/idle/1.png<>uid://32amlbwir0by::::res://Demo Game/Scripts/enemy.gd
-game.tscn::PackedScene::1891468503260400493::1757268292::0::1::::<><><>0<>0<><>::uid://be05spmmaewml::::res://Demo Game/Scripts/game.gd<>uid://bnmfh85lwxuid::::res://Demo Game/The assets/sprites/world_tileset.png<>uid://dikfgaeqdng3d::::res://Demo Game/Scenes/player.tscn<>uid://dr1fsle17larj::::res://Assets for the acual game/Scenes/killzone.tscn<>uid://bvjmot5d81tgk::::res://Demo Game/Scripts/camera_2d.gd<>uid://d1mkdm54ef6sl::::res://Assets for the acual game/Scenes/chest.tscn<>uid://dj4qjq0vtdg6k::::res://Assets for the acual game/Scenes/enemy.tscn<>uid://dbb6rc8vl0y7e::::res://Assets for the acual game/Scenes/mob.tscn<>uid://daq51b7c6g0cy::::res://Assets for the acual game/Assets/Sprites/Player Animation/idle_right/Scripts/BGv7.png
-gun.tscn::PackedScene::1564663173348778469::1757268292::0::1::::<><><>0<>0<><>::uid://dvjuxe6egka52::::res://Demo Game/Scripts/gun.gd<>uid://dnmo0qivmo8rl::::res://Demo Game/The assets/sprites/Pentagon.png<>uid://br23h6nq4b727::::res://Demo Game/The assets/sounds/Rumble2fixed.mp3
-killzone.tscn::PackedScene::8406482528946114275::1757268293::0::1::::<><><>0<>0<><>::
-mob.tscn::PackedScene::7233428014738639996::1757268292::0::1::::<><><>0<>0<><>::uid://bfcgkskxd8a6n::::res://Demo Game/Scripts/mob.gd<>uid://dcbthan2nnahp::::res://Assets for the acual game/Assets/Sprites/h4.png<>uid://dw7akmqtv63ke::::res://Assets for the acual game/Assets/Sprites/h2.png<>uid://n66irhyfx083::::res://Assets for the acual game/Assets/Sprites/h1.png<>uid://bpgf7h0uvji1o::::res://Demo Game/Scripts/2.gd
+game.tscn::PackedScene::1891468503260400493::1757279107::0::1::::<><><>0<>0<><>::uid://be05spmmaewml::::res://Demo Game/Scripts/game.gd<>uid://bnmfh85lwxuid::::res://Demo Game/The assets/sprites/world_tileset.png<>uid://dikfgaeqdng3d::::res://Demo Game/Scenes/player.tscn<>uid://dr1fsle17larj::::res://Assets for the acual game/Scenes/killzone.tscn<>uid://bvjmot5d81tgk::::res://Demo Game/Scripts/camera_2d.gd<>uid://d1mkdm54ef6sl::::res://Assets for the acual game/Scenes/chest.tscn<>uid://dbb6rc8vl0y7e::::res://Assets for the acual game/Scenes/mob.tscn<>uid://daq51b7c6g0cy::::res://Assets for the acual game/Assets/Sprites/Player Animation/idle_right/Scripts/BGv7.png
+gun.tscn::PackedScene::1564663173348778469::1757279107::0::1::::<><><>0<>0<><>::uid://dvjuxe6egka52::::res://Demo Game/Scripts/gun.gd<>uid://dnmo0qivmo8rl::::res://Demo Game/The assets/sprites/Pentagon.png<>uid://br23h6nq4b727::::res://Demo Game/The assets/sounds/Rumble2fixed.mp3
+killzone.tscn::PackedScene::8406482528946114275::1757279107::0::1::::<><><>0<>0<><>::
+mob.tscn::PackedScene::7233428014738639996::1757279107::0::1::::<><><>0<>0<><>::uid://bfcgkskxd8a6n::::res://Demo Game/Scripts/mob.gd<>uid://dcbthan2nnahp::::res://Assets for the acual game/Assets/Sprites/h4.png<>uid://b1co7iqjlecyp::::res://Demo Game/Scripts/hitflash.tres<>uid://dw7akmqtv63ke::::res://Assets for the acual game/Assets/Sprites/h2.png<>uid://n66irhyfx083::::res://Assets for the acual game/Assets/Sprites/h1.png<>uid://bpgf7h0uvji1o::::res://Demo Game/Scripts/2.gd
+bullet_v_2.tscn::PackedScene::2610860948188495007::1757279107::0::1::::<><><>0<>0<><>::uid://d2s1voci4kdi::::res://Demo Game/Scripts/bullet_v_2.gd<>uid://cr4tf815gw12u::::res://Assets for the acual game/Assets/Sprites/Player Animation/idle/real bullet.png
+bullet_3.tscn::PackedScene::7492446239671907540::1757275154::0::1::::<><><>0<>0<><>::uid://c01fbq54ejqdr::::res://Demo Game/Scripts/bullet_3.gd<>uid://cr4tf815gw12u::::res://Assets for the acual game/Assets/Sprites/Player Animation/idle/real bullet.png
 ::res://Demo Game/::1756247951
-::res://Demo Game/Scenes/::1757268293
+::res://Demo Game/Scenes/::1757279107
 boss.tscn::PackedScene/PackedScene::5886347038330292226::1756945640::0::1::::<><><>0<>0<><>::uid://ds0jqqcoxqspb::::res://Demo Game/Scripts/boss.gd<>uid://b0niybdmwwcls::::res://Assets for the acual game/Assets/Sprites/Player Animation/idle/10.png<>uid://8xd1oa0g1es3::::res://Demo Game/Scripts/vision_area.gd
-Bullet.tscn::PackedScene::6604796688888553192::1757268293::0::1::::<><><>0<>0<><>::uid://cymurx1pvkyql::::res://Demo Game/Scripts/bullet.gd<>uid://b54yvnr7t1rnf::::res://Assets for the acual game/Assets/Sprites/bullet.png<>uid://crnuj5d5dtc0w::::res://Demo Game/Scripts/bulletglow.gdshader
+Bullet.tscn::PackedScene::6604796688888553192::1757272214::0::1::::<><><>0<>0<><>::uid://cymurx1pvkyql::::res://Demo Game/Scripts/bullet.gd<>uid://crnuj5d5dtc0w::::res://Demo Game/Scripts/bulletglow.gdshader<>uid://cr4tf815gw12u::::res://Assets for the acual game/Assets/Sprites/Player Animation/idle/real bullet.png
 Music.tscn::PackedScene/PackedScene::4516306845108220715::1757214293::0::1::::<><><>0<>0<><>::uid://cvdi6lca0gk0n::::res://Demo Game/The assets/music/Godot BG music.MP3
 player.gd::GDScript/GDScript::6786248652936189010::1756581146::0::1::::<>RefCounted<><>0<>0<><>::
-player.tscn::PackedScene::7741730884362133995::1757268292::0::1::::<><><>0<>0<><>::uid://canfsqyqpe8qy::::res://Assets for the acual game/Assets/Sprites/Player Animation/idle/0.png<>uid://wj61kt8sa2wn::::res://Assets for the acual game/Scenes/gun.tscn
-::res://Demo Game/Scripts/::1757268293
+player.tscn::PackedScene::7741730884362133995::1757279107::0::1::::<><><>0<>0<><>::uid://canfsqyqpe8qy::::res://Assets for the acual game/Assets/Sprites/Player Animation/idle/0.png<>uid://wj61kt8sa2wn::::res://Assets for the acual game/Scenes/gun.tscn
+::res://Demo Game/Scripts/::1757279107
 2.gd::GDScript/GDScript::3452000742377431290::1757208191::0::1::::<>Sprite2D<><>0<>0<><>::
 boss.gd::GDScript/GDScript::8474846550183449975::1756759621::0::1::::<>CharacterBody2D<><>0<>0<><>::
-bullet.gd::GDScript/GDScript::6483392095011393035::1757217050::0::1::::<>Area2D<><>0<>0<><>::
-bulletglow.gdshader::Shader::5994120613738742328::1757268293::0::1::::<><><>0<>0<><>::
+bullet.gd::GDScript::6483392095011393035::1757272142::0::1::::<>Area2D<><>0<>0<><>::
+bulletglow.gdshader::Shader::5994120613738742328::1757279107::0::1::::<><><>0<>0<><>::
 camera_2d.gd::GDScript/GDScript::3879720449375419874::1757260730::0::1::::<>Camera2D<><>0<>0<><>::
 chest.gd::GDScript/GDScript::1778843349297751655::1757261666::0::1::::<>Area2D<><>0<>0<><>::
 collision_shape_2d.gd::GDScript/GDScript::706933745472091543::1756581146::0::1::::<>CollisionShape2D<><>0<>0<><>::
 dash_curve.tres::Curve/Curve::7789665665279733540::1756422510::0::1::::<><><>0<>0<><>::
 enemy.gd::GDScript/GDScript::2021047831064002598::1756745889::0::1::::<>Node2D<><>0<>0<><>::
 game.gd::GDScript/GDScript::2720639963103320347::1756770009::0::1::::<>Node2D<><>0<>0<><>::
-gun.gd::GDScript/GDScript::8653062838552154375::1757262816::0::1::::<>Area2D<><>0<>0<><>::
+gun.gd::GDScript::8653062838552154375::1757276608::0::1::::<>Area2D<><>0<>0<><>::
 killzone.gd::GDScript/GDScript::6566478834712243227::1756512017::0::1::::<>Area2D<><>0<>0<><>::
-mob.gd::GDScript/GDScript::2741876779205698883::1757211208::0::1::::<>CharacterBody2D<><>0<>0<><>::
+mob.gd::GDScript::2741876779205698883::1757278457::0::1::::<>CharacterBody2D<><>0<>0<><>::
 m_1.gd::GDScript/GDScript::550299455894321460::1757259617::0::1::::<>Node2D<><>0<>0<><>::
-m_1.gdshader::Shader::8966155123904751501::1757268293::0::1::::<><><>0<>0<><>::
+m_1.gdshader::Shader::8966155123904751501::1757279107::0::1::::<><><>0<>0<><>::
 player.gd::GDScript/GDScript::5805352793106419543::1756581147::0::1::::<>CharacterBody2D<><>0<>0<><>::
 playerteleportation.gd::GDScript/GDScript::4117888236040414213::1756581146::0::1::::<>CharacterBody2D<><>0<>0<><>::
+bullet_v_2.gd::GDScript::267445191505362622::1757275838::0::1::::<>Area2D<><>0<>0<><>::
+bullet_3.gd::GDScript::6581542538741382879::1757275153::0::1::::<>Area2D<><>0<>0<><>::
+hitflash.tres::ShaderMaterial::4216367002421200439::1757279107::0::1::::<><><>0<>0<><>::uid://dp68jk15532nd::::res://Demo Game/Scripts/hitflash2.tres
+hitflash2.tres::VisualShader::8278110715734780585::1757279107::0::1::::<><><>0<>0<><>::
 theplayer.gd::GDScript/GDScript::8410997101251762802::1756581146::0::1::::<>CharacterBody2D<><>0<>0<><>::
 vision_area.gd::GDScript/GDScript::2363941846490103008::1756753732::0::1::::<>Area2D<><>0<>0<><>::
 world_environment.gd::GDScript/GDScript::1638230144553156528::1757211179::0::1::::<>WorldEnvironment<><>0<>0<><>::
@@ -150,4 +156,9 @@ platforms.png::CompressedTexture2D/CompressedTexture2D::7760729867263859524::175
 slime_green.png::CompressedTexture2D/CompressedTexture2D::1621132277795276796::1756148778::1756149514::1::::<><><>0<>0<>b1fc5a5842cd1dade61438e4d4e76f72<>res://.godot/imported/slime_green.png-8036faba55f8833c63ed7f5535f41eee.ctex::
 slime_purple.png::CompressedTexture2D/CompressedTexture2D::1704470111416444563::1756148778::1756149514::1::::<><><>0<>0<>e5624ea265a539011136565c256b6790<>res://.godot/imported/slime_purple.png-9ccde68a4595cba6ae328a5b5517daae.ctex::
 world_tileset.png::CompressedTexture2D/CompressedTexture2D::3323966049702209627::1756148778::1756149514::1::::<><><>0<>0<>2424286f71d5a7717041aeb0cb92e987<>res://.godot/imported/world_tileset.png-ae23bbad20bd6de1dff3b739574ec07d.ctex::
+::res://smoke_explosion/::1757279337
+circle_32.png::CompressedTexture2D::6271663262871881894::1757279337::1757279338::1::::<><><>0<>0<>c453c076bdbc64f9e2d4065be3748769<>res://.godot/imported/circle_32.png-ff53eadac5c62484a55afe7e47d5145f.ctex::
+smoke_explosion.gd::GDScript::6616731595816416403::1757279337::0::1::::<>Node2D<><>0<>0<><>::
+smoke_explosion.gdshader::Shader::1838052037089669501::1757279337::0::1::::<><><>0<>0<><>::
+smoke_explosion.tscn::PackedScene::7675803860678853612::1757279337::0::1::::<><><>0<>0<><>::res://smoke_explosion/smoke_explosion.gdshader<>res://smoke_explosion/smoke_explosion.gd
 ::res://The git/::1756513566

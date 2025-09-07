@@ -1,8 +1,11 @@
 extends CharacterBody2D
 
+var health = 10
+
 @onready var player = get_node("/root/Game/Player")
 @onready var animation_player = $AnimationPlayer
 @onready var sprites = [ $"0", $"1", $"2" ]  # These are just visuals, not animated individually
+@onready var hit_flash: AnimationPlayer = $HitFlash
 
 func _physics_process(delta):
 	# Movement toward player
@@ -23,5 +26,15 @@ func _physics_process(delta):
 	if is_moving and current_anim != "walk":
 		animation_player.play("walk")
 	elif not is_moving and current_anim != "idle":
-		animation_player.play("walk") 
+		animation_player.play("walk")  
 		
+func take_damage(): 
+	health -= 10
+	hit_flash.play("Hitflash")
+	
+	if health == 0: 
+		queue_free() 
+		const SMOKE_SCENE = preload("res://smoke_explosion/smoke_explosion.tscn")
+		var smoke = SMOKE_SCENE.instantiate() 
+		get_parent().add_child(smoke)
+		smoke.global_position = global_position 

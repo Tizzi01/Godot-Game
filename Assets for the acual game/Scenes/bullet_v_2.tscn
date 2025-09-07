@@ -4,8 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://cr4tf815gw12u" path="res://Assets for the acual game/Assets/Sprites/Player Animation/idle/real bullet.png" id="2_dx6qm"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qly5t"]
-radius = 144.0
-height = 294.0
+radius = 149.883
+height = 899.299
 
 [node name="BulletV2" type="Area2D"]
 scale = Vector2(0.02, 0.02)
@@ -18,7 +18,8 @@ rotation = 1.5708
 texture = ExtResource("2_dx6qm")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(266.667, -9.09495e-13)
+position = Vector2(0, -1.09274e-07)
+rotation = -1.55464
 shape = SubResource("CapsuleShape2D_qly5t")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -13,3 +13,9 @@ res://Demo Game/Scripts/bullet_v_2.gd
 res://Assets for the acual game/Scenes/bullet_v_2.tscn
 res://Demo Game/Scripts/bullet_3.gd
 res://Assets for the acual game/Scenes/bullet_3.tscn
+res://Demo Game/Scripts/mob.gd
+res://Demo Game/Scripts/hitflash.tres
+res://Demo Game/Scripts/hitflash2.tres
+res://smoke_explosion/smoke_explosion.tscn
+res://Demo Game/Scripts/progress_bar.gd
+res://Demo Game/Scripts/game.gd

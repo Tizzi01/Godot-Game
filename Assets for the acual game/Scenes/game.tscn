@@ -6,7 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://dr1fsle17larj" path="res://Assets for the acual game/Scenes/killzone.tscn" id="3_221o8"]
 [ext_resource type="Script" uid="uid://bvjmot5d81tgk" path="res://Demo Game/Scripts/camera_2d.gd" id="3_naqcg"]
 [ext_resource type="PackedScene" uid="uid://d1mkdm54ef6sl" path="res://Assets for the acual game/Scenes/chest.tscn" id="4_naqcg"]
-[ext_resource type="PackedScene" uid="uid://dbb6rc8vl0y7e" path="res://Assets for the acual game/Scenes/mob.tscn" id="8_4bs2y"]
 [ext_resource type="Texture2D" uid="uid://daq51b7c6g0cy" path="res://Assets for the acual game/Assets/Sprites/Player Animation/idle_right/Scripts/BGv7.png" id="10_14idw"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8i32r"]
@@ -183,6 +182,12 @@ sources/0 = SubResource("TileSetAtlasSource_8i32r")
 _data = [Vector2(0, 0.376471), 0.0, 0.0, 0, 0, Vector2(0.1, 0.92549), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 3
 
+[sub_resource type="Curve2D" id="Curve2D_naqcg"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -2065, -1005, 0, 0, 0, 0, -2084, -1127, 0, 0, 0, 0, 1834, -1120, 0, 0, 0, 0, 1809, 1156, 0, 0, 0, 0, -2065, -1005)
+}
+point_count = 5
+
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_8i32r"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_sfajg"]
@@ -197,6 +202,7 @@ tile_set = SubResource("TileSet_wtn8l")
 format = 2
 
 [node name="Player" parent="." instance=ExtResource("2_s1uwp")]
+unique_name_in_owner = true
 z_index = 1
 position = Vector2(-134, 33)
 dash_curve = SubResource("Curve_sfajg")
@@ -204,9 +210,17 @@ dash_curve = SubResource("Curve_sfajg")
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2(0, -1)
 zoom = Vector2(5, 5)
-position_smoothing_enabled = true
 rotation_smoothing_enabled = true
 script = ExtResource("3_naqcg")
+
+[node name="Path2D" type="Path2D" parent="Player"]
+position = Vector2(134, -33)
+curve = SubResource("Curve2D_naqcg")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Player/Path2D"]
+unique_name_in_owner = true
+position = Vector2(-2065, -1005)
+rotation = -1.72529
 
 [node name="killzone" parent="." instance=ExtResource("3_221o8")]
 
@@ -218,25 +232,10 @@ shape = SubResource("WorldBoundaryShape2D_8i32r")
 [node name="chest" parent="." instance=ExtResource("4_naqcg")]
 position = Vector2(-183, 34)
 
-[node name="Mob" parent="." instance=ExtResource("8_4bs2y")]
-position = Vector2(-33, 130)
-collision_mask = 5
-
-[node name="Mob2" parent="." instance=ExtResource("8_4bs2y")]
-position = Vector2(0, 11)
-collision_mask = 5
-
-[node name="Mob3" parent="." instance=ExtResource("8_4bs2y")]
-position = Vector2(-285, -98)
-collision_mask = 5
-
-[node name="Mob4" parent="." instance=ExtResource("8_4bs2y")]
-position = Vector2(-461, 118)
-collision_mask = 5
-
 [node name="BG" type="Node" parent="."]
 
 [node name="BGv7" type="Sprite2D" parent="BG"]
+visible = false
 z_index = -55
 position = Vector2(-151, 32)
 scale = Vector2(0.2, 0.2)
@@ -323,3 +322,9 @@ shape = SubResource("WorldBoundaryShape2D_sfajg")
 position = Vector2(5, 1158)
 rotation = -6.28318
 shape = SubResource("WorldBoundaryShape2D_sfajg")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.3
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

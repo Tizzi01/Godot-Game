@@ -213,11 +213,12 @@ offset = Vector2(-8.665, 14.38)
 
 [node name="ShootingPoint" type="Marker2D" parent="GunPivot/Sprite2D"]
 unique_name_in_owner = true
+position = Vector2(-5.76196e-05, -146.341)
 scale = Vector2(0.75, 0.199187)
 
 [node name="PointLight2D" type="PointLight2D" parent="GunPivot/Sprite2D"]
-position = Vector2(-5.36458e-05, -97.561)
-scale = Vector2(23.4342, 23.4342)
+position = Vector2(-4.43459e-05, 9.53674e-07)
+scale = Vector2(37.5638, 37.5638)
 texture = SubResource("GradientTexture2D_0ve7x")
 
 [node name="Timer" type="Timer" parent="."]

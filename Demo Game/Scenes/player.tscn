@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://dikfgaeqdng3d"]
+[gd_scene load_steps=17 format=3 uid="uid://dikfgaeqdng3d"]
 
 [ext_resource type="Texture2D" uid="uid://canfsqyqpe8qy" path="res://Assets for the acual game/Assets/Sprites/Player Animation/idle/0.png" id="1_i7wno"]
 [ext_resource type="PackedScene" uid="uid://wj61kt8sa2wn" path="res://Assets for the acual game/Scenes/gun.tscn" id="3_bijw4"]
+[ext_resource type="Script" uid="uid://by72bvasui27b" path="res://Demo Game/Scripts/progress_bar.gd" id="3_u23ib"]
 
 [sub_resource type="GDScript" id="GDScript_vxcno"]
 script/source = "extends CharacterBody2D
@@ -11,6 +12,8 @@ class_name Player
 @export var run_speed = 250.0
 @export_range(0,1) var acceleration = 0.1
 @export_range(0,1) var decceleration = 0.1
+
+var health = 100.0
 
 #borders
 var pushback_timer = 0.0
@@ -52,34 +55,30 @@ var teleport_hover_max_time = 2.0
 var last_facing_dir = 1
 
 # damage
-@onready var texture_progress_bar: TextureProgressBar = $TextureProgressBar
-@export var HP : int = 100
+
 
 # gun tracking
 var Gun_mouse_pos: Vector2 = Vector2.ZERO
 
-func _ready() -> void:
-	set_health()
 
-	gun_node.visible = false
-	gun_node.set_process(false)
 
-	if hitbox:
-		hitbox.monitoring = false
 
-func set_health() -> void:
-	texture_progress_bar.max_value = HP
-	texture_progress_bar.value = HP
 
-func update_health(Amount : int) -> void:
-	HP += Amount
-	texture_progress_bar.value = HP
+
+
+
+signal health_depleted
 
 func _physics_process(delta):
 	
 	
-	
-
+	const DAMAGE_RATE = 5.0 
+	var overlapping_mobs = %HurtBox.get_overlapping_bodies()
+	if overlapping_mobs.size() > 0: 
+		health -= DAMAGE_RATE * overlapping_mobs.size() * delta 
+		%ProgressBar.value = health 
+		if health <= 0.0: 
+			health_depleted.emit() 
 			
 
 
@@ -485,6 +484,24 @@ _data = {
 radius = 4.0
 height = 28.0
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3h3w8"]
+radius = 6.0
+height = 28.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2pset"]
+bg_color = Color(0.105882, 0.156863, 0.270588, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_je6th"]
+bg_color = Color(0.396078, 0.686275, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 script = SubResource("GDScript_vxcno")
 
@@ -502,9 +519,30 @@ libraries = {
 position = Vector2(0, 2)
 shape = SubResource("CapsuleShape2D_guesk")
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="."]
-offset_right = 40.0
-offset_bottom = 40.0
-
 [node name="Gun" parent="." instance=ExtResource("3_bijw4")]
 unique_name_in_owner = true
+
+[node name="HurtBox" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+shape = SubResource("CapsuleShape2D_3h3w8")
+debug_color = Color(1, 0, 0, 0.313726)
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+unique_name_in_owner = true
+anchors_preset = -1
+offset_left = 20.0
+offset_top = -21.0
+offset_right = 25.0
+offset_bottom = 19.0
+rotation = 1.5787
+theme_override_styles/background = SubResource("StyleBoxFlat_2pset")
+theme_override_styles/fill = SubResource("StyleBoxFlat_je6th")
+step = 0.0
+value = 100.0
+fill_mode = 3
+show_percentage = false
+script = ExtResource("3_u23ib")
