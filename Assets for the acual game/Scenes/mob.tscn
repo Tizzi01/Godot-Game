@@ -1,10 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://dbb6rc8vl0y7e"]
+[gd_scene load_steps=7 format=3 uid="uid://dbb6rc8vl0y7e"]
 
 [ext_resource type="Script" uid="uid://bfcgkskxd8a6n" path="res://Demo Game/Scripts/mob.gd" id="1_fif7o"]
-[ext_resource type="Texture2D" uid="uid://canfsqyqpe8qy" path="res://Assets for the acual game/Assets/Sprites/Player Animation/idle/0.png" id="1_mqe2o"]
+[ext_resource type="Texture2D" uid="uid://dcbthan2nnahp" path="res://Assets for the acual game/Assets/Sprites/h4.png" id="2_8en0k"]
+[ext_resource type="Texture2D" uid="uid://dw7akmqtv63ke" path="res://Assets for the acual game/Assets/Sprites/h2.png" id="3_jqdqu"]
+[ext_resource type="Texture2D" uid="uid://n66irhyfx083" path="res://Assets for the acual game/Assets/Sprites/h1.png" id="4_r5hxa"]
+[ext_resource type="Script" uid="uid://bpgf7h0uvji1o" path="res://Demo Game/Scripts/2.gd" id="5_65b08"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_d8s0i"]
-radius = 7.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wvgs6"]
+radius = 6.0
+height = 16.0
 
 [node name="Mob" type="CharacterBody2D"]
 collision_layer = 4
@@ -13,7 +17,19 @@ script = ExtResource("1_fif7o")
 [node name="0" type="Sprite2D" parent="."]
 position = Vector2(5.68434e-14, 5.96046e-08)
 scale = Vector2(0.022, 0.022)
-texture = ExtResource("1_mqe2o")
+texture = ExtResource("2_8en0k")
+
+[node name="1" type="Sprite2D" parent="."]
+position = Vector2(5.68434e-14, 5.96046e-08)
+scale = Vector2(0.022, 0.022)
+texture = ExtResource("3_jqdqu")
+
+[node name="2" type="Sprite2D" parent="."]
+position = Vector2(5.68434e-14, 5.96046e-08)
+scale = Vector2(0.022, 0.022)
+texture = ExtResource("4_r5hxa")
+script = ExtResource("5_65b08")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_d8s0i")
+visible = false
+shape = SubResource("CapsuleShape2D_wvgs6")

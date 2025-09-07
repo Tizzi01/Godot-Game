@@ -7,3 +7,5 @@ res://Assets for the acual game/Scenes/mob.tscn
 res://Assets for the acual game/Scenes/gun.tscn
 res://Demo Game/Scenes/Bullet.tscn
 res://Assets for the acual game/Scenes/killzone.tscn
+res://Demo Game/Scripts/2.gd
+res://Demo Game/Scripts/mob.gd
