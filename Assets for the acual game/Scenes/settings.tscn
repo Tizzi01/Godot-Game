@@ -1,0 +1,144 @@
+[gd_scene load_steps=10 format=3 uid="uid://cj73a4h7l4545"]
+
+[ext_resource type="Script" uid="uid://f65d6ar53jpu" path="res://Demo Game/Scripts/settings.gd" id="1_spl1a"]
+[ext_resource type="Texture2D" uid="uid://b4qelx0hwtt61" path="res://Assets for the acual game/Assets/Sprites/settings page v3.png" id="2_dkffb"]
+[ext_resource type="FontFile" uid="uid://ctp71ddagy2v8" path="res://Demo Game/The assets/fonts/Roquen DEMO.otf" id="3_dkffb"]
+[ext_resource type="Script" uid="uid://detuerh42hcky" path="res://Demo Game/Scripts/music.gd" id="3_ww1uc"]
+[ext_resource type="Script" uid="uid://c78ucclj1brpw" path="res://Demo Game/Scripts/sound_effects.gd" id="5_ebncw"]
+[ext_resource type="AudioStream" uid="uid://cvdi6lca0gk0n" path="res://Demo Game/The assets/music/Godot BG music.MP3" id="6_ebncw"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6l2qg"]
+texture = ExtResource("2_dkffb")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ekiiq"]
+bg_color = Color(0.396078, 0.686275, 1, 1)
+border_width_left = 70
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.105882, 0.156863, 0.270588, 1)
+corner_radius_top_left = 11
+corner_radius_top_right = 11
+corner_radius_bottom_right = 11
+corner_radius_bottom_left = 11
+expand_margin_left = 70.0
+expand_margin_top = 11.0
+expand_margin_right = 11.0
+expand_margin_bottom = 11.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dkffb"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 11
+corner_radius_top_right = 11
+corner_radius_bottom_right = 11
+corner_radius_bottom_left = 11
+
+[node name="Settings" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_spl1a")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_6l2qg")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Music" type="HSlider" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -547.0
+offset_top = -76.0
+offset_right = 547.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/slider = SubResource("StyleBoxFlat_ekiiq")
+theme_override_styles/grabber_area = SubResource("StyleBoxFlat_dkffb")
+max_value = 1.0
+step = 0.001
+script = ExtResource("3_ww1uc")
+
+[node name="Music" type="Label" parent="Music"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -609.0
+offset_top = -7.0
+offset_right = 319.0
+offset_bottom = 33.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("3_dkffb")
+theme_override_font_sizes/font_size = 18
+text = "Music"
+
+[node name="Sound Effects" type="HSlider" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -547.0
+offset_top = 10.0
+offset_right = 547.0
+offset_bottom = 49.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/slider = SubResource("StyleBoxFlat_ekiiq")
+theme_override_styles/grabber_area = SubResource("StyleBoxFlat_dkffb")
+max_value = 1.0
+step = 0.001
+script = ExtResource("5_ebncw")
+
+[node name="Sound Effects" type="Label" parent="Sound Effects"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -609.0
+offset_top = -13.5
+offset_right = 319.0
+offset_bottom = 26.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("3_dkffb")
+theme_override_font_sizes/font_size = 11
+text = "Sound
+Effects "
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_ebncw")
+volume_db = -15.0
+
+[connection signal="value_changed" from="Music" to="." method="_on_volume_value_changed"]
+[connection signal="value_changed" from="Sound Effects" to="." method="_on_volume_value_changed"]

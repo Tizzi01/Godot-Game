@@ -184,7 +184,7 @@ point_count = 3
 
 [sub_resource type="Curve2D" id="Curve2D_naqcg"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, -2065, -1005, 0, 0, 0, 0, -2084, -1127, 0, 0, 0, 0, 1834, -1120, 0, 0, 0, 0, 1809, 1156, 0, 0, 0, 0, -2065, -1005)
+"points": PackedVector2Array(0, 0, 0, 0, -2656, 1446, 0, 0, 0, 0, -2630, -1445, 0, 0, 0, 0, 2350, -1463, 0, 0, 0, 0, 2424, 1471, 0, 0, 0, 0, -2652, 1446)
 }
 point_count = 5
 
@@ -219,8 +219,8 @@ curve = SubResource("Curve2D_naqcg")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="Player/Path2D"]
 unique_name_in_owner = true
-position = Vector2(-2065, -1005)
-rotation = -1.72529
+position = Vector2(-2656, 1446)
+rotation = -1.5618
 
 [node name="killzone" parent="." instance=ExtResource("3_221o8")]
 
@@ -235,7 +235,6 @@ position = Vector2(-183, 34)
 [node name="BG" type="Node" parent="."]
 
 [node name="BGv7" type="Sprite2D" parent="BG"]
-visible = false
 z_index = -55
 position = Vector2(-151, 32)
 scale = Vector2(0.2, 0.2)
@@ -327,4 +326,5 @@ shape = SubResource("WorldBoundaryShape2D_sfajg")
 wait_time = 0.3
 autostart = true
 
+[connection signal="health_depleted" from="Player" to="." method="_on_player_health_depleted"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -11,13 +11,9 @@ config_version=5
 [application]
 
 config/name="Game v1"
-run/main_scene="uid://17ihev8gmx8p"
+run/main_scene="uid://cjeipb5iia78u"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
-
-[autoload]
-
-Music="*res://Demo Game/Scenes/Music.tscn"
 
 [display]
 

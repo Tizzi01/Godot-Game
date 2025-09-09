@@ -1,21 +1,17 @@
 res://Assets for the acual game/Scenes/game.tscn
-res://Demo Game/Scripts/bulletglow.gdshader
+res://Demo Game/Scripts/hitflash2.tres
+res://Demo Game/Scripts/hitflash.tres
 res://Demo Game/Scripts/m_1.gdshader
+res://Demo Game/Scripts/bulletglow.gdshader
 res://Demo Game/Scenes/player.tscn
-res://Assets for the acual game/Scenes/gun.tscn
 res://Assets for the acual game/Scenes/chest.tscn
 res://Assets for the acual game/Scenes/mob.tscn
-res://Demo Game/Scenes/Bullet.tscn
-res://Assets for the acual game/Scenes/killzone.tscn
-res://Demo Game/Scripts/bullet.gd
-res://Demo Game/Scripts/gun.gd
-res://Demo Game/Scripts/bullet_v_2.gd
-res://Assets for the acual game/Scenes/bullet_v_2.tscn
-res://Demo Game/Scripts/bullet_3.gd
-res://Assets for the acual game/Scenes/bullet_3.tscn
-res://Demo Game/Scripts/mob.gd
-res://Demo Game/Scripts/hitflash.tres
-res://Demo Game/Scripts/hitflash2.tres
 res://smoke_explosion/smoke_explosion.tscn
-res://Demo Game/Scripts/progress_bar.gd
-res://Demo Game/Scripts/game.gd
+res://Assets for the acual game/Scenes/audio_slider.tscn
+res://Assets for the acual game/Scenes/main_menu.tscn
+res://Assets for the acual game/Scenes/settings.tscn
+res://Demo Game/Scripts/volume.gd
+res://Demo Game/The assets/sprites/main_menu.gd
+res://Demo Game/Scripts/music.gd
+res://Demo Game/Scripts/settings.gd
+res://Demo Game/Scripts/sound_effects.gd
