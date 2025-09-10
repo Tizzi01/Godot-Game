@@ -208,7 +208,7 @@ physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_8i32r")
 
 [sub_resource type="Curve" id="Curve_sfajg"]
-_data = [Vector2(0, 0.376471), 0.0, 0.0, 0, 0, Vector2(0.1, 0.92549), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 0.187268), 0.0, 0.0, 0, 0, Vector2(0.11017, 0.893991), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 3
 
 [sub_resource type="Curve2D" id="Curve2D_naqcg"]

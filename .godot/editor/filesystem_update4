@@ -21,3 +21,4 @@ res://Assets for the acual game/Scenes/BG music.tscn
 res://Demo Game/Scripts/gun.gd
 res://Demo Game/Scripts/node.gd
 res://Demo Game/Scripts/game.gd
+res://Demo Game/Scripts/dash_sfx.gd

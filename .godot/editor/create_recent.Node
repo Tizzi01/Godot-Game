@@ -1,3 +1,4 @@
+AudioStreamPlayer
 Label
 VBoxContainer
 MarginContainer
@@ -5,7 +6,6 @@ PanelContainer
 ColorRect
 CanvasLayer
 Sprite2D
-AudioStreamPlayer
 Node
 AudioListener2D
 AudioStreamPlayer2D
