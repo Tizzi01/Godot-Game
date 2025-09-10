@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cj73a4h7l4545"]
+[gd_scene load_steps=13 format=3 uid="uid://cj73a4h7l4545"]
 
 [ext_resource type="Script" uid="uid://f65d6ar53jpu" path="res://Demo Game/Scripts/settings.gd" id="1_spl1a"]
 [ext_resource type="Texture2D" uid="uid://b4qelx0hwtt61" path="res://Assets for the acual game/Assets/Sprites/settings page v3.png" id="2_dkffb"]
@@ -32,6 +32,25 @@ corner_radius_top_left = 11
 corner_radius_top_right = 11
 corner_radius_bottom_right = 11
 corner_radius_bottom_left = 11
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jweou"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_os213"]
+bg_color = Color(0.396078, 0.686275, 1, 1)
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2fjwd"]
+bg_color = Color(0.105882, 0.156863, 0.270588, 1)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+shadow_color = Color(0, 0, 0, 0.521569)
+shadow_size = 3
 
 [node name="Settings" type="Control"]
 layout_mode = 3
@@ -140,5 +159,27 @@ Effects "
 stream = ExtResource("6_ebncw")
 volume_db = -15.0
 
+[node name="Back" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -229.0
+offset_top = 84.0
+offset_right = 229.0
+offset_bottom = 160.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_dkffb")
+theme_override_font_sizes/font_size = 33
+theme_override_styles/focus = SubResource("StyleBoxEmpty_jweou")
+theme_override_styles/hover = SubResource("StyleBoxFlat_os213")
+theme_override_styles/normal = SubResource("StyleBoxFlat_2fjwd")
+text = "Back"
+
 [connection signal="value_changed" from="Music" to="." method="_on_volume_value_changed"]
 [connection signal="value_changed" from="Sound Effects" to="." method="_on_volume_value_changed"]
+[connection signal="pressed" from="Back" to="." method="_on_back_pressed"]

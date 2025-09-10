@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://wj61kt8sa2wn"]
+[gd_scene load_steps=10 format=3 uid="uid://wj61kt8sa2wn"]
 
 [ext_resource type="Script" uid="uid://dvjuxe6egka52" path="res://Demo Game/Scripts/gun.gd" id="1_6j442"]
 [ext_resource type="Texture2D" uid="uid://dnmo0qivmo8rl" path="res://Demo Game/The assets/sprites/Pentagon.png" id="2_6j442"]
 [ext_resource type="AudioStream" uid="uid://br23h6nq4b727" path="res://Demo Game/The assets/sounds/Rumble2fixed.mp3" id="3_hmsyr"]
+[ext_resource type="Script" uid="uid://g0ngvbbyepkj" path="res://Demo Game/Scripts/slash_sfx.gd" id="4_0ve7x"]
 
 [sub_resource type="Gradient" id="Gradient_3hhu8"]
 offsets = PackedFloat32Array(0, 0.228972, 1)
@@ -190,6 +191,20 @@ tracks/6/keys = {
 "update": 1,
 "values": [55, 1]
 }
+tracks/7/type = "method"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("SlashSFX")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"play_with_variation"
+}]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_hco14"]
 _data = {
@@ -228,6 +243,7 @@ autostart = true
 [node name="SlashSFX" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_hmsyr")
 bus = &"SFX"
+script = ExtResource("4_0ve7x")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

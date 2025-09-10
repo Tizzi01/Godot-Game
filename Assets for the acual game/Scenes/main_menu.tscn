@@ -1,11 +1,11 @@
 [gd_scene load_steps=8 format=3 uid="uid://cjeipb5iia78u"]
 
 [ext_resource type="Script" uid="uid://coot1o5lmolk" path="res://Demo Game/The assets/sprites/main_menu.gd" id="1_43o24"]
-[ext_resource type="Texture2D" uid="uid://dtbvkdh1e5c5l" path="res://Demo Game/The assets/sprites/MAIN MENU BG.png" id="1_yuxdu"]
 [ext_resource type="FontFile" uid="uid://ctp71ddagy2v8" path="res://Demo Game/The assets/fonts/Roquen DEMO.otf" id="2_43o24"]
+[ext_resource type="Texture2D" uid="uid://bo5oi3m1am6ju" path="res://Demo Game/The assets/sprites/new bg2.png" id="2_fm0ht"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fm0ht"]
-texture = ExtResource("1_yuxdu")
+texture = ExtResource("2_fm0ht")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yuxdu"]
 

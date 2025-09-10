@@ -43,8 +43,6 @@ func shoot():
 
 	get_tree().current_scene.add_child(bullet_instance)
 
-	print("Bullet spawned at:", bullet_instance.global_position)
-	print("Rotation (deg):", rad_to_deg(bullet_instance.rotation))
 
 	
 
