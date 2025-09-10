@@ -1,10 +1,13 @@
-[gd_scene load_steps=20 format=3 uid="uid://dikfgaeqdng3d"]
+[gd_scene load_steps=27 format=3 uid="uid://dikfgaeqdng3d"]
 
+[ext_resource type="Material" uid="uid://b1co7iqjlecyp" path="res://Demo Game/Scripts/hitflash.tres" id="1_7k0jb"]
 [ext_resource type="Texture2D" uid="uid://canfsqyqpe8qy" path="res://Assets for the acual game/Assets/Sprites/Player Animation/idle/0.png" id="1_i7wno"]
 [ext_resource type="PackedScene" uid="uid://wj61kt8sa2wn" path="res://Assets for the acual game/Scenes/gun.tscn" id="3_bijw4"]
 [ext_resource type="Script" uid="uid://by72bvasui27b" path="res://Demo Game/Scripts/progress_bar.gd" id="3_u23ib"]
 [ext_resource type="AudioStream" uid="uid://2oa4vqotb5bt" path="res://Demo Game/The assets/music/dash.mp3" id="4_u23ib"]
 [ext_resource type="Script" uid="uid://ckbcbouawdeeo" path="res://Demo Game/Scripts/dash_sfx.gd" id="5_2pset"]
+[ext_resource type="AudioStream" uid="uid://dvrvblfg1cd5s" path="res://Demo Game/The assets/music/TP Goku.mp3" id="7_7k0jb"]
+[ext_resource type="Script" uid="uid://b8dvnvp6uf1r4" path="res://Demo Game/Scripts/tp_1.gd" id="7_y2uok"]
 
 [sub_resource type="GDScript" id="GDScript_vxcno"]
 script/source = "extends CharacterBody2D
@@ -19,6 +22,7 @@ class_name Player
 
 var health = 100.0
 
+@onready var tp_anim_player: AnimationPlayer = $PlayerSprite/HitFlash
 #borders
 var pushback_timer = 0.0
 
@@ -34,7 +38,7 @@ var pushback_timer = 0.0
 @export var dash_speed = 950.0
 @export var dash_max_distance = 100.0
 @export var dash_curve : Curve
-@export var dash_cooldown = 0.0
+@export var dash_cooldown = 1.0
 
 @export var Gun_radius: float = 20.0
 @export var Gun_follow_speed: float = 10.0
@@ -130,7 +134,7 @@ func _physics_process(delta):
 			dash_start_position = global_position
 			dash_direction = input_vector
 			dash_timer = dash_cooldown
-
+			dash_sfx.play_with_variation()
 			if teleporting:
 				teleport_hovering = false
 				teleporting = false
@@ -169,7 +173,6 @@ func _physics_process(delta):
 			if collision.has(\"normal\"):
 				var push_dir = collision[\"normal\"].normalized()
 				var safe_pos = target_pos + push_dir * 10.0
-
 				query.transform = Transform2D.IDENTITY.translated(safe_pos)
 				var recheck = space_state.intersect_shape(query)
 
@@ -185,7 +188,9 @@ func _physics_process(delta):
 		teleport_hover_timer = 0.0
 		velocity = Vector2.ZERO
 		$PlayerSprite/AnimationPlayer.play(\"Idle\")
-
+		$TP1.play()
+		tp_anim_player.play(\"TP\") 
+		
 	if velocity == Vector2.ZERO and not teleporting and not is_dashing:
 		if Input.is_action_pressed(\"left\") or Input.is_action_pressed(\"right\") or Input.is_action_pressed(\"up\") or Input.is_action_pressed(\"down\"):
 			velocity = input_vector * walk_speed
@@ -302,6 +307,63 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_u23ib"]
+resource_name = "dash"
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("DashSFX")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.0333333),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"play_with_variation"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_hls0o"]
+resource_name = "dashs"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.366667, 1.214, 1.46587),
+"transitions": PackedFloat32Array(-2, -2, -2, 1),
+"update": 0,
+"values": [Vector2(0, -2.26), Vector2(0, 0.06), Vector2(0, 0.06), Vector2(0, 1.18837e-06)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.366667, 1.214, 1.46587),
+"transitions": PackedFloat32Array(-2, -2, -2, 1),
+"update": 0,
+"values": [0.0, 0.610865, 0.610865, 0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PlayerSprite:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.366667, 1.214, 1.46587),
+"transitions": PackedFloat32Array(-2, -2, -2, 1),
+"update": 0,
+"values": [Vector2(0.038, 0.038), Vector2(0.038, 0.038), Vector2(0.038, 0.038), Vector2(0.038, 0.038)]
 }
 
 [sub_resource type="Animation" id="Animation_prhqr"]
@@ -427,73 +489,58 @@ tracks/1/keys = {
 "values": [Vector2(-0.038, 0.038)]
 }
 
-[sub_resource type="Animation" id="Animation_hls0o"]
-resource_name = "dashs"
-length = 1.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("PlayerSprite:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.366667, 1.214, 1.46587),
-"transitions": PackedFloat32Array(-2, -2, -2, 1),
-"update": 0,
-"values": [Vector2(0, -2.26), Vector2(0, 0.06), Vector2(0, 0.06), Vector2(0, 1.18837e-06)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("PlayerSprite:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.366667, 1.214, 1.46587),
-"transitions": PackedFloat32Array(-2, -2, -2, 1),
-"update": 0,
-"values": [0.0, 0.610865, 0.610865, 0.0]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("PlayerSprite:scale")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.366667, 1.214, 1.46587),
-"transitions": PackedFloat32Array(-2, -2, -2, 1),
-"update": 0,
-"values": [Vector2(0.038, 0.038), Vector2(0.038, 0.038), Vector2(0.038, 0.038), Vector2(0.038, 0.038)]
-}
-
-[sub_resource type="Animation" id="Animation_u23ib"]
-resource_name = "dash"
-tracks/0/type = "method"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("DashSFX")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0.0333333),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [0.0],
-"method": &"play_with_variation"
-}]
-}
+[sub_resource type="Animation" id="Animation_1wgvf"]
+resource_name = "TP"
+length = 0.1
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_kn884"]
 _data = {
 &"Idle": SubResource("Animation_vxcno"),
 &"RESET": SubResource("Animation_qjmxq"),
+&"TP": SubResource("Animation_1wgvf"),
 &"dash": SubResource("Animation_u23ib"),
 &"dashs": SubResource("Animation_hls0o"),
 &"fall": SubResource("Animation_prhqr"),
 &"jump": SubResource("Animation_kn884"),
 &"run": SubResource("Animation_qxrvo"),
 &"run_left": SubResource("Animation_83akb")
+}
+
+[sub_resource type="Animation" id="Animation_6enu5"]
+resource_name = "TP"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_lu225"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nsxml"]
+_data = {
+&"RESET": SubResource("Animation_lu225"),
+&"TP": SubResource("Animation_6enu5")
 }
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_guesk"]
@@ -522,6 +569,7 @@ corner_radius_bottom_left = 8
 script = SubResource("GDScript_vxcno")
 
 [node name="PlayerSprite" type="Sprite2D" parent="."]
+material = ExtResource("1_7k0jb")
 scale = Vector2(0.0380787, 0.0380787)
 texture = ExtResource("1_i7wno")
 
@@ -529,6 +577,12 @@ texture = ExtResource("1_i7wno")
 root_node = NodePath("../..")
 libraries = {
 &"": SubResource("AnimationLibrary_kn884")
+}
+
+[node name="HitFlash" type="AnimationPlayer" parent="PlayerSprite"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_nsxml")
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -567,3 +621,9 @@ stream = ExtResource("4_u23ib")
 volume_db = -10.0
 bus = &"SFX"
 script = ExtResource("5_2pset")
+
+[node name="TP1" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("7_7k0jb")
+volume_db = -15.0
+script = ExtResource("7_y2uok")
