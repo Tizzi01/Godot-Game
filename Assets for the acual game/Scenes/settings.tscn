@@ -182,7 +182,9 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_2fjwd")
 text = "Back"
 
 [node name="Soundx" parent="." instance=ExtResource("7_0n7r4")]
-root_path = NodePath("..")
+root_path = NodePath("")
+ui3_volume_db = -25.0
+click_volume_db = -25.0
 
 [connection signal="value_changed" from="Music" to="." method="_on_volume_value_changed"]
 [connection signal="value_changed" from="Sound Effects" to="." method="_on_volume_value_changed"]

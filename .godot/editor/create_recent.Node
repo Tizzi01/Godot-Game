@@ -1,6 +1,6 @@
-AnimationPlayer
 Node
 AudioStreamPlayer
+AnimationPlayer
 Button
 Panel
 CanvasLayer

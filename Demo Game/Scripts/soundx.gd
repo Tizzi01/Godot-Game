@@ -2,9 +2,10 @@ extends Node
 
 @export var root_path: NodePath
 @export var ui3_volume_db: float = -25.0  # Easy tweak for UI3 volume
+@export var click_volume_db: float = -25.0  # Easy tweak for Click3 volume
 
 @onready var sounds := {
-	"ClickSound": AudioStreamPlayer.new(),
+	"Click3": AudioStreamPlayer.new(),
 	"UI3": AudioStreamPlayer.new()
 }
 
@@ -16,11 +17,13 @@ func _ready():
 		var player = sounds[key]
 		add_child(player)
 		player.stream = load("res://Demo Game/The assets/music/" + key + ".mp3")
-		
-		# Apply volume tweak for UI3
+
+		# Apply volume tweaks
 		if key == "UI3":
 			player.volume_db = ui3_volume_db
-		
+		elif key == "Click3":
+			player.volume_db = click_volume_db
+
 		player.connect("finished", Callable(self, "_on_sound_finished").bind(root_path))
 
 	# Install sounds to buttons under the specified root node
@@ -32,7 +35,7 @@ func install_sounds(node: Node) -> void:
 	for child in node.get_children():
 		if child is Button:
 			child.mouse_entered.connect(func(): mainmenu_music_play("UI3"))
-			child.pressed.connect(func(): mainmenu_music_play("ClickSound"))
+			child.pressed.connect(func(): mainmenu_music_play("Click3"))
 		install_sounds(child)  # Recursive call for nested buttons
 
 func mainmenu_music_play(sound_key: String) -> void:

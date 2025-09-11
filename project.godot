@@ -17,9 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-BgMusic="*res://Assets for the acual game/Scenes/BG music.tscn"
-Soundy="*res://Assets for the acual game/Scenes/soundy.tscn"
-Soundx="*res://Assets for the acual game/Scenes/soundx.tscn"
+Click="*res://Assets for the acual game/Scenes/clicky.tscn"
 
 [display]
 

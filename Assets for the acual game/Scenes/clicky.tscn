@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://crxp2d15frpu"]
+
+[ext_resource type="Script" uid="uid://dwmnuhgxrlc5g" path="res://Demo Game/Scripts/node.gd" id="1_33dqu"]
+
+[node name="Clicky" type="Node"]
+script = ExtResource("1_33dqu")

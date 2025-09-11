@@ -1,26 +1,18 @@
-res://Demo Game/Scenes/player.tscn
+res://Assets for the acual game/Scenes/game.tscn
 res://Demo Game/Scripts/hitflash.tres
 res://Demo Game/Scripts/m_1.gdshader
 res://Demo Game/Scripts/bulletglow.gdshader
 res://Demo Game/Scripts/hitflash2.tres
-res://Assets for the acual game/Scenes/game.tscn
-res://Assets for the acual game/Scenes/gun.tscn
+res://Demo Game/Scenes/player.tscn
 res://Assets for the acual game/Scenes/mob.tscn
-res://Assets for the acual game/Scenes/audio_slider.tscn
 res://Assets for the acual game/Scenes/main_menu.tscn
 res://Assets for the acual game/Scenes/settings.tscn
-res://Demo Game/Scripts/camera_2d.gd
-res://Demo Game/Scripts/game.gd
-res://Demo Game/Scripts/mob.gd
-res://Demo Game/Scripts/progress_bar.gd
-res://Demo Game/The assets/sprites/main_menu.gd
-res://Assets for the acual game/Scenes/how_to_play.tscn
-res://Demo Game/Scripts/how_to_play.gd
-res://Demo Game/Scripts/click_sound.gd
-res://Assets for the acual game/Scenes/click_sound.tscn
-res://Demo Game/Scripts/button_p_lus.gd
-res://Assets for the acual game/Scenes/button_plus.tscn
 res://Assets for the acual game/Scenes/soundx.tscn
-res://Demo Game/Scripts/soundx.gd
-res://Demo Game/Scripts/soundy.gd
 res://Assets for the acual game/Scenes/soundy.tscn
+res://Demo Game/Scripts/soundx.gd
+res://Demo Game/The assets/sprites/main_menu.gd
+res://Demo Game/Scripts/click.gd
+res://Assets for the acual game/Scenes/how_to_play.tscn
+res://Assets for the acual game/Scenes/click.tscn
+res://Demo Game/Scripts/node.gd
+res://Assets for the acual game/Scenes/clicky.tscn
