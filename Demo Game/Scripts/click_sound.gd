@@ -4,48 +4,52 @@ var UI3 : AudioStreamPlayer
 var ClickSound : AudioStreamPlayer
 
 var sounds = {}
-var root_path : NodePath = "MainMenu" # adjust this to your UI root node path
+var root_path : NodePath = "MainMenu"  # Make sure this matches your actual UI container node
 
 func _ready() -> void:
-	assert(root_path != null, "Empty root path for Interface Sounds")
+	var root_node = get_node_or_null(root_path)
+	if root_node == null:
+		print("⚠️ Could not find node at path:", root_path)
+		return
 
-	# set up audio stream players and load sound files
+	# Set up audio stream players and load sound files
 	for strId in ["UI3", "ClickSound"]:
 		var sound = AudioStreamPlayer.new()
-		sound.stream = load("res://%s.ogg" % strId)
+		sound.stream = load("res://Demo Game/The assets/music/%s.mp3" % strId)
 		sounds[strId] = sound
 		add_child(sound)
 
-	# connect signals to the method that plays the sounds
-	install_sounds(get_node(root_path))
+	# Connect signals to play sounds
+	install_sounds(root_node)
 
 
 func install_sounds(node: Node) -> void:
-	for main_menu in node.get_children():
-		if main_menu is Button:
-			main_menu.mouse_entered.connect(ui_sfx_play.bind("UI3"))
-			main_menu.pressed.connect(ui_sfx_play.bind("ClickSound"))
+	for child in node.get_children():
+		if child is Button:
+			child.mouse_entered.connect(ui_sfx_play.bind("UI3"))
+			child.pressed.connect(ui_sfx_play.bind("ClickSound"))
 
-		elif main_menu is OptionButton:
-			main_menu.mouse_entered.connect(ui_sfx_play.bind("UI3"))
-			main_menu.pressed.connect(ui_sfx_play.bind("ClickSound"))
+		elif child is OptionButton:
+			child.mouse_entered.connect(ui_sfx_play.bind("UI3"))
+			child.pressed.connect(ui_sfx_play.bind("ClickSound"))
 
-		elif main_menu is TextEdit:
-			main_menu.mouse_entered.connect(ui_sfx_play.bind("UI3"))
-			main_menu.text_submitted.connect(ui_sfx_play.bind("ClickSound"))
+		elif child is TextEdit:
+			child.mouse_entered.connect(ui_sfx_play.bind("UI3"))
+			child.text_submitted.connect(ui_sfx_play.bind("ClickSound"))
 
-		elif main_menu is LineEdit:
-			main_menu.mouse_entered.connect(ui_sfx_play.bind("UI3"))
-			main_menu.focus_entered.connect(ui_sfx_play.bind("UI3"))
+		elif child is LineEdit:
+			child.mouse_entered.connect(ui_sfx_play.bind("UI3"))
+			child.focus_entered.connect(ui_sfx_play.bind("UI3"))
 
-		elif main_menu is TabContainer:
-			main_menu.tab_hovered.connect(ui_sfx_play.bind("UI3"))
-			main_menu.tab_selected.connect(ui_sfx_play.bind("ClickSound"))
-			main_menu.tab_closed.connect(ui_sfx_play.bind("UI3"))
+		elif child is TabContainer:
+			child.tab_hovered.connect(ui_sfx_play.bind("UI3"))
+			child.tab_selected.connect(ui_sfx_play.bind("ClickSound"))
+			child.tab_closed.connect(ui_sfx_play.bind("UI3"))
 
-		# recursively add sounds for children
-		install_sounds(main_menu)
+		# Recursively connect children
+		install_sounds(child)
 
 
-func ui_sfx_play(sound : String) -> void:
-	sounds[sound].play()
+func ui_sfx_play(sound: String) -> void:
+	if sounds.has(sound):
+		sounds[sound].play()

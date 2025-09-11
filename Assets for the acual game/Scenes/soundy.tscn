@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bnfe7g7cynpsf"]
+
+[ext_resource type="Script" uid="uid://bhqahchubmdpy" path="res://Demo Game/Scripts/soundy.gd" id="1_cwl0k"]
+
+[node name="Soundy" type="Node"]
+script = ExtResource("1_cwl0k")

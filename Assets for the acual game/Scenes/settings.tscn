@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cj73a4h7l4545"]
+[gd_scene load_steps=14 format=3 uid="uid://cj73a4h7l4545"]
 
 [ext_resource type="Script" uid="uid://f65d6ar53jpu" path="res://Demo Game/Scripts/settings.gd" id="1_spl1a"]
 [ext_resource type="Texture2D" uid="uid://b4qelx0hwtt61" path="res://Assets for the acual game/Assets/Sprites/settings page v3.png" id="2_dkffb"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://detuerh42hcky" path="res://Demo Game/Scripts/music.gd" id="3_ww1uc"]
 [ext_resource type="Script" uid="uid://c78ucclj1brpw" path="res://Demo Game/Scripts/sound_effects.gd" id="5_ebncw"]
 [ext_resource type="AudioStream" uid="uid://cvdi6lca0gk0n" path="res://Demo Game/The assets/music/Godot BG music.MP3" id="6_ebncw"]
+[ext_resource type="PackedScene" uid="uid://yew5oypof0mq" path="res://Assets for the acual game/Scenes/soundx.tscn" id="7_0n7r4"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6l2qg"]
 texture = ExtResource("2_dkffb")
@@ -179,6 +180,9 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_jweou")
 theme_override_styles/hover = SubResource("StyleBoxFlat_os213")
 theme_override_styles/normal = SubResource("StyleBoxFlat_2fjwd")
 text = "Back"
+
+[node name="Soundx" parent="." instance=ExtResource("7_0n7r4")]
+root_path = NodePath("..")
 
 [connection signal="value_changed" from="Music" to="." method="_on_volume_value_changed"]
 [connection signal="value_changed" from="Sound Effects" to="." method="_on_volume_value_changed"]

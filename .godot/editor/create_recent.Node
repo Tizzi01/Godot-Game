@@ -1,8 +1,9 @@
+AnimationPlayer
 Node
 AudioStreamPlayer
+Button
 Panel
 CanvasLayer
-AnimationPlayer
 Label
 VBoxContainer
 MarginContainer
@@ -11,4 +12,3 @@ ColorRect
 Sprite2D
 AudioListener2D
 AudioStreamPlayer2D
-CanvasGroup

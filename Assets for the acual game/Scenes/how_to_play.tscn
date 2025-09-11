@@ -1,12 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://dhdia7dhvy183"]
+[gd_scene load_steps=9 format=3 uid="uid://dhdia7dhvy183"]
 
 [ext_resource type="Script" uid="uid://d1583i8622esu" path="res://Demo Game/Scripts/how_to_play.gd" id="1_qcbfp"]
 [ext_resource type="Texture2D" uid="uid://np3x2k4uovnm" path="res://Assets for the acual game/Assets/Sprites/How to play .png" id="2_4qse6"]
 [ext_resource type="FontFile" uid="uid://ctp71ddagy2v8" path="res://Demo Game/The assets/fonts/Roquen DEMO.otf" id="2_pasae"]
 [ext_resource type="AudioStream" uid="uid://bmburjsmunkrx" path="res://Demo Game/The assets/music/electric Pop Out.wav" id="4_4qse6"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pasae"]
-bg_color = Color(0.180392, 0.247059, 0.368627, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2bcf8"]
 texture = ExtResource("2_4qse6")
@@ -38,20 +35,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_qcbfp")
-
-[node name="cover up" type="Panel" parent="."]
-z_index = 1
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 84.0
-offset_top = 126.0
-offset_right = -1018.0
-offset_bottom = -896.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_pasae")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1

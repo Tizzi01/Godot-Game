@@ -18,3 +18,9 @@ res://Assets for the acual game/Scenes/how_to_play.tscn
 res://Demo Game/Scripts/how_to_play.gd
 res://Demo Game/Scripts/click_sound.gd
 res://Assets for the acual game/Scenes/click_sound.tscn
+res://Demo Game/Scripts/button_p_lus.gd
+res://Assets for the acual game/Scenes/button_plus.tscn
+res://Assets for the acual game/Scenes/soundx.tscn
+res://Demo Game/Scripts/soundx.gd
+res://Demo Game/Scripts/soundy.gd
+res://Assets for the acual game/Scenes/soundy.tscn
