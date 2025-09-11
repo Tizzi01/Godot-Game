@@ -13,6 +13,8 @@ func spawn_mob():
 	new_mob.global_position = %PathFollow2D.global_position
 	add_child(new_mob)
 
+	# Connect the mob's 'died' signal to the player's kill handler
+	new_mob.died.connect(player._on_mob_died)
 func _on_timer_timeout() -> void:
 	spawn_mob()
 
@@ -26,3 +28,6 @@ func _on_restart_pressed():
 func _on_main_menu_pressed():
 	print("🏠 Main Menu button pressed")
 	get_tree().change_scene_to_file("res://Assets for the acual game/Scenes/main_menu.tscn")
+func _input(event):
+	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
+		game_over_screen.visible = not game_over_screen.visible

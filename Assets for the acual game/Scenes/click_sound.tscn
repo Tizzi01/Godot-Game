@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://btjl2v8rb1fa0"]
+
+[ext_resource type="Script" uid="uid://1vhugmqc2wen" path="res://Demo Game/Scripts/click_sound.gd" id="1_2bel5"]
+
+[node name="ClickSound" type="Node"]
+script = ExtResource("1_2bel5")

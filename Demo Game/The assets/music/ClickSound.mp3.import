@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://88r2pkpecc83"
+path="res://.godot/imported/ClickSound.mp3-a0d69ef876498e64b5b34dec7e54842b.mp3str"
+
+[deps]
+
+source_file="res://Demo Game/The assets/music/ClickSound.mp3"
+dest_files=["res://.godot/imported/ClickSound.mp3-a0d69ef876498e64b5b34dec7e54842b.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -6,7 +6,7 @@ var health = 10
 @onready var animation_player = $AnimationPlayer
 @onready var sprites = [ $"0", $"1", $"2" ]  # These are just visuals, not animated individually
 @onready var hit_flash: AnimationPlayer = $HitFlash
-
+signal died
 func _physics_process(delta):
 	# Movement toward player
 	var direction = global_position.direction_to(player.global_position)
@@ -33,6 +33,7 @@ func take_damage():
 	hit_flash.play("Hitflash")
 	
 	if health == 0: 
+		died.emit()
 		queue_free() 
 		const SMOKE_SCENE = preload("res://smoke_explosion/smoke_explosion.tscn")
 		var smoke = SMOKE_SCENE.instantiate() 

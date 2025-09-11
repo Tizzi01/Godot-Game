@@ -1,11 +1,10 @@
-[gd_scene load_steps=27 format=3 uid="uid://dikfgaeqdng3d"]
+[gd_scene load_steps=26 format=3 uid="uid://dikfgaeqdng3d"]
 
 [ext_resource type="Material" uid="uid://b1co7iqjlecyp" path="res://Demo Game/Scripts/hitflash.tres" id="1_7k0jb"]
 [ext_resource type="Texture2D" uid="uid://canfsqyqpe8qy" path="res://Assets for the acual game/Assets/Sprites/Player Animation/idle/0.png" id="1_i7wno"]
 [ext_resource type="PackedScene" uid="uid://wj61kt8sa2wn" path="res://Assets for the acual game/Scenes/gun.tscn" id="3_bijw4"]
-[ext_resource type="Script" uid="uid://by72bvasui27b" path="res://Demo Game/Scripts/progress_bar.gd" id="3_u23ib"]
-[ext_resource type="AudioStream" uid="uid://2oa4vqotb5bt" path="res://Demo Game/The assets/music/dash.mp3" id="4_u23ib"]
 [ext_resource type="Script" uid="uid://ckbcbouawdeeo" path="res://Demo Game/Scripts/dash_sfx.gd" id="5_2pset"]
+[ext_resource type="AudioStream" uid="uid://c8ti7vpuxc3y3" path="res://Demo Game/The assets/music/dash2.wav" id="5_7k0jb"]
 [ext_resource type="AudioStream" uid="uid://dvrvblfg1cd5s" path="res://Demo Game/The assets/music/TP Goku.mp3" id="7_7k0jb"]
 [ext_resource type="Script" uid="uid://b8dvnvp6uf1r4" path="res://Demo Game/Scripts/tp_1.gd" id="7_y2uok"]
 
@@ -33,7 +32,7 @@ var pushback_timer = 0.0
 @onready var anim_player: AnimationPlayer = $PlayerSprite/AnimationPlayer
 @onready var hitbox: Area2D = %Gun
 @onready var slash_anim: AnimationPlayer = gun_node.get_node(\"AnimationPlayer\")
-
+var kill_count := 0
 # dashing
 @export var dash_speed = 950.0
 @export var dash_max_distance = 100.0
@@ -79,7 +78,9 @@ func _physics_process(delta):
 	var overlapping_mobs = %HurtBox.get_overlapping_bodies()
 	if overlapping_mobs.size() > 0: 
 		health -= DAMAGE_RATE * overlapping_mobs.size() * delta 
-		%ProgressBar.value = health 
+		for bar in get_tree().get_nodes_in_group(\"HPBAR\"):
+			bar.value = health
+
 		if health <= 0.0: 
 			health_depleted.emit() 
 			
@@ -168,6 +169,15 @@ func _physics_process(delta):
 
 		if result.is_empty():
 			global_position = target_pos
+			$Camera2D.add_vertical_trauma(0.3)
+
+			teleporting = true
+			teleport_hovering = true
+			teleport_hover_timer = 0.0
+			velocity = Vector2.ZERO
+			$PlayerSprite/AnimationPlayer.play(\"Idle\")
+			$TP1.play()
+			tp_anim_player.play(\"TP\")
 		else:
 			var collision = result[0]
 			if collision.has(\"normal\"):
@@ -178,19 +188,20 @@ func _physics_process(delta):
 
 				if recheck.is_empty():
 					global_position = safe_pos
+					$Camera2D.add_trauma(0.4)
+
+					teleporting = true
+					teleport_hovering = true
+					teleport_hover_timer = 0.0
+					velocity = Vector2.ZERO
+					$PlayerSprite/AnimationPlayer.play(\"Idle\")
+					$TP1.play()
+					tp_anim_player.play(\"TP\")
 				else:
 					print(\"Blocked! Can't teleport too close to wall.\")
 			else:
 				print(\"Collision has no normal — skipping safe push.\")
 
-		teleporting = true
-		teleport_hovering = true
-		teleport_hover_timer = 0.0
-		velocity = Vector2.ZERO
-		$PlayerSprite/AnimationPlayer.play(\"Idle\")
-		$TP1.play()
-		tp_anim_player.play(\"TP\") 
-		
 	if velocity == Vector2.ZERO and not teleporting and not is_dashing:
 		if Input.is_action_pressed(\"left\") or Input.is_action_pressed(\"right\") or Input.is_action_pressed(\"up\") or Input.is_action_pressed(\"down\"):
 			velocity = input_vector * walk_speed
@@ -226,7 +237,11 @@ func _input(event: InputEvent) -> void:
 		if teleporting:
 			teleport_hovering = false
 			teleporting = false
-			teleport_hover_timer = 0.0
+			teleport_hover_timer = 0.0 
+			
+func _on_mob_died():
+	kill_count += 1
+	print(\"💀 Kill count:\", kill_count)
 "
 
 [sub_resource type="Animation" id="Animation_vxcno"]
@@ -308,6 +323,10 @@ tracks/2/keys = {
 "update": 0,
 "values": [0.0]
 }
+
+[sub_resource type="Animation" id="Animation_1wgvf"]
+resource_name = "TP"
+length = 0.1
 
 [sub_resource type="Animation" id="Animation_u23ib"]
 resource_name = "dash"
@@ -489,10 +508,6 @@ tracks/1/keys = {
 "values": [Vector2(-0.038, 0.038)]
 }
 
-[sub_resource type="Animation" id="Animation_1wgvf"]
-resource_name = "TP"
-length = 0.1
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_kn884"]
 _data = {
 &"Idle": SubResource("Animation_vxcno"),
@@ -506,21 +521,17 @@ _data = {
 &"run_left": SubResource("Animation_83akb")
 }
 
-[sub_resource type="Animation" id="Animation_6enu5"]
-resource_name = "TP"
-length = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("PlayerSprite:material:shader_parameter/enabled")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [true, false]
-}
+[sub_resource type="Gradient" id="Gradient_3hhu8"]
+offsets = PackedFloat32Array(0, 0.451243, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.228527, 0.62113, 1, 1, 0.0352941, 0.0352941, 0.0352941, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7k0jb"]
+gradient = SubResource("Gradient_3hhu8")
+width = 1
+height = 1
+fill = 1
+fill_from = Vector2(0.5, 0.49359)
+fill_to = Vector2(0.5, 0)
 
 [sub_resource type="Animation" id="Animation_lu225"]
 length = 0.001
@@ -534,7 +545,95 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite/PointLight2D:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("GradientTexture2D_7k0jb")]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PlayerSprite/PointLight2D:texture:width")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("PlayerSprite/PointLight2D:texture:height")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+
+[sub_resource type="Animation" id="Animation_6enu5"]
+resource_name = "TP"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = false
+tracks/0/path = NodePath("PlayerSprite:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite/PointLight2D:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("GradientTexture2D_7k0jb")]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PlayerSprite/PointLight2D:texture:width")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [88, 1]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("PlayerSprite/PointLight2D:texture:height")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [88, 1]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_nsxml"]
@@ -551,24 +650,12 @@ height = 28.0
 radius = 6.0
 height = 28.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2pset"]
-bg_color = Color(0.105882, 0.156863, 0.270588, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_je6th"]
-bg_color = Color(0.396078, 0.686275, 1, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 script = SubResource("GDScript_vxcno")
 
 [node name="PlayerSprite" type="Sprite2D" parent="."]
+light_mask = 5
+visibility_layer = 5
 material = ExtResource("1_7k0jb")
 scale = Vector2(0.0380787, 0.0380787)
 texture = ExtResource("1_i7wno")
@@ -585,12 +672,19 @@ libraries = {
 &"": SubResource("AnimationLibrary_nsxml")
 }
 
+[node name="PointLight2D" type="PointLight2D" parent="PlayerSprite"]
+position = Vector2(-4.43459e-05, 9.53674e-07)
+scale = Vector2(37.5638, 37.5638)
+range_item_cull_mask = 4
+texture = SubResource("GradientTexture2D_7k0jb")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 2)
 shape = SubResource("CapsuleShape2D_guesk")
 
 [node name="Gun" parent="." instance=ExtResource("3_bijw4")]
 unique_name_in_owner = true
+collision_layer = 4
 
 [node name="HurtBox" type="Area2D" parent="."]
 unique_name_in_owner = true
@@ -601,23 +695,8 @@ collision_mask = 4
 shape = SubResource("CapsuleShape2D_3h3w8")
 debug_color = Color(1, 0, 0, 0.313726)
 
-[node name="ProgressBar" type="ProgressBar" parent="."]
-unique_name_in_owner = true
-offset_left = 20.0
-offset_top = -21.0
-offset_right = 25.0
-offset_bottom = 19.0
-rotation = 1.5787
-theme_override_styles/background = SubResource("StyleBoxFlat_2pset")
-theme_override_styles/fill = SubResource("StyleBoxFlat_je6th")
-step = 0.0
-value = 100.0
-fill_mode = 3
-show_percentage = false
-script = ExtResource("3_u23ib")
-
 [node name="DashSFX" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("4_u23ib")
+stream = ExtResource("5_7k0jb")
 volume_db = -10.0
 bus = &"SFX"
 script = ExtResource("5_2pset")
@@ -625,5 +704,5 @@ script = ExtResource("5_2pset")
 [node name="TP1" type="AudioStreamPlayer" parent="."]
 unique_name_in_owner = true
 stream = ExtResource("7_7k0jb")
-volume_db = -15.0
+volume_db = -12.0
 script = ExtResource("7_y2uok")

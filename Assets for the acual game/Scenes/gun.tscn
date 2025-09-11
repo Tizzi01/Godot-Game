@@ -5,12 +5,12 @@
 [ext_resource type="AudioStream" uid="uid://br23h6nq4b727" path="res://Demo Game/The assets/sounds/Rumble2fixed.mp3" id="3_hmsyr"]
 [ext_resource type="Script" uid="uid://g0ngvbbyepkj" path="res://Demo Game/Scripts/slash_sfx.gd" id="4_0ve7x"]
 
-[sub_resource type="Gradient" id="Gradient_3hhu8"]
+[sub_resource type="Gradient" id="Gradient_0ve7x"]
 offsets = PackedFloat32Array(0, 0.228972, 1)
 colors = PackedColorArray(1, 1, 1, 1, 0.228527, 0.62113, 1, 1, 0.0352941, 0.0352941, 0.0352941, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_0ve7x"]
-gradient = SubResource("Gradient_3hhu8")
+gradient = SubResource("Gradient_0ve7x")
 width = 1
 height = 1
 fill = 1

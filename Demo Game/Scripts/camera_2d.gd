@@ -25,9 +25,23 @@ func add_trauma(amount : float) -> void:
 
 func shake() -> void:
 	var amount = pow(trauma, trauma_power)
-	rotation = max_roll * amount * randf_range(-1, 1)
-	offset.x = max_offset.x * amount * randf_range(-1, 1)
-	offset.y = max_offset.y * amount * randf_range(-1, 1)
+	if offset.x == 0 and rotation == 0:
+		# Vertical-only shake
+		offset.y = max_offset.y * amount * randf_range(-1, 1)
+	else:
+		# Full shake
+		rotation = max_roll * amount * randf_range(-1, 1)
+		offset.x = max_offset.x * amount * randf_range(-1, 1)
+		offset.y = max_offset.y * amount * randf_range(-1, 1)
+
 
 func _on_item_acquired():
-	add_trauma(0.3)
+	add_trauma(0.3) 
+	
+func add_vertical_trauma(amount: float) -> void:
+	trauma = min(trauma + amount, 1.0)
+	# Temporarily disable horizontal shake and rotation
+	offset.x = 0
+	rotation = 0
+
+	
