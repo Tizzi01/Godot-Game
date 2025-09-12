@@ -16,3 +16,13 @@ res://Assets for the acual game/Scenes/how_to_play.tscn
 res://Assets for the acual game/Scenes/click.tscn
 res://Demo Game/Scripts/node.gd
 res://Assets for the acual game/Scenes/clicky.tscn
+res://Demo Game/Scripts/game.gd
+res://Demo Game/Scripts/settings.gd
+res://Demo Game/Scripts/how_to_play.gd
+res://Assets for the acual game/Scenes/intro_music.tscn
+res://intro_music.gd
+res://Demo Game/Scripts/intro_music.gd
+res://Demo Game/Scripts/camera_2d.gd
+res://Demo Game/Scripts/panel.gd
+res://Demo Game/Scripts/anime_shine.gd
+res://Assets for the acual game/Scenes/anime_shine.tscn

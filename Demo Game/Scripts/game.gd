@@ -2,11 +2,15 @@ extends Node2D
 
 @onready var player = $Player
 @onready var game_over_screen = %"Game Over"
+@onready var music: AudioStreamPlayer = $Music
 
 func _ready():
+	IntroMusic1.stop_IntroMusic()
+	
 	# Connect the player's health_depleted signal to trigger game over
 	player.health_depleted.connect(_on_game_over)
-
+	%Music.play() 
+	
 func spawn_mob():
 	var new_mob = preload("res://Assets for the acual game/Scenes/mob.tscn").instantiate()
 	%PathFollow2D.progress_ratio = randf()
