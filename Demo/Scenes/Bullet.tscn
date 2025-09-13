@@ -1,0 +1,39 @@
+[gd_scene load_steps=7 format=3 uid="uid://c1dobiglcpm3i"]
+
+[ext_resource type="Script" uid="uid://cymurx1pvkyql" path="res://Demo/Scripts/bullet.gd" id="1_6hugp"]
+[ext_resource type="Shader" uid="uid://crnuj5d5dtc0w" path="res://Demo/Scripts/bulletglow.gdshader" id="2_35kd2"]
+[ext_resource type="Texture2D" uid="uid://cr4tf815gw12u" path="res://Folder/Assets/Sprites/Player Animation/idle/real bullet.png" id="3_35kd2"]
+
+[sub_resource type="GDScript" id="GDScript_5ydnh"]
+script/source = "extends Node2D
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y0um8"]
+shader = ExtResource("2_35kd2")
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_35kd2"]
+radius = 2.0
+height = 7.99791
+
+[node name="Bullet" type="Node2D"]
+script = SubResource("GDScript_5ydnh")
+
+[node name="Bullet" type="Area2D" parent="."]
+top_level = true
+collision_layer = 0
+collision_mask = 7
+script = ExtResource("1_6hugp")
+
+[node name="Bullet" type="Sprite2D" parent="Bullet"]
+material = SubResource("ShaderMaterial_y0um8")
+position = Vector2(2.38419e-07, 2.38419e-07)
+scale = Vector2(0.0108548, 0.0108548)
+texture = ExtResource("3_35kd2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bullet"]
+position = Vector2(0.220948, -1.39685)
+rotation = -0.0514358
+scale = Vector2(1, 1)
+shape = SubResource("CapsuleShape2D_35kd2")
+
+[connection signal="body_entered" from="Bullet" to="Bullet" method="_on_body_entered"]

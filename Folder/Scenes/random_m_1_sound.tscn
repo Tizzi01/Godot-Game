@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://bariju17e1jri"]
+
+[ext_resource type="AudioStream" uid="uid://br23h6nq4b727" path="res://Demo/Stuff/sounds/Rumble2fixed.mp3" id="1_opww3"]
+[ext_resource type="Script" uid="uid://b0mgeodfsv4y2" path="res://Demo/Scripts/random_m_1_sound.gd" id="2_nfvsr"]
+
+[node name="RandomM1Sound" type="AudioStreamPlayer"]
+stream = ExtResource("1_opww3")
+script = ExtResource("2_nfvsr")

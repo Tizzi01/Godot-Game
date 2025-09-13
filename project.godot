@@ -17,9 +17,9 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-Click="*res://Assets for the acual game/Scenes/clicky.tscn"
-IntroMusic1="*res://Assets for the acual game/Scenes/intro_music.tscn"
-AnimeShine="*res://Assets for the acual game/Scenes/anime_shine.tscn"
+Click="*res://Folder/Scenes/clicky.tscn"
+IntroMusic1="*res://Folder/Scenes/intro_music.tscn"
+AnimeShine="*res://Folder/Scenes/anime_shine.tscn"
 
 [display]
 

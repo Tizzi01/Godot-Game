@@ -1,26 +1,35 @@
 res://addons/godot_super-wakatime/api_key_prompt.tscn::a6988a5ba43d5aa92a08f216c1db28db::1755579418::res://.godot/exported/133200997/export-cd8705cb5e2533bd79c64579ac674dae-api_key_prompt.scn
 res://addons/godot_super-wakatime/counter.tscn::7f13ad35960e259f6de719f9785ce249::1755579418::res://.godot/exported/133200997/export-4af6c9115c1c285af5925fa1ce6a526e-counter.scn
-res://Demo Game/Scenes/Bullet.tscn::e2777827440f7226e787de9c53ff1cc5::1757272214::res://.godot/exported/133200997/export-c4573e4fd041e35e89ed049fa5757fbb-Bullet.scn
-res://Assets for the acual game/Scenes/killzone.tscn::49bf687525685eaf4729ba8eab6e5824::1757372927::res://.godot/exported/133200997/export-d76b7c04a361b2f7bdb4ac8f3da1971f-killzone.scn
-res://Demo Game/Scripts/dash_curve.tres::5849044644817b09204b7f1481230787::1756422510::res://.godot/exported/133200997/export-f5a14ef88ceea1c1451c922b16b0cec9-dash_curve.res
-res://Assets for the acual game/Scenes/chest.tscn::32e0c2a7da1b2a88f9ddce3eb95b6781::1757457831::res://.godot/exported/133200997/export-cc80dfdc7c1a86c5bf6201443842eb17-chest.scn
-res://Assets for the acual game/Scenes/game.tscn::1a8374fdcf1384e8dd7e7a7e41243185::1757556903::res://.godot/exported/133200997/export-7a1a744401533ea8086a700f2c791544-game.scn
-res://Assets for the acual game/Scenes/enemy.tscn::6118816e9b7b8426f8d85376d7aa2d0f::1756945640::res://.godot/exported/133200997/export-5167f13e63e22fb2dcc891e937249467-enemy.scn
-res://Demo Game/Scenes/player.tscn::f3a12c4a55bbe974b58e4a04d6a58046::1757556475::res://.godot/exported/133200997/export-2384bb0f84424c23fb40f38de3b114d2-player.scn
-res://Demo Game/Scenes/boss.tscn::58f0c34463dd85476f4debc4713a7222::1756945640::res://.godot/exported/133200997/export-cc75fd2d7eb335ccc3c3da4b8d6dd796-boss.scn
-res://default_bus_layout.tres::12da5abaea04b65fafd3331bd62e0be2::1757214180::res://.godot/exported/133200997/export-19246414aa9fb561ced4b8dce477acec-default_bus_layout.res
-res://Assets for the acual game/Assets/Sprites/Player Animation/idle/m_1.tscn::9aee8cc2da112d5126e928c0c38703a6::1757264217::res://.godot/exported/133200997/export-edf76f5a6fdc499dd5a25f4302861516-m_1.scn
-res://Assets for the acual game/Scenes/gun.tscn::2f4f76cb44585db8fbecc97558e8b23a::1757556475::res://.godot/exported/133200997/export-0d23ec8ccddeedf4d85f0d83ccbda189-gun.scn
-res://Assets for the acual game/Scenes/mob.tscn::7865935b9ea0e230437dbf43aa686da5::1757556475::res://.godot/exported/133200997/export-e18790deb52773fa4097a2cc3e457f77-mob.scn
-res://Assets for the acual game/Scenes/bullet_v_2.tscn::f316c5e78b2d0a5cd6fa9a49f2a942ea::1757372927::res://.godot/exported/133200997/export-c36d8961fe48066568ac1a02ac9f200f-bullet_v_2.scn
-res://Assets for the acual game/Scenes/bullet_3.tscn::325a1177aef547a972127b3e3f8c7c16::1757275154::res://.godot/exported/133200997/export-e77a1124ec0c7ce1396471c335acdf69-bullet_3.scn
-res://Demo Game/Scenes/Music.tscn::8237958549ed1288c168825f6e7f4934::1757456174::res://.godot/exported/133200997/export-67c5227f7620c2447a10f60045e3bd03-Music.scn
-res://Demo Game/Scripts/hitflash.tres::bd0f5af50e90a1fd6bf6fd76a741c3ee::1757556475::res://.godot/exported/133200997/export-febeb87b698ac86891d69fb75c46dcae-hitflash.res
-res://Demo Game/Scripts/hitflash2.tres::78411f8119043c891ad15d5e1661f936::1757556903::res://.godot/exported/133200997/export-cda8b66ae73374448b8f3ed2d9fed587-hitflash2.res
 res://smoke_explosion/smoke_explosion.tscn::1b81f09cc160ba53285632c201af7444::1757457831::res://.godot/exported/133200997/export-e72ef0eae21a758bfc24d9e4f444eb60-smoke_explosion.scn
-res://Assets for the acual game/Scenes/audio_slider.tscn::11fbbce4a9a2b3ce8f3adfa02dbf6a69::1757556475::res://.godot/exported/133200997/export-319ea201c612d763b832a4a1ae6a1d04-audio_slider.scn
-res://Assets for the acual game/Scenes/main_menu.tscn::65e87d3d898b414acbfebfc197e59b24::1757556475::res://.godot/exported/133200997/export-b0307fc914d2bda8e0a9ded69d61d4fb-main_menu.scn
-res://Assets for the acual game/Scenes/settings.tscn::c8630a3c7b326f48b9a1c55c8f8273ed::1757556475::res://.godot/exported/133200997/export-f833379eca7619bdc03a6e1c23de5fa6-settings.scn
-res://Assets for the acual game/Assets/Sprites/Player Animation/idle_right/game.tres::a10a169f0292eea3fca7134922c8a46b::1757458727::res://.godot/exported/133200997/export-9194b8e33a7b669ec99d4f24edb4ec6f-game.res
-res://Assets for the acual game/Scenes/BG music.tscn::594f5a511d916705943521b188d57b00::1757458388::res://.godot/exported/133200997/export-f8d9f1dabb57da53935fcf873190b7b4-BG music.scn
-res://Assets for the acual game/Scenes/random_m_1_sound.tscn::aa994045a6a8309ad732d5d5ea96a71c::1757457831::res://.godot/exported/133200997/export-8827d2936d5b5e17df84a008ea57d190-random_m_1_sound.scn
+res://default_bus_layout.tres::12da5abaea04b65fafd3331bd62e0be2::1757214180::res://.godot/exported/133200997/export-19246414aa9fb561ced4b8dce477acec-default_bus_layout.res
+res://Folder/Assets/Sprites/Player Animation/idle/m_1.tscn::7c96e1cfb33c3c386948dbd46c6a2999::1757721133::res://.godot/exported/133200997/export-5e2d97801fb2e24021b4f46c9d65ccfe-m_1.scn
+res://Folder/Assets/Sprites/Player Animation/idle_right/game.tres::a10a169f0292eea3fca7134922c8a46b::1757458727::res://.godot/exported/133200997/export-209f7bd7db0ec90a750bd12850cb77d5-game.res
+res://Folder/Scenes/anime_shine.tscn::03b1c2704c7cc131892b5614c65dbce3::1757721517::res://.godot/exported/133200997/export-1e6e496afc8354b47b0bf052f098dcf4-anime_shine.scn
+res://Folder/Scenes/audio_slider.tscn::adc16de7f890b2e96c589d1c49c89b8e::1757721102::res://.godot/exported/133200997/export-35d32fbea759ce3fdc76ca8a0ecabe63-audio_slider.scn
+res://Folder/Scenes/BG music.tscn::a4aa69b60e6b805fca681e5a0fe0832c::1757721133::res://.godot/exported/133200997/export-3bd3c338861097a623875f43f7a3da62-BG music.scn
+res://Folder/Scenes/bullet_3.tscn::f73150cedc5a9b44502967bbc1477053::1757721102::res://.godot/exported/133200997/export-2396886371dfe13958a6837fbbcf7592-bullet_3.scn
+res://Folder/Scenes/bullet_v_2.tscn::7c505588a66a35fb36cc8e99f7a64f01::1757721102::res://.godot/exported/133200997/export-cae74291a5b26e25332022807538ad53-bullet_v_2.scn
+res://Folder/Scenes/button_plus.tscn::d62580b49d9a271cf094083d8864966e::1757721133::res://.godot/exported/133200997/export-1e0518307aa70916d838ae90d06faa33-button_plus.scn
+res://Folder/Scenes/chest.tscn::33a50515a1ef7a7437d1b751c5194ed4::1757721133::res://.godot/exported/133200997/export-ec6601f165a1b4b67c6d050a012a3064-chest.scn
+res://Folder/Scenes/click.tscn::d1ed3a8a7f78a7d80bfddea5c5d13026::1757721133::res://.godot/exported/133200997/export-6dd691ad7f365b35adc2758d10f40fa3-click.scn
+res://Folder/Scenes/clicky.tscn::382bee3de75b13117d18798bf45c6cf5::1757721516::res://.godot/exported/133200997/export-130bda610faf8b61874e479697d4146c-clicky.scn
+res://Folder/Scenes/click_sound.tscn::87491a35bbab89e619602b13f2a55a5d::1757721102::res://.godot/exported/133200997/export-9f90f20fc395399dd5c4c8d189e200fd-click_sound.scn
+res://Folder/Scenes/enemy.tscn::71e36a574e7db7fc61cc29ff1258bb23::1757721102::res://.godot/exported/133200997/export-bd529c988e89d7b8974b940fe8faea54-enemy.scn
+res://Folder/Scenes/game.tscn::bbb97f63f3354a495ef9d84446b10c6c::1757721516::res://.godot/exported/133200997/export-40e545e0f824d6b287dd21f8d769060e-game.scn
+res://Folder/Scenes/gun.tscn::2977c4ddda751fe32724ef32b5fdca4a::1757721133::res://.godot/exported/133200997/export-acd6d770bd07e53273473bb517330b4b-gun.scn
+res://Folder/Scenes/how_to_play.tscn::bdeadfd2f630dd804cc24b4c7e07f48d::1757721516::res://.godot/exported/133200997/export-4542f32ce5367e743b64707a3e8b544a-how_to_play.scn
+res://Folder/Scenes/intro_music.tscn::112d7f182352df36537e5fc8537cdaf6::1757721102::res://.godot/exported/133200997/export-6151a17d1ecacdc1f31a321dbefb91e3-intro_music.scn
+res://Folder/Scenes/killzone.tscn::49bf687525685eaf4729ba8eab6e5824::1757372927::res://.godot/exported/133200997/export-5e2d8e5bdc094e94156028f0c6083def-killzone.scn
+res://Folder/Scenes/main_menu.tscn::3fed33fc49621e0bab75f315c6f8b616::1757721516::res://.godot/exported/133200997/export-46bb4ed206ba28ce28d1a84f59329ccb-main_menu.scn
+res://Folder/Scenes/mob.tscn::dcca8b11276225d88edf51fb1f215ff9::1757721516::res://.godot/exported/133200997/export-68e2524716b9cca53480aab981a76e44-mob.scn
+res://Folder/Scenes/random_m_1_sound.tscn::1027345a0373fd7d529e948f8deb8fbd::1757721133::res://.godot/exported/133200997/export-d956a869d1f6f3992aa1a8426db77fad-random_m_1_sound.scn
+res://Folder/Scenes/settings.tscn::25579f1a5572f0631f4fa283b796fd24::1757721516::res://.godot/exported/133200997/export-1b24a2535456134e744be46337f920ce-settings.scn
+res://Folder/Scenes/soundx.tscn::3096d262a6419222357a087399982e06::1757721516::res://.godot/exported/133200997/export-44a5be40d28327cf2ce68dda14cea378-soundx.scn
+res://Folder/Scenes/soundy.tscn::6ee0ee7d751d41c6b3310647a30a8793::1757721102::res://.godot/exported/133200997/export-6ca03a09e86bed223f24fd044af3dea4-soundy.scn
+res://Demo/Scenes/boss.tscn::c3e4c2b02c53f34a6f0e2546d012a31d::1757721102::res://.godot/exported/133200997/export-4e7528a27072d227313b26f88ae8ad4e-boss.scn
+res://Demo/Scenes/Bullet.tscn::324e13780295a1cf5997e7f48dafc2ee::1757721102::res://.godot/exported/133200997/export-b644d1c5f87254b23a10714aa633824d-Bullet.scn
+res://Demo/Scenes/Music.tscn::3d5ba34cec871161e93e3e08d64b17a7::1757721133::res://.godot/exported/133200997/export-404192a58556c7834372adb587802626-Music.scn
+res://Demo/Scenes/player.tscn::18a5525a910ff2ed1e5413740db65a7c::1757721516::res://.godot/exported/133200997/export-eb51f7aed3cbead3d42ef9606f7c23bc-player.scn
+res://Demo/Scripts/dash_curve.tres::5849044644817b09204b7f1481230787::1756422510::res://.godot/exported/133200997/export-85f925b678fd3a74665c555905f44c5c-dash_curve.res
+res://Demo/Scripts/hitflash2.tres::78411f8119043c891ad15d5e1661f936::1757721517::res://.godot/exported/133200997/export-e63018820bd6ceb06e7df118a3a8423e-hitflash2.res
+res://Demo/Scripts/hitflash.tres::bd0f5af50e90a1fd6bf6fd76a741c3ee::1757721516::res://.godot/exported/133200997/export-245751116043d4ee8c8563e42a959a0a-hitflash.res

@@ -1,0 +1,248 @@
+[gd_scene load_steps=12 format=3 uid="uid://d1mkdm54ef6sl"]
+
+[ext_resource type="Script" uid="uid://0lxj4k642akl" path="res://Demo/Scripts/chest.gd" id="1_5chet"]
+[ext_resource type="Texture2D" uid="uid://bsrsm6rgvt86a" path="res://Folder/Assets/Sprites/Adobe Express - file.png" id="2_t1hi0"]
+[ext_resource type="AudioStream" uid="uid://py2bwe3s613i" path="res://Demo/Stuff/sounds/Rumble1fixed .mp3" id="3_llhw8"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_t1hi0"]
+radius = 12.0
+
+[sub_resource type="Gradient" id="Gradient_llhw8"]
+offsets = PackedFloat32Array(0, 0.171371, 0.669388, 0.728571, 1)
+colors = PackedColorArray(0.847401, 0.925059, 1, 1, 0.228527, 0.62113, 1, 1, 0.0223976, 0.092711, 0.129844, 0.0980086, 0.0112567, 0.064151, 0.0828133, 0.0492576, 0, 0.0352941, 0.0352941, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_sq82o"]
+gradient = SubResource("Gradient_llhw8")
+fill = 1
+fill_from = Vector2(0.5, 0.49359)
+metadata/_snap_count = 100
+
+[sub_resource type="Animation" id="Animation_t1hi0"]
+resource_name = "ChestGone"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PointLight2D:texture:fill_to")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.0333333, 0.0583333, 0.0833333, 0.108333, 0.133333),
+"transitions": PackedFloat32Array(-2, -2, -2, -2, -2),
+"update": 0,
+"values": [Vector2(1, 0), Vector2(1.3, 0), Vector2(1, 0.5), Vector2(1.3, 0), Vector2(1.3, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PointLight2D:texture:width")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.108333, 0.133333),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 1,
+"values": [64, 1]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PointLight2D:texture:height")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.108333, 0.133333),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 1,
+"values": [64, 1]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.133333),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("CollisionShape2D:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.133333),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("ChestGoneSFX:playing")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/6/type = "method"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath(".")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0.966667),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_3hhu8"]
+resource_name = "ChestGone2"
+length = 0.1
+
+[sub_resource type="Animation" id="Animation_sq82o"]
+resource_name = "ChestIdle"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.03333, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -1.635), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_llhw8"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PointLight2D:texture:fill_to")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PointLight2D:texture:width")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [64]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PointLight2D:texture:height")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [64]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("CollisionShape2D:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("ChestGoneSFX:playing")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Sprite2D:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3hhu8"]
+_data = {
+&"ChestGone": SubResource("Animation_t1hi0"),
+&"ChestGone2": SubResource("Animation_3hhu8"),
+&"ChestIdle": SubResource("Animation_sq82o"),
+&"RESET": SubResource("Animation_llhw8")
+}
+
+[node name="chest" type="Area2D"]
+script = ExtResource("1_5chet")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.022, 0.022)
+texture = ExtResource("2_t1hi0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource("CircleShape2D_t1hi0")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+texture = SubResource("GradientTexture2D_sq82o")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_3hhu8")
+}
+
+[node name="ChestGoneSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_llhw8")
+bus = &"SFX"
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

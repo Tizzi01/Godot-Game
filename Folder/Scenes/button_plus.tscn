@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://cgkh52uncrh7x"]
+
+[ext_resource type="Script" uid="uid://djhknnlc5aue4" path="res://Demo/Scripts/button_p_lus.gd" id="1_anm1i"]
+[ext_resource type="AudioStream" uid="uid://88r2pkpecc83" path="res://Demo/Stuff/music/ClickSound.mp3" id="2_lh5i7"]
+
+[node name="ButtonPlus" type="Button"]
+offset_right = 8.0
+offset_bottom = 8.0
+script = ExtResource("1_anm1i")
+
+[node name="ClickSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_lh5i7")
+volume_db = -22.0
+
+[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="."]
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]

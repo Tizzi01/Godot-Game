@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://cei7su6ng08m8"]
-
-[ext_resource type="Script" uid="uid://orjsref2y736" path="res://Demo Game/Scripts/intro_music.gd" id="1_elv7m"]
-
-[node name="IntroMusic" type="Node"]
-script = ExtResource("1_elv7m")

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dt5dmgkdulwlq"]
+
+[ext_resource type="Script" uid="uid://dho3d7vun34i3" path="res://Demo/Scripts/anime_shine.gd" id="1_wta71"]
+
+[node name="AnimeShine" type="Node2D"]
+script = ExtResource("1_wta71")

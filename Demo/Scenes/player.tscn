@@ -1,0 +1,708 @@
+[gd_scene load_steps=26 format=3 uid="uid://dikfgaeqdng3d"]
+
+[ext_resource type="Material" uid="uid://b1co7iqjlecyp" path="res://Demo/Scripts/hitflash.tres" id="1_7k0jb"]
+[ext_resource type="Texture2D" uid="uid://canfsqyqpe8qy" path="res://Folder/Assets/Sprites/Player Animation/idle/0.png" id="1_i7wno"]
+[ext_resource type="PackedScene" uid="uid://wj61kt8sa2wn" path="res://Folder/Scenes/gun.tscn" id="3_bijw4"]
+[ext_resource type="Script" uid="uid://ckbcbouawdeeo" path="res://Demo/Scripts/dash_sfx.gd" id="5_2pset"]
+[ext_resource type="AudioStream" uid="uid://c8ti7vpuxc3y3" path="res://Demo/Stuff/music/dash2.wav" id="5_7k0jb"]
+[ext_resource type="AudioStream" uid="uid://dvrvblfg1cd5s" path="res://Demo/Stuff/music/TP Goku.mp3" id="7_7k0jb"]
+[ext_resource type="Script" uid="uid://b8dvnvp6uf1r4" path="res://Demo/Scripts/tp_1.gd" id="7_y2uok"]
+
+[sub_resource type="GDScript" id="GDScript_vxcno"]
+script/source = "extends CharacterBody2D
+class_name Player
+
+@onready var dash_sfx = $DashSFX
+
+@export var walk_speed = 150.0
+@export var run_speed = 250.0
+@export_range(0,1) var acceleration = 0.1
+@export_range(0,1) var decceleration = 0.1
+
+var health = 100.0
+
+@onready var tp_anim_player: AnimationPlayer = $PlayerSprite/HitFlash
+#borders
+var pushback_timer = 0.0
+
+@export var jump_force = -300.0
+@export_range(0,1) var deccelerate_on_jump_release = 0.5
+@onready var gun_node = $Gun
+# slash
+@onready var anim_player: AnimationPlayer = $PlayerSprite/AnimationPlayer
+@onready var hitbox: Area2D = %Gun
+@onready var slash_anim: AnimationPlayer = gun_node.get_node(\"AnimationPlayer\")
+var kill_count := 0
+# dashing
+@export var dash_speed = 950.0
+@export var dash_max_distance = 100.0
+@export var dash_curve : Curve
+@export var dash_cooldown = 1.0
+
+@export var Gun_radius: float = 20.0
+@export var Gun_follow_speed: float = 10.0
+
+var is_dashing = false
+var dash_start_position = Vector2.ZERO
+var dash_direction = Vector2.ZERO
+var dash_timer = 0.0
+
+var was_on_floor = true
+var is_jumping = false
+@export var max_jumps = 99
+var jump_count = 0
+
+@onready var sprite: Sprite2D = $PlayerSprite
+
+# teleport hover
+var teleporting = false
+var teleport_hovering = false
+var teleport_hover_timer = 0.0
+var teleport_hover_max_time = 2.0
+var last_facing_dir = 1
+
+# damage
+
+func _ready():
+	anim_player.play(\"Idle\")
+
+
+# gun tracking
+var Gun_mouse_pos: Vector2 = Vector2.ZERO
+
+signal health_depleted
+
+func _physics_process(delta):
+	
+	const DAMAGE_RATE = 5.0 
+	var overlapping_mobs = %HurtBox.get_overlapping_bodies()
+	if overlapping_mobs.size() > 0: 
+		health -= DAMAGE_RATE * overlapping_mobs.size() * delta 
+		for bar in get_tree().get_nodes_in_group(\"HPBAR\"):
+			bar.value = health
+
+		if health <= 0.0: 
+			health_depleted.emit() 
+			
+
+	# Hover freeze
+	if teleport_hovering:
+		velocity = Vector2.ZERO
+		teleport_hover_timer += delta
+		$PlayerSprite/AnimationPlayer.play(\"Idle\")
+
+		if teleport_hover_timer >= teleport_hover_max_time or Input.is_action_just_pressed(\"jump\") or Input.is_action_just_pressed(\"dash\") or Input.is_action_pressed(\"left\") or Input.is_action_pressed(\"right\"):
+			teleport_hovering = false
+			teleporting = false
+			teleport_hover_timer = 0.0
+
+	var speed = walk_speed
+	if Input.is_action_pressed(\"run\"):
+		speed = run_speed
+
+	var input_vector = Vector2(
+		Input.get_action_strength(\"right\") - Input.get_action_strength(\"left\"),
+		Input.get_action_strength(\"down\") - Input.get_action_strength(\"up\")
+	).normalized()
+
+	if input_vector.x != 0:
+		last_facing_dir = sign(input_vector.x)
+
+	velocity.x = move_toward(velocity.x, input_vector.x * speed, speed * acceleration)
+	velocity.y = move_toward(velocity.y, input_vector.y * speed, speed * acceleration)
+
+	if Input.is_action_just_pressed(\"jump\"):
+		if is_on_floor():
+			velocity.y = jump_force
+			jump_count = 1
+		elif jump_count < max_jumps:
+			velocity.y = jump_force
+			jump_count += 1
+
+		if teleporting:
+			teleport_hovering = false
+			teleporting = false
+			teleport_hover_timer = 0.0
+
+	if is_on_floor():
+		jump_count = 0
+
+	sprite.flip_h = last_facing_dir < 0
+
+	if Input.is_action_just_pressed(\"dash\") and not is_dashing and dash_timer <= 0:
+		if input_vector.length() > 0.1:
+			is_dashing = true 		
+			dash_start_position = global_position
+			dash_direction = input_vector
+			dash_timer = dash_cooldown
+			dash_sfx.play_with_variation()
+			if teleporting:
+				teleport_hovering = false
+				teleporting = false
+				teleport_hover_timer = 0.0
+
+	if is_dashing:
+		if dash_direction.length() < 0.1:
+			is_dashing = false
+		else:
+			var current_distance = global_position.distance_to(dash_start_position)
+			if current_distance >= dash_max_distance or is_on_wall():
+				is_dashing = false
+			else:
+				velocity = dash_direction * dash_speed * dash_curve.sample(current_distance / dash_max_distance)
+
+	if dash_timer > 0:
+		dash_timer -= delta
+
+	if Input.is_action_just_pressed(\"tp\"):
+		var target_pos = get_global_mouse_position()
+		var space_state = get_world_2d().direct_space_state
+		var shape = $CollisionShape2D.shape.duplicate()
+
+		var query = PhysicsShapeQueryParameters2D.new()
+		query.shape = shape
+		query.transform = Transform2D.IDENTITY.translated(target_pos)
+		query.collide_with_areas = true
+		query.collide_with_bodies = true
+
+		var result = space_state.intersect_shape(query)
+
+		if result.is_empty():
+			global_position = target_pos
+			$Camera2D.add_vertical_trauma(0.3)
+
+			teleporting = true
+			teleport_hovering = true
+			teleport_hover_timer = 0.0
+			velocity = Vector2.ZERO
+			$PlayerSprite/AnimationPlayer.play(\"Idle\")
+			$TP1.play()
+			tp_anim_player.play(\"TP\")
+		else:
+			var collision = result[0]
+			if collision.has(\"normal\"):
+				var push_dir = collision[\"normal\"].normalized()
+				var safe_pos = target_pos + push_dir * 10.0
+				query.transform = Transform2D.IDENTITY.translated(safe_pos)
+				var recheck = space_state.intersect_shape(query)
+
+				if recheck.is_empty():
+					global_position = safe_pos
+					$Camera2D.add_trauma(0.4)
+
+					teleporting = true
+					teleport_hovering = true
+					teleport_hover_timer = 0.0
+					velocity = Vector2.ZERO
+					$PlayerSprite/AnimationPlayer.play(\"Idle\")
+					$TP1.play()
+					tp_anim_player.play(\"TP\")
+				else:
+					print(\"Blocked! Can't teleport too close to wall.\")
+			else:
+				print(\"Collision has no normal — skipping safe push.\")
+
+	if velocity == Vector2.ZERO and not teleporting and not is_dashing:
+		if Input.is_action_pressed(\"left\") or Input.is_action_pressed(\"right\") or Input.is_action_pressed(\"up\") or Input.is_action_pressed(\"down\"):
+			velocity = input_vector * walk_speed
+			print(\"✅ Unstuck player with input\")
+
+	if is_on_floor() and velocity.x == 0:
+		$PlayerSprite/AnimationPlayer.play(\"Idle\") 
+		
+	move_and_slide() 
+	
+	if get_slide_collision_count() > 0:
+		for i in get_slide_collision_count():
+			var col = get_slide_collision(i)
+			var collider = col.get_collider()
+			if collider and collider.is_in_group(\"Borders\"):
+				print(\"got touched\")
+
+				# Knockback direction: away from the collision
+				var push_dir = col.get_normal().normalized()
+
+				# Apply knockback force
+				velocity = push_dir * (800 * 0.85)
+
+				# Optional: cooldown to prevent repeated knockbacks
+				pushback_timer = 0.4
+
+
+func _input(event: InputEvent) -> void:
+	if gun_node.visible and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		if slash_anim and not slash_anim.is_playing():
+			slash_anim.play(\"slash\")
+
+		if teleporting:
+			teleport_hovering = false
+			teleporting = false
+			teleport_hover_timer = 0.0 
+			
+func _on_mob_died():
+	kill_count += 1
+	print(\"💀 Kill count:\", kill_count)
+"
+
+[sub_resource type="Animation" id="Animation_vxcno"]
+resource_name = "Idle"
+length = 1.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.766667, 1.5),
+"transitions": PackedFloat32Array(-2, -2, -2),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -1.82), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.766766, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.0380787, 0.0380787), Vector2(0.0380787, 0.0380787), Vector2(0.0380787, 0.0380787)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PlayerSprite:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_qjmxq"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.0380787, 0.0380787)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PlayerSprite:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_1wgvf"]
+resource_name = "TP"
+length = 0.1
+
+[sub_resource type="Animation" id="Animation_u23ib"]
+resource_name = "dash"
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("DashSFX")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.0333333),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"play_with_variation"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_hls0o"]
+resource_name = "dashs"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.366667, 1.214, 1.46587),
+"transitions": PackedFloat32Array(-2, -2, -2, 1),
+"update": 0,
+"values": [Vector2(0, -2.26), Vector2(0, 0.06), Vector2(0, 0.06), Vector2(0, 1.18837e-06)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.366667, 1.214, 1.46587),
+"transitions": PackedFloat32Array(-2, -2, -2, 1),
+"update": 0,
+"values": [0.0, 0.610865, 0.610865, 0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PlayerSprite:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.366667, 1.214, 1.46587),
+"transitions": PackedFloat32Array(-2, -2, -2, 1),
+"update": 0,
+"values": [Vector2(0.038, 0.038), Vector2(0.038, 0.038), Vector2(0.038, 0.038), Vector2(0.038, 0.038)]
+}
+
+[sub_resource type="Animation" id="Animation_prhqr"]
+resource_name = "fall"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -2.26)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PlayerSprite:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.038, 0.0338148)]
+}
+
+[sub_resource type="Animation" id="Animation_kn884"]
+resource_name = "jump"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0666667, 0.398293),
+"transitions": PackedFloat32Array(0.5, 0.5, 1),
+"update": 0,
+"values": [Vector2(0.0380787, 0.0380787), Vector2(0.0380787, 0.0301505), Vector2(0.0380787, 0.0431134)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.0666667, 0.398293),
+"transitions": PackedFloat32Array(0.5, 0.5, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 2), Vector2(0, -2.71878)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PlayerSprite:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_qxrvo"]
+resource_name = "run"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.174533]
+}
+
+[sub_resource type="Animation" id="Animation_83akb"]
+resource_name = "run_left"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-0.174533]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-0.038, 0.038)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kn884"]
+_data = {
+&"Idle": SubResource("Animation_vxcno"),
+&"RESET": SubResource("Animation_qjmxq"),
+&"TP": SubResource("Animation_1wgvf"),
+&"dash": SubResource("Animation_u23ib"),
+&"dashs": SubResource("Animation_hls0o"),
+&"fall": SubResource("Animation_prhqr"),
+&"jump": SubResource("Animation_kn884"),
+&"run": SubResource("Animation_qxrvo"),
+&"run_left": SubResource("Animation_83akb")
+}
+
+[sub_resource type="Gradient" id="Gradient_3hhu8"]
+offsets = PackedFloat32Array(0, 0.451243, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.228527, 0.62113, 1, 1, 0.0352941, 0.0352941, 0.0352941, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7k0jb"]
+gradient = SubResource("Gradient_3hhu8")
+width = 1
+height = 1
+fill = 1
+fill_from = Vector2(0.5, 0.49359)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="Animation" id="Animation_lu225"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite/PointLight2D:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("GradientTexture2D_7k0jb")]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PlayerSprite/PointLight2D:texture:width")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("PlayerSprite/PointLight2D:texture:height")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+
+[sub_resource type="Animation" id="Animation_6enu5"]
+resource_name = "TP"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = false
+tracks/0/path = NodePath("PlayerSprite:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite/PointLight2D:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("GradientTexture2D_7k0jb")]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PlayerSprite/PointLight2D:texture:width")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [88, 1]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("PlayerSprite/PointLight2D:texture:height")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [88, 1]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nsxml"]
+_data = {
+&"RESET": SubResource("Animation_lu225"),
+&"TP": SubResource("Animation_6enu5")
+}
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_guesk"]
+radius = 4.0
+height = 28.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3h3w8"]
+radius = 6.0
+height = 28.0
+
+[node name="Player" type="CharacterBody2D" groups=["player"]]
+script = SubResource("GDScript_vxcno")
+
+[node name="PlayerSprite" type="Sprite2D" parent="."]
+light_mask = 5
+visibility_layer = 5
+material = ExtResource("1_7k0jb")
+scale = Vector2(0.0380787, 0.0380787)
+texture = ExtResource("1_i7wno")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PlayerSprite"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_kn884")
+}
+
+[node name="HitFlash" type="AnimationPlayer" parent="PlayerSprite"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_nsxml")
+}
+
+[node name="PointLight2D" type="PointLight2D" parent="PlayerSprite"]
+position = Vector2(-4.43459e-05, 9.53674e-07)
+scale = Vector2(37.5638, 37.5638)
+range_item_cull_mask = 4
+texture = SubResource("GradientTexture2D_7k0jb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 2)
+shape = SubResource("CapsuleShape2D_guesk")
+
+[node name="Gun" parent="." instance=ExtResource("3_bijw4")]
+unique_name_in_owner = true
+collision_layer = 4
+
+[node name="HurtBox" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+shape = SubResource("CapsuleShape2D_3h3w8")
+debug_color = Color(1, 0, 0, 0.313726)
+
+[node name="DashSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_7k0jb")
+volume_db = -10.0
+bus = &"SFX"
+script = ExtResource("5_2pset")
+
+[node name="TP1" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("7_7k0jb")
+volume_db = -12.0
+script = ExtResource("7_y2uok")
