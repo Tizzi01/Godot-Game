@@ -1,11 +1,11 @@
-[gd_scene load_steps=15 format=3 uid="uid://dbb6rc8vl0y7e"]
+[gd_scene load_steps=15 format=3 uid="uid://veco7skvrbam"]
 
-[ext_resource type="Script" uid="uid://bfcgkskxd8a6n" path="res://Demo/Scripts/mob.gd" id="1_fif7o"]
-[ext_resource type="Texture2D" uid="uid://dcbthan2nnahp" path="res://Folder/Assets/Sprites/h4.png" id="2_8en0k"]
-[ext_resource type="Material" uid="uid://b1co7iqjlecyp" path="res://Demo/Scripts/hitflash.tres" id="2_jqdqu"]
-[ext_resource type="Texture2D" uid="uid://dw7akmqtv63ke" path="res://Folder/Assets/Sprites/h2.png" id="3_jqdqu"]
-[ext_resource type="Texture2D" uid="uid://n66irhyfx083" path="res://Folder/Assets/Sprites/h1.png" id="4_r5hxa"]
-[ext_resource type="Script" uid="uid://bpgf7h0uvji1o" path="res://Demo/Scripts/2.gd" id="5_65b08"]
+[ext_resource type="Script" uid="uid://oxq6pefjc8j7" path="res://Demo/Scripts/mob_2.gd" id="1_gra4s"]
+[ext_resource type="Material" uid="uid://b1co7iqjlecyp" path="res://Demo/Scripts/hitflash.tres" id="2_p8y0f"]
+[ext_resource type="Texture2D" uid="uid://dcbthan2nnahp" path="res://Folder/Assets/Sprites/h4.png" id="3_tngbi"]
+[ext_resource type="Texture2D" uid="uid://dw7akmqtv63ke" path="res://Folder/Assets/Sprites/h2.png" id="4_1enx6"]
+[ext_resource type="Texture2D" uid="uid://n66irhyfx083" path="res://Folder/Assets/Sprites/h1.png" id="5_q8lpc"]
+[ext_resource type="Script" uid="uid://bpgf7h0uvji1o" path="res://Demo/Scripts/2.gd" id="6_nuf5k"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wvgs6"]
 radius = 6.0
@@ -283,7 +283,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0.1),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("2_jqdqu")]
+"values": [ExtResource("2_p8y0f")]
 }
 
 [sub_resource type="Animation" id="Animation_wvgs6"]
@@ -322,7 +322,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("2_jqdqu")]
+"values": [ExtResource("2_p8y0f")]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_o54nl"]
@@ -331,28 +331,27 @@ _data = {
 &"RESET": SubResource("Animation_wvgs6")
 }
 
-[node name="Mob" type="CharacterBody2D"]
-visible = false
+[node name="Mob2" type="CharacterBody2D"]
 collision_layer = 4
 collision_mask = 5
-script = ExtResource("1_fif7o")
+script = ExtResource("1_gra4s")
 
 [node name="0" type="Sprite2D" parent="."]
-material = ExtResource("2_jqdqu")
+material = ExtResource("2_p8y0f")
 position = Vector2(5.68434e-14, 5.96046e-08)
 scale = Vector2(0.022, 0.022)
-texture = ExtResource("2_8en0k")
+texture = ExtResource("3_tngbi")
 
 [node name="1" type="Sprite2D" parent="."]
 position = Vector2(5.68434e-14, 5.96046e-08)
 scale = Vector2(0.022, 0.022)
-texture = ExtResource("3_jqdqu")
+texture = ExtResource("4_1enx6")
 
 [node name="2" type="Sprite2D" parent="."]
 position = Vector2(5.68434e-14, 5.96046e-08)
 scale = Vector2(0.022, 0.022)
-texture = ExtResource("4_r5hxa")
-script = ExtResource("5_65b08")
+texture = ExtResource("5_q8lpc")
+script = ExtResource("6_nuf5k")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
