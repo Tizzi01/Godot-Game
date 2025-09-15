@@ -1,8 +1,9 @@
+Node
 AudioStreamPlayer
+PointLight2D
+AnimationPlayer
 Timer
 Panel
-Node
-AnimationPlayer
 Button
 CanvasLayer
 Label
@@ -11,4 +12,3 @@ MarginContainer
 PanelContainer
 ColorRect
 Sprite2D
-AudioListener2D

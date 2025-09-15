@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bdsjg0mvsd65d"]
+
+[ext_resource type="Script" uid="uid://thgk25mv55he" path="res://Demo/Scripts/TeleportManager.gd" id="1_ufa81"]
+
+[node name="Node" type="Node"]
+script = ExtResource("1_ufa81")

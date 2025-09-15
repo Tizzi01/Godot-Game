@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://veco7skvrbam"]
+[gd_scene load_steps=24 format=3 uid="uid://veco7skvrbam"]
 
 [ext_resource type="Script" uid="uid://oxq6pefjc8j7" path="res://Demo/Scripts/mob_2.gd" id="1_gra4s"]
 [ext_resource type="Shader" uid="uid://bew4h4rfw3sra" path="res://Folder/Scenes/White2.tres" id="1_p8y0f"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://bcq38irwuwa4y" path="res://Demo/Stuff/sprites/alinehead.png" id="5_p8y0f"]
 [ext_resource type="Script" uid="uid://bpgf7h0uvji1o" path="res://Demo/Scripts/2.gd" id="6_nuf5k"]
 [ext_resource type="AudioStream" uid="uid://b66g5lhclxfnv" path="res://Demo/Stuff/music/glitch2.wav" id="7_p8y0f"]
+[ext_resource type="AudioStream" uid="uid://cpuoprfvoqa1d" path="res://Demo/Stuff/music/ZERO.mp3" id="8_tngbi"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tngbi"]
 shader = ExtResource("1_p8y0f")
@@ -223,6 +224,78 @@ _data = {
 &"RESET": SubResource("Animation_wvgs6")
 }
 
+[sub_resource type="Animation" id="Animation_1enx6"]
+resource_name = "TP"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PointLight2D:texture:width")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [88, 1]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PointLight2D:texture:height")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [88, 1]
+}
+
+[sub_resource type="Animation" id="Animation_q8lpc"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PointLight2D:texture:width")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PointLight2D:texture:height")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nuf5k"]
+_data = {
+&"RESET": SubResource("Animation_q8lpc"),
+&"TP": SubResource("Animation_1enx6")
+}
+
+[sub_resource type="Gradient" id="Gradient_p8y0f"]
+offsets = PackedFloat32Array(0, 0.460656, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.443078, 0.233966, 0.670805, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_tngbi"]
+gradient = SubResource("Gradient_p8y0f")
+width = 1
+height = 1
+fill = 1
+fill_from = Vector2(0.502137, 0.519231)
+
 [node name="Mob2" type="CharacterBody2D"]
 material = SubResource("ShaderMaterial_tngbi")
 collision_layer = 4
@@ -264,3 +337,16 @@ libraries = {
 
 [node name="GL" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("7_p8y0f")
+
+[node name="TP" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_nuf5k")
+}
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+visible = false
+texture = SubResource("GradientTexture2D_tngbi")
+
+[node name="Zero" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_tngbi")
+volume_db = -18.0
