@@ -1,29 +1,35 @@
 extends CharacterBody2D
 
-var health = 10
+var health = 100
+var is_glitching := false  # Flag to disable movement during glitch
 
+@onready var gl: AudioStreamPlayer = $GL
 @onready var player = get_node("/root/Game/Player")
 @onready var animation_player = $AnimationPlayer
-@onready var sprites = [ $"0", $"1", $"2" ]  # These are just visuals, not animated individually
+@onready var sprites = [ $"0", $"1", $"2" ]  # Visual layers
 @onready var hit_flash: AnimationPlayer = $HitFlash
+@onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 
 signal died
 
 # Teleport logic
-var teleport_cooldown := 5.0  # seconds between teleports
-var teleport_timer := 0.0     # countdown tracker
+var teleport_cooldown := 5.0
+var teleport_timer := 0.0
 
 func _ready():
 	randomize()
 
 func _physics_process(delta):
 	# Movement toward player
-	var direction = global_position.direction_to(player.global_position)
-	velocity = direction * 100.0
-	move_and_slide()
+	if not is_glitching:
+		var direction = global_position.direction_to(player.global_position)
+		velocity = direction * 150.0
+		move_and_slide()
+	else:
+		velocity = Vector2.ZERO
 
 	# Flip visuals to face player
-	var should_flip = player.global_position.x < global_position.x
+	var should_flip = player.global_position.x > global_position.x
 	for sprite in sprites:
 		if sprite:
 			sprite.flip_h = should_flip
@@ -45,22 +51,20 @@ func _physics_process(delta):
 		teleport_near_player()
 
 func take_damage():
+	if is_glitching:
+		return  # Already glitching out—ignore further damage
+
 	health -= 10
 	hit_flash.play("Hitflash")
 
 	if health <= 0:
 		died.emit()
-		queue_free()
-		const SMOKE_SCENE = preload("res://smoke_explosion/smoke_explosion.tscn")
-		var smoke = SMOKE_SCENE.instantiate()
-		get_parent().add_child(smoke)
-		smoke.global_position = global_position
+		await glitch_out()
 
 func teleport_near_player():
 	var space_state = get_viewport().get_world_2d().direct_space_state
 	var shape = $CollisionShape2D.shape.duplicate()
 
-	# Random offset near player
 	var offset = Vector2(randf_range(-200, 200), randf_range(-200, 200))
 	var target_pos = player.global_position + offset
 
@@ -74,7 +78,6 @@ func teleport_near_player():
 
 	if result.is_empty():
 		global_position = target_pos
-		hit_flash.play("Hitflash")
 		print("✅ Enemy teleported directly to:", target_pos)
 	else:
 		var collision = result[0]
@@ -86,9 +89,37 @@ func teleport_near_player():
 
 			if recheck.is_empty():
 				global_position = safe_pos
-				hit_flash.play("Hitflash")
 				print("✅ Enemy teleported to safe pushed position:", safe_pos)
 			else:
 				print("❌ Enemy teleport failed — safe position blocked:", safe_pos)
 		else:
 			print("❌ Enemy teleport failed — no normal in collision result")
+
+func glitch_out():
+	is_glitching = true
+	animation_player.play("walk")
+	gl.play()
+	collision_shape_2d.disabled = true
+
+	var original_pos = position
+	var original_visibility = visible
+
+	for i in range(6):
+		position += Vector2(randf_range(-3, 3), randf_range(-3, 3))
+		visible = false
+		await get_tree().create_timer(0.03).timeout
+		visible = true
+		await get_tree().create_timer(0.03).timeout
+		position = original_pos
+
+		for sprite in sprites:
+			if sprite:
+				sprite.modulate = Color(randf(), randf(), randf())
+
+	await get_tree().create_timer(0.1).timeout
+
+	for sprite in sprites:
+		if sprite:
+			sprite.modulate = Color(1, 1, 1)
+
+	queue_free()

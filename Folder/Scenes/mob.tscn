@@ -332,7 +332,6 @@ _data = {
 }
 
 [node name="Mob" type="CharacterBody2D"]
-visible = false
 collision_layer = 4
 collision_mask = 5
 script = ExtResource("1_fif7o")

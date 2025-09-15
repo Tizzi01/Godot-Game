@@ -1,7 +1,7 @@
+AudioStreamPlayer
 Timer
 Panel
 Node
-AudioStreamPlayer
 AnimationPlayer
 Button
 CanvasLayer
@@ -12,4 +12,3 @@ PanelContainer
 ColorRect
 Sprite2D
 AudioListener2D
-AudioStreamPlayer2D
