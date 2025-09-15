@@ -24,7 +24,7 @@ var health = 100.0
 @onready var tp_anim_player: AnimationPlayer = $PlayerSprite/HitFlash
 #borders
 var pushback_timer = 0.0
-
+var frozen := false
 @export var jump_force = -300.0
 @export_range(0,1) var deccelerate_on_jump_release = 0.5
 @onready var gun_node = $Gun
@@ -62,17 +62,21 @@ var teleport_hover_max_time = 2.0
 var last_facing_dir = 1
 
 # damage
+signal health_depleted
 
 func _ready():
 	anim_player.play(\"Idle\")
 
+	var game_node = get_tree().get_root().get_node(\"Game\")
+	if game_node:
+		game_node.game_over_triggered.connect(_on_game_over_triggered)
 
 # gun tracking
 var Gun_mouse_pos: Vector2 = Vector2.ZERO
 
-signal health_depleted
-
 func _physics_process(delta):
+	if frozen:
+		return
 	
 	const DAMAGE_RATE = 5.0 
 	var overlapping_mobs = %HurtBox.get_overlapping_bodies()
@@ -84,7 +88,6 @@ func _physics_process(delta):
 		if health <= 0.0: 
 			health_depleted.emit() 
 			
-
 	# Hover freeze
 	if teleport_hovering:
 		velocity = Vector2.ZERO
@@ -219,17 +222,14 @@ func _physics_process(delta):
 			if collider and collider.is_in_group(\"Borders\"):
 				print(\"got touched\")
 
-				# Knockback direction: away from the collision
 				var push_dir = col.get_normal().normalized()
-
-				# Apply knockback force
 				velocity = push_dir * (800 * 0.85)
-
-				# Optional: cooldown to prevent repeated knockbacks
 				pushback_timer = 0.4
 
-
 func _input(event: InputEvent) -> void:
+	if frozen:
+		return
+
 	if gun_node.visible and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		if slash_anim and not slash_anim.is_playing():
 			slash_anim.play(\"slash\")
@@ -242,6 +242,14 @@ func _input(event: InputEvent) -> void:
 func _on_mob_died():
 	kill_count += 1
 	print(\"💀 Kill count:\", kill_count)
+	
+func _on_mob2_died():
+	kill_count += 5
+	print(\"💀 Kill count:\", kill_count)
+
+func _on_game_over_triggered():
+	frozen = true
+	print(\"🧊 Player frozen — input disabled\")
 "
 
 [sub_resource type="Animation" id="Animation_vxcno"]

@@ -1,12 +1,12 @@
+CanvasLayer
+Timer
+Label
 Node
 AudioStreamPlayer
 PointLight2D
 AnimationPlayer
-Timer
 Panel
 Button
-CanvasLayer
-Label
 VBoxContainer
 MarginContainer
 PanelContainer

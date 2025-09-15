@@ -12,7 +12,9 @@ res://Folder/Scenes/mob2.tscn
 res://Folder/Scenes/settings.tscn
 res://Folder/Scenes/soundx.tscn
 res://Folder/Scenes/how_to_play.tscn
-res://Demo/Scripts/mob_2.gd
-res://Demo/Scripts/game.gd
 res://TeleportManager.tscn
-res://Demo/Scripts/TeleportManager.gd
+res://timer.gd
+res://timer.tscn
+res://Demo/Scripts/game.gd
+res://Demo/Scripts/mob.gd
+res://Demo/Scripts/mob_2.gd

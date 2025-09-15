@@ -23,13 +23,17 @@ func _ready():
 	move_speed = speed_options[randi() % speed_options.size()]
 
 	if move_speed == 150.0:
-		health = 70
-	elif move_speed == 200.0:
 		health = 60
-	elif move_speed == 250.0:
+	elif move_speed == 200.0:
 		health = 50
-	elif move_speed == 300.0:
+	elif move_speed == 250.0:
 		health = 40
+	elif move_speed == 300.0:
+		health = 30
+
+	var game_node = get_tree().get_root().get_node("Game")
+	if game_node:
+		game_node.game_over_triggered.connect(_on_game_over_triggered)
 
 func _physics_process(delta):
 	if not is_glitching and not is_teleporting:
@@ -114,6 +118,10 @@ func tp_glitch():
 	is_teleporting = true
 	zero.play()
 
+	var camera := get_viewport().get_camera_2d()
+	if camera and camera.has_method("add_glitch_trauma"):
+		camera.add_glitch_trauma(0.5)
+
 	var original_pos = position
 
 	for i in range(4):
@@ -125,10 +133,7 @@ func tp_glitch():
 
 		for sprite in sprites:
 			if sprite:
-				if i % 2 == 0:
-					sprite.modulate = Color(0.4, 0.0, 0.6)
-				else:
-					sprite.modulate = Color(0.2, 0.4, 1.0)
+				sprite.modulate = Color(0.4, 0.0, 0.6) if i % 2 == 0 else Color(0.2, 0.4, 1.0)
 
 	is_teleporting = false
 
@@ -141,10 +146,7 @@ func tp_glitch():
 
 		for sprite in sprites:
 			if sprite:
-				if i % 2 == 0:
-					sprite.modulate = Color(0.4, 0.0, 0.6)
-				else:
-					sprite.modulate = Color(0.2, 0.4, 1.0)
+				sprite.modulate = Color(0.4, 0.0, 0.6) if i % 2 == 0 else Color(0.2, 0.4, 1.0)
 
 	position = original_pos
 	await get_tree().create_timer(0.1).timeout
@@ -181,4 +183,8 @@ func glitch_out():
 	collision_shape_2d.disabled = true
 
 	await play_glitch_animation()
+	queue_free()
+
+func _on_game_over_triggered():
+	print("💥 Mob2 removed on game over:", name)
 	queue_free()

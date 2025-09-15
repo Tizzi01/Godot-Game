@@ -23,23 +23,27 @@ func _process(delta: float) -> void:
 func add_trauma(amount : float) -> void:
 	trauma = min(trauma + amount, 1.0)
 
+func add_vertical_trauma(amount: float) -> void:
+	trauma = min(trauma + amount, 1.0)
+	offset.x = 0
+	rotation = 0
+
+func add_glitch_trauma(amount: float) -> void:
+	trauma = min(trauma + amount, 1.0)
+	# Full shake: rotation + offset
+
 func shake() -> void:
 	var amount = pow(trauma, trauma_power)
 	rotation = max_roll * amount * randf_range(-1, 1)
 	offset.x = max_offset.x * amount * randf_range(-1, 1)
 	offset.y = max_offset.y * amount * randf_range(-1, 1)
 
-func add_vertical_trauma(amount: float) -> void:
-	trauma = min(trauma + amount, 1.0)
-	offset.x = 0
-	rotation = 0
-
 func _on_item_acquired():
 	add_trauma(0.3)
 
 func startup_zoom_and_shake():
 	var default_zoom := Vector2(3.0, 3.0)     # Your actual zoom
-	var start_zoom := default_zoom * 2.0      # Start zoomed out (3.3, 3.3)
+	var start_zoom := default_zoom * 2.0      # Start zoomed out
 
 	zoom = start_zoom
 

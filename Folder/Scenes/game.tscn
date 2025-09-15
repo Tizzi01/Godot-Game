@@ -1,8 +1,9 @@
-[gd_scene load_steps=27 format=3 uid="uid://17ihev8gmx8p"]
+[gd_scene load_steps=28 format=3 uid="uid://17ihev8gmx8p"]
 
 [ext_resource type="Script" uid="uid://be05spmmaewml" path="res://Demo/Scripts/game.gd" id="1_naqcg"]
 [ext_resource type="Texture2D" uid="uid://bnmfh85lwxuid" path="res://Demo/Stuff/sprites/world_tileset.png" id="1_wi88m"]
 [ext_resource type="FontFile" uid="uid://ctp71ddagy2v8" path="res://Demo/Stuff/fonts/Roquen DEMO.otf" id="2_d18qc"]
+[ext_resource type="PackedScene" uid="uid://ctmey75fd8kje" path="res://timer.tscn" id="2_faiuj"]
 [ext_resource type="Script" uid="uid://dyifq4fcbw2o7" path="res://Demo/Scripts/panel.gd" id="2_pr0nq"]
 [ext_resource type="PackedScene" uid="uid://dikfgaeqdng3d" path="res://Demo/Scenes/player.tscn" id="2_s1uwp"]
 [ext_resource type="PackedScene" uid="uid://dr1fsle17larj" path="res://Folder/Scenes/killzone.tscn" id="3_221o8"]
@@ -244,6 +245,13 @@ point_count = 5
 script = ExtResource("1_naqcg")
 metadata/_edit_horizontal_guides_ = [-287.0]
 
+[node name="CanvasLayer3" type="CanvasLayer" parent="."]
+
+[node name="Timer" parent="CanvasLayer3" instance=ExtResource("2_faiuj")]
+unique_name_in_owner = true
+offset_top = -521.0
+offset_bottom = -521.0
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="WhiteFlash" type="Panel" parent="CanvasLayer"]
@@ -407,7 +415,6 @@ scale = Vector2(0.2, 0.2)
 texture = ExtResource("10_14idw")
 
 [node name="BGv8" type="Sprite2D" parent="BG"]
-visible = false
 z_index = -55
 position = Vector2(1487, 32)
 scale = Vector2(0.2, 0.2)
@@ -509,7 +516,7 @@ position = Vector2(5, 1158)
 rotation = -6.28318
 shape = SubResource("WorldBoundaryShape2D_sfajg")
 
-[node name="Timer" type="Timer" parent="."]
+[node name="Timer2" type="Timer" parent="."]
 wait_time = 0.3
 autostart = true
 
@@ -528,4 +535,4 @@ volume_db = -28.0
 [connection signal="pressed" from="CanvasLayer/Game Over/Restart" to="." method="_on_restart_pressed"]
 [connection signal="pressed" from="CanvasLayer/Game Over/Main Menu" to="." method="_on_main_menu_pressed"]
 [connection signal="health_depleted" from="Player" to="." method="_on_player_health_depleted"]
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="Timer2" to="." method="_on_timer_timeout"]

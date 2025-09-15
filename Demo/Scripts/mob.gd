@@ -6,7 +6,14 @@ var health = 10
 @onready var animation_player = $AnimationPlayer
 @onready var sprites = [ $"0", $"1", $"2" ]  # These are just visuals, not animated individually
 @onready var hit_flash: AnimationPlayer = $HitFlash
+
 signal died
+
+func _ready():
+	var game_node = get_tree().get_root().get_node("Game")
+	if game_node:
+		game_node.game_over_triggered.connect(_on_game_over_triggered)
+
 func _physics_process(delta):
 	# Movement toward player
 	var direction = global_position.direction_to(player.global_position)
@@ -27,7 +34,7 @@ func _physics_process(delta):
 		animation_player.play("walk")
 	elif not is_moving and current_anim != "idle":
 		animation_player.play("walk")  
-		
+
 func take_damage(): 
 	health -= 10
 	hit_flash.play("Hitflash")
@@ -38,4 +45,8 @@ func take_damage():
 		const SMOKE_SCENE = preload("res://smoke_explosion/smoke_explosion.tscn")
 		var smoke = SMOKE_SCENE.instantiate() 
 		get_parent().add_child(smoke)
-		smoke.global_position = global_position 
+		smoke.global_position = global_position
+
+func _on_game_over_triggered():
+	print("💥 Mob removed on game over:", name)
+	queue_free()
