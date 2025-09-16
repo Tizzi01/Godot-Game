@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://17ihev8gmx8p"]
+[gd_scene load_steps=30 format=3 uid="uid://17ihev8gmx8p"]
 
 [ext_resource type="Script" uid="uid://be05spmmaewml" path="res://Demo/Scripts/game.gd" id="1_naqcg"]
 [ext_resource type="Texture2D" uid="uid://bnmfh85lwxuid" path="res://Demo/Stuff/sprites/world_tileset.png" id="1_wi88m"]
@@ -10,6 +10,8 @@
 [ext_resource type="Script" uid="uid://bvjmot5d81tgk" path="res://Demo/Scripts/camera_2d.gd" id="3_naqcg"]
 [ext_resource type="Script" uid="uid://by72bvasui27b" path="res://Demo/Scripts/progress_bar.gd" id="3_ur6pw"]
 [ext_resource type="PackedScene" uid="uid://d1mkdm54ef6sl" path="res://Folder/Scenes/chest.tscn" id="4_naqcg"]
+[ext_resource type="Script" uid="uid://bnbqvlqrg70nu" path="res://Demo/Scripts/game_over.gd" id="4_vyor8"]
+[ext_resource type="AudioStream" uid="uid://cuutt7cj2ai0f" path="res://Demo/Stuff/music/glitch1.wav" id="6_vyor8"]
 [ext_resource type="AudioStream" uid="uid://cvdi6lca0gk0n" path="res://Demo/Stuff/music/Godot BG music.MP3" id="8_4bs2y"]
 [ext_resource type="Texture2D" uid="uid://dv8q78bspppr2" path="res://Folder/Assets/Sprites/final blue line.png" id="8_14idw"]
 [ext_resource type="Script" uid="uid://dwmnuhgxrlc5g" path="res://Demo/Scripts/node.gd" id="8_sfajg"]
@@ -272,6 +274,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.435294)
+script = ExtResource("4_vyor8")
 
 [node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Game Over"]
 layout_mode = 1
@@ -346,6 +349,11 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_ur6pw")
 theme_override_styles/hover = SubResource("StyleBoxFlat_pr0nq")
 theme_override_styles/normal = SubResource("StyleBoxFlat_gyfa2")
 text = "Main Menu"
+
+[node name="End" type="AudioStreamPlayer" parent="CanvasLayer/Game Over"]
+unique_name_in_owner = true
+stream = ExtResource("6_vyor8")
+volume_db = -5.0
 
 [node name="CanvasLayer2" type="CanvasLayer" parent="."]
 

@@ -23,6 +23,7 @@ func _ready():
 	randomize()
 	IntroMusic1.stop_IntroMusic()
 	player.health_depleted.connect(_on_game_over)
+	game_over_screen.game_over_glitched.connect(_on_game_over_glitched)
 	music.play()
 
 func _process(delta):
@@ -64,28 +65,27 @@ func spawn_mob2():
 	print("🚀 Spawned Mob2 with speed:", new_mob2.move_speed, "and health:", new_mob2.health)
 
 func _on_game_over():
-	game_over_screen.show()
-	allow_spawning = false  # ✅ Disable all future mob spawning
-	emit_signal("game_over_triggered")  # ✅ Notify player and timer
-	fade_out_music()  # ✅ Start music fade-out
+	game_over_screen.trigger_game_over()
+	allow_spawning = false
+	emit_signal("game_over_triggered")
+	fade_out_music()
 
-func fade_out_music():
-	var duration := 3.0
-	var start_volume := music.volume_db
-	var end_volume := -80.0
-	var timer := 0.0
-
-	while timer < duration:
-		var t := timer / duration
-		music.volume_db = lerp(start_volume, end_volume, t)
-		await get_tree().create_timer(0.1).timeout
-		timer += 0.1
-
-	music.stop()
+func _on_game_over_glitched():
+	allow_spawning = false
+	emit_signal("game_over_triggered")
 
 func _on_restart_pressed():
 	AnimeShine.play_ClickSound()
 	print("🔁 Restart button pressed")
+
+	# 🧼 Remove reverb effect from Master bus
+	var bus_index := AudioServer.get_bus_index("Master")
+	for i in range(AudioServer.get_bus_effect_count(bus_index)):
+		var effect := AudioServer.get_bus_effect(bus_index, i)
+		if effect is AudioEffectReverb:
+			AudioServer.remove_bus_effect(bus_index, i)
+			break  # Remove only one instance
+
 	get_tree().reload_current_scene()
 
 func _on_main_menu_pressed():
@@ -95,3 +95,28 @@ func _on_main_menu_pressed():
 func _input(event):
 	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
 		game_over_screen.visible = not game_over_screen.visible
+
+
+func fade_out_music(duration := 5.0):
+	# Add reverb effect if not already present
+	var bus_index := AudioServer.get_bus_index("Master")
+	if AudioServer.get_bus_effect_count(bus_index) == 0:
+		var reverb := AudioEffectReverb.new()
+		reverb.room_size = 0.8
+		reverb.damping = 0.3
+		reverb.wet = 0.6
+		reverb.dry = 0.4
+		AudioServer.add_bus_effect(bus_index, reverb, 0)
+
+	# Fade out volume over time
+	var start_volume := music.volume_db
+	var end_volume := -80.0
+	var time_passed := 0.0
+
+	while time_passed < duration:
+		var t := time_passed / duration
+		music.volume_db = lerp(start_volume, end_volume, t)
+		await get_tree().create_timer(0.05).timeout
+		time_passed += 0.05
+
+	music.volume_db = end_volume

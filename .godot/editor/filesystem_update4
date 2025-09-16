@@ -18,3 +18,5 @@ res://timer.tscn
 res://Demo/Scripts/game.gd
 res://Demo/Scripts/mob.gd
 res://Demo/Scripts/mob_2.gd
+res://Demo/Scripts/game_over.gd
+res://Demo/Scripts/label.gd

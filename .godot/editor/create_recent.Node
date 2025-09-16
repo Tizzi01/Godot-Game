@@ -1,8 +1,9 @@
+AudioStreamPlayer
+AudioStreamPlayer2D
 CanvasLayer
 Timer
 Label
 Node
-AudioStreamPlayer
 PointLight2D
 AnimationPlayer
 Panel
@@ -11,4 +12,3 @@ VBoxContainer
 MarginContainer
 PanelContainer
 ColorRect
-Sprite2D

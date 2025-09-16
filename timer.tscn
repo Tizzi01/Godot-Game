@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://ctmey75fd8kje"]
+[gd_scene load_steps=4 format=3 uid="uid://ctmey75fd8kje"]
 
 [ext_resource type="Script" uid="uid://nva3w50nppxa" path="res://timer.gd" id="1_ye2uk"]
 [ext_resource type="FontFile" uid="uid://ctp71ddagy2v8" path="res://Demo/Stuff/fonts/Roquen DEMO.otf" id="2_o6fnk"]
+[ext_resource type="Script" uid="uid://w1xex8xu6taw" path="res://Demo/Scripts/label.gd" id="3_o6fnk"]
 
 [node name="Timer" type="Control"]
 layout_mode = 3
@@ -23,9 +24,15 @@ offset_left = -25.0
 offset_right = 25.0
 offset_bottom = 23.0
 grow_horizontal = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = -3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 10
 theme_override_fonts/font = ExtResource("2_o6fnk")
 theme_override_font_sizes/font_size = 50
 text = "00:00"
+script = ExtResource("3_o6fnk")
 
 [node name="Timer" type="Timer" parent="."]
 autostart = true
