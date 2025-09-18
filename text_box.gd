@@ -5,7 +5,7 @@ extends MarginContainer
 @onready var background: NinePatchRect = $NinePatchRect
 @onready var beep: AudioStreamPlayer = $Beep  # 🔊 Reference to beep node
 
-const MAX_WIDTH = 900
+const MAX_WIDTH = 655
 
 var text: String = ""
 var letter_index: int = 0
@@ -36,8 +36,8 @@ func display_text(text_to_display: String):
 	print("STEP 5.1: word_count reset to 0")
 	label.text = ""
 	print("STEP 6: Label cleared")
-
-	custom_minimum_size.x = min(size.x, MAX_WIDTH)
+	custom_minimum_size.x = 655
+	label.custom_minimum_size.x = 655
 	print("STEP 7: custom_minimum_size.x set to:", custom_minimum_size.x)
 
 	if size.x > MAX_WIDTH:
@@ -51,7 +51,7 @@ func display_text(text_to_display: String):
 	var screen_size = get_viewport().get_visible_rect().size
 	var box_size = background.size
 
-	var margin = Vector2(48, 1000)
+	var margin = Vector2(-12, 980)
 	global_position = screen_size - box_size - margin
 	print("📍 Text box positioned at:", global_position)
 	print("STEP 10: global_position set to:", global_position)

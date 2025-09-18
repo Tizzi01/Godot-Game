@@ -28,7 +28,9 @@ const MAX_SLIMES := 500
 const MAX_MOB2 := 50
 var allow_spawning := true
 
-func _ready():
+func _ready(): 
+	
+	
 	randomize()
 	IntroMusic1.stop_IntroMusic()
 	player.health_depleted.connect(_on_game_over)
@@ -42,6 +44,12 @@ func _ready():
 	var margin = 32
 	var position = Vector2(screen_size.x - box_width - margin, screen_size.y - 96)
 	start_dialog(position, ["Incoming Threat: Space Slimes are launching an invasion"])
+	
+
+# second speech 
+	await get_tree().create_timer(20.0).timeout
+	start_dialog(position, [""])	
+
 
 func _process(delta):
 	if not allow_spawning:

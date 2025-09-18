@@ -1,7 +1,8 @@
+Label
+RichTextLabel
 AudioStreamPlayer
 AudioStreamPlayer2D
 Timer
-Label
 MarginContainer
 NinePatchRect
 CanvasLayer
@@ -11,4 +12,3 @@ AnimationPlayer
 Panel
 Button
 VBoxContainer
-PanelContainer
