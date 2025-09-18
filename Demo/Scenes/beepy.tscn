@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://d0fwqg5be3ip1"]
+
+[ext_resource type="AudioStream" uid="uid://ihp6vmy21f27" path="res://Demo/Stuff/music/Beep .mp3" id="1_71obq"]
+
+[node name="Beepy" type="AudioStreamPlayer2D"]
+stream = ExtResource("1_71obq")

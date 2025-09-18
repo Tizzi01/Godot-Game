@@ -1,6 +1,6 @@
 extends Control
 var game_scene = preload("res://Folder/Scenes/game.tscn")
-
+var Beep = preload("res://Demo/Stuff/music/Beep .mp3")
 func _ready():
 	IntroMusic1.play_IntroMusic()
 

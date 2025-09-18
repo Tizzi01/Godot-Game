@@ -1,14 +1,14 @@
 AudioStreamPlayer
 AudioStreamPlayer2D
-CanvasLayer
 Timer
 Label
+MarginContainer
+NinePatchRect
+CanvasLayer
 Node
 PointLight2D
 AnimationPlayer
 Panel
 Button
 VBoxContainer
-MarginContainer
 PanelContainer
-ColorRect

@@ -1,0 +1,50 @@
+[gd_scene load_steps=6 format=3 uid="uid://ptyc2pnotr62"]
+
+[ext_resource type="Script" uid="uid://dtm1jip00dyyn" path="res://text_box.gd" id="1_6n3nt"]
+[ext_resource type="Texture2D" uid="uid://bwsgygmvitlw7" path="res://Folder/Assets/Sprites/Blank.png" id="2_2oilc"]
+[ext_resource type="Script" uid="uid://bjn0m2d8db6rw" path="res://Demo/Scripts/nine_patch_rect.gd" id="3_2oilc"]
+[ext_resource type="FontFile" uid="uid://b8hcr1w4xjlbo" path="res://Demo/Stuff/fonts/arial.ttf" id="3_ac73j"]
+[ext_resource type="AudioStream" uid="uid://ihp6vmy21f27" path="res://Demo/Stuff/music/Beep .mp3" id="5_ac73j"]
+
+[node name="TextBox" type="MarginContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -192.0
+offset_top = -20.0
+offset_right = 423.0
+offset_bottom = 46.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_6n3nt")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+layout_mode = 2
+texture = ExtResource("2_2oilc")
+region_rect = Rect2(64, 96, 1800, 848)
+script = ExtResource("3_2oilc")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 11
+theme_override_constants/margin_top = 11
+theme_override_constants/margin_right = 11
+theme_override_constants/margin_bottom = 11
+
+[node name="Label" type="Label" parent="MarginContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_ac73j")
+theme_override_font_sizes/font_size = 25
+vertical_alignment = 1
+
+[node name="LetterDisplayTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="Beep" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_ac73j")
+bus = &"SFX"
+
+[connection signal="timeout" from="LetterDisplayTimer" to="." method="_on_letter_display_timer_timeout"]

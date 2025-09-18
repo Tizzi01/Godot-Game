@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://17ihev8gmx8p"]
+[gd_scene load_steps=31 format=3 uid="uid://17ihev8gmx8p"]
 
 [ext_resource type="Script" uid="uid://be05spmmaewml" path="res://Demo/Scripts/game.gd" id="1_naqcg"]
 [ext_resource type="Texture2D" uid="uid://bnmfh85lwxuid" path="res://Demo/Stuff/sprites/world_tileset.png" id="1_wi88m"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://dikfgaeqdng3d" path="res://Demo/Scenes/player.tscn" id="2_s1uwp"]
 [ext_resource type="PackedScene" uid="uid://dr1fsle17larj" path="res://Folder/Scenes/killzone.tscn" id="3_221o8"]
 [ext_resource type="Script" uid="uid://bvjmot5d81tgk" path="res://Demo/Scripts/camera_2d.gd" id="3_naqcg"]
+[ext_resource type="PackedScene" uid="uid://ptyc2pnotr62" path="res://Demo/Scenes/text_box.tscn" id="3_s0xpa"]
 [ext_resource type="Script" uid="uid://by72bvasui27b" path="res://Demo/Scripts/progress_bar.gd" id="3_ur6pw"]
 [ext_resource type="PackedScene" uid="uid://d1mkdm54ef6sl" path="res://Folder/Scenes/chest.tscn" id="4_naqcg"]
 [ext_resource type="Script" uid="uid://bnbqvlqrg70nu" path="res://Demo/Scripts/game_over.gd" id="4_vyor8"]
@@ -253,6 +254,13 @@ metadata/_edit_horizontal_guides_ = [-287.0]
 unique_name_in_owner = true
 offset_top = -521.0
 offset_bottom = -521.0
+
+[node name="TextBox" parent="CanvasLayer3" instance=ExtResource("3_s0xpa")]
+visible = false
+offset_left = 517.0
+offset_top = 395.0
+offset_right = 901.0
+offset_bottom = 436.0
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
