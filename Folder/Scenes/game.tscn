@@ -1,7 +1,8 @@
-[gd_scene load_steps=34 format=3 uid="uid://17ihev8gmx8p"]
+[gd_scene load_steps=36 format=3 uid="uid://17ihev8gmx8p"]
 
 [ext_resource type="Script" uid="uid://be05spmmaewml" path="res://Demo/Scripts/game.gd" id="1_naqcg"]
 [ext_resource type="Texture2D" uid="uid://bnmfh85lwxuid" path="res://Demo/Stuff/sprites/world_tileset.png" id="1_wi88m"]
+[ext_resource type="Texture2D" uid="uid://dfw0vsk6x0og7" path="res://Demo/Stuff/sprites/Redy.png" id="2_61t74"]
 [ext_resource type="FontFile" uid="uid://ctp71ddagy2v8" path="res://Demo/Stuff/fonts/Roquen DEMO.otf" id="2_d18qc"]
 [ext_resource type="PackedScene" uid="uid://ctmey75fd8kje" path="res://timer.tscn" id="2_faiuj"]
 [ext_resource type="Script" uid="uid://dyifq4fcbw2o7" path="res://Demo/Scripts/panel.gd" id="2_pr0nq"]
@@ -18,7 +19,25 @@
 [ext_resource type="Script" uid="uid://dwmnuhgxrlc5g" path="res://Demo/Scripts/node.gd" id="8_sfajg"]
 [ext_resource type="Texture2D" uid="uid://daq51b7c6g0cy" path="res://Folder/Assets/Sprites/Player Animation/idle_right/Scripts/BGv7.png" id="10_14idw"]
 
-[sub_resource type="Animation" id="Animation_s0xpa"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vonys"]
+texture = ExtResource("2_61t74")
+
+[sub_resource type="Animation" id="Animation_66lna"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_61t74"]
 resource_name = "Red"
 length = 0.2
 tracks/0/type = "value"
@@ -31,28 +50,13 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.1, 0.2),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Color(1, 0, 0, 0), Color(1, 0, 0, 1), Color(1, 0, 0, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_61t74"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 0, 0, 0)]
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.345098), Color(1, 1, 1, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vonys"]
 _data = {
-&"RESET": SubResource("Animation_61t74"),
-&"Red": SubResource("Animation_s0xpa")
+&"RESET": SubResource("Animation_66lna"),
+&"Red": SubResource("Animation_61t74")
 }
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yojxo"]
@@ -288,14 +292,14 @@ metadata/_edit_horizontal_guides_ = [-287.0]
 [node name="CanvasLayer4" type="CanvasLayer" parent="."]
 
 [node name="Panel" type="Panel" parent="CanvasLayer4"]
-modulate = Color(1, 0, 0, 0)
-self_modulate = Color(1, 0, 0, 1)
+modulate = Color(1, 1, 1, 0)
+z_index = 4096
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("2_pr0nq")
+theme_override_styles/panel = SubResource("StyleBoxTexture_vonys")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer4/Panel"]
 libraries = {

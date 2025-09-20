@@ -7,7 +7,7 @@
 [ext_resource type="AudioStream" uid="uid://c8ti7vpuxc3y3" path="res://Demo/Stuff/music/dash2.wav" id="5_7k0jb"]
 [ext_resource type="AudioStream" uid="uid://dvrvblfg1cd5s" path="res://Demo/Stuff/music/TP Goku.mp3" id="7_7k0jb"]
 [ext_resource type="Script" uid="uid://b8dvnvp6uf1r4" path="res://Demo/Scripts/tp_1.gd" id="7_y2uok"]
-[ext_resource type="AudioStream" uid="uid://csjdd4oequ3cv" path="res://Demo/Stuff/music/fast glitch 22.mp3" id="8_wf6if"]
+[ext_resource type="AudioStream" uid="uid://brx7af5hj5o52" path="res://Demo/Stuff/music/DG4.mp3" id="8_hvqp6"]
 [ext_resource type="Script" uid="uid://d25i0sevnvkaa" path="res://Demo/Scenes/DG.gd" id="9_hvqp6"]
 
 [sub_resource type="GDScript" id="GDScript_vxcno"]
@@ -828,6 +828,6 @@ volume_db = -12.0
 script = ExtResource("7_y2uok")
 
 [node name="DG" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("8_wf6if")
-volume_db = -16.0
+stream = ExtResource("8_hvqp6")
+volume_db = -5.0
 script = ExtResource("9_hvqp6")

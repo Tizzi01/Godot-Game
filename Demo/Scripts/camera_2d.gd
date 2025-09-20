@@ -60,7 +60,20 @@ func startup_zoom_and_shake():
 
 	add_trauma(0.5)  # Light shake
 
-func _on_player_damaged():
-	print("skibidi")  # ✅ Will print when player takes damage
-	add_trauma(0.020) 
-	animation_player.play("Red")  # Light shake when player takes damage
+var shake_on_cooldown := false
+
+func _on_player_damaged() -> void:
+	if shake_on_cooldown:
+		return
+
+	shake_on_cooldown = true
+	add_trauma(0.3)
+	animation_player.play("Red")
+
+	# Let the shake run for 0.2 seconds
+	await get_tree().create_timer(0.2).timeout 
+	trauma = 0.0  # Stop the shake manually
+
+	# Wait 0.1s before allowing another shake
+	await get_tree().create_timer(0.0).timeout
+	shake_on_cooldown = false
