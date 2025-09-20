@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cmndk5g4wk24p"
+path="res://.godot/imported/Fast Glitch 2 (SFX).mp3-71a65830156f41ae742a74aec6ceee53.mp3str"
+
+[deps]
+
+source_file="res://Demo/Stuff/music/Fast Glitch 2 (SFX).mp3"
+dest_files=["res://.godot/imported/Fast Glitch 2 (SFX).mp3-71a65830156f41ae742a74aec6ceee53.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

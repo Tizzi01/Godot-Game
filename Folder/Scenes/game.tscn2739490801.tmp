@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://17ihev8gmx8p"]
+[gd_scene load_steps=31 format=3 uid="uid://17ihev8gmx8p"]
 
 [ext_resource type="Script" uid="uid://be05spmmaewml" path="res://Demo/Scripts/game.gd" id="1_naqcg"]
 [ext_resource type="Texture2D" uid="uid://bnmfh85lwxuid" path="res://Demo/Stuff/sprites/world_tileset.png" id="1_wi88m"]
@@ -17,43 +17,6 @@
 [ext_resource type="Texture2D" uid="uid://dv8q78bspppr2" path="res://Folder/Assets/Sprites/final blue line.png" id="8_14idw"]
 [ext_resource type="Script" uid="uid://dwmnuhgxrlc5g" path="res://Demo/Scripts/node.gd" id="8_sfajg"]
 [ext_resource type="Texture2D" uid="uid://daq51b7c6g0cy" path="res://Folder/Assets/Sprites/Player Animation/idle_right/Scripts/BGv7.png" id="10_14idw"]
-
-[sub_resource type="Animation" id="Animation_s0xpa"]
-resource_name = "Red"
-length = 0.2
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Color(1, 0, 0, 0), Color(1, 0, 0, 1), Color(1, 0, 0, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_61t74"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 0, 0, 0)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_vonys"]
-_data = {
-&"RESET": SubResource("Animation_61t74"),
-&"Red": SubResource("Animation_s0xpa")
-}
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yojxo"]
 bg_color = Color(1, 1, 1, 1)
@@ -284,23 +247,6 @@ point_count = 5
 [node name="Game" type="Node2D"]
 script = ExtResource("1_naqcg")
 metadata/_edit_horizontal_guides_ = [-287.0]
-
-[node name="CanvasLayer4" type="CanvasLayer" parent="."]
-
-[node name="Panel" type="Panel" parent="CanvasLayer4"]
-modulate = Color(1, 0, 0, 0)
-self_modulate = Color(1, 0, 0, 1)
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("2_pr0nq")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer4/Panel"]
-libraries = {
-&"": SubResource("AnimationLibrary_vonys")
-}
 
 [node name="CanvasLayer3" type="CanvasLayer" parent="."]
 

@@ -4,6 +4,7 @@ extends Camera2D
 @export var max_offset : Vector2 = Vector2(10, 6)  # 🔧 Softer shake
 @export var max_roll : float = 0.01               # 🔧 Less rotation
 @export var follow_node : Node2D
+@onready var animation_player: AnimationPlayer = $"../../CanvasLayer4/Panel/AnimationPlayer"
 
 var trauma : float = 0.0
 var trauma_power : int = 1
@@ -11,6 +12,11 @@ var trauma_power : int = 1
 func _ready() -> void:
 	randomize()
 	startup_zoom_and_shake()
+
+	var player := get_parent()  # ✅ FIXED: camera is child of player
+	if player.has_signal("player_damaged"):
+		player.player_damaged.connect(_on_player_damaged)
+		print("📸 Connected to player_damaged signal")
 
 func _process(delta: float) -> void:
 	if follow_node:
@@ -53,3 +59,8 @@ func startup_zoom_and_shake():
 		.set_ease(Tween.EASE_OUT)
 
 	add_trauma(0.5)  # Light shake
+
+func _on_player_damaged():
+	print("skibidi")  # ✅ Will print when player takes damage
+	add_trauma(0.020) 
+	animation_player.play("Red")  # Light shake when player takes damage

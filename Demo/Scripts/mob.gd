@@ -48,5 +48,4 @@ func take_damage():
 		smoke.global_position = global_position
 
 func _on_game_over_triggered():
-	print("💥 Mob removed on game over:", name)
 	queue_free()

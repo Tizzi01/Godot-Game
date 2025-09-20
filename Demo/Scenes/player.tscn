@@ -1,17 +1,19 @@
-[gd_scene load_steps=26 format=3 uid="uid://dikfgaeqdng3d"]
+[gd_scene load_steps=30 format=3 uid="uid://dikfgaeqdng3d"]
 
-[ext_resource type="Material" uid="uid://b1co7iqjlecyp" path="res://Demo/Scripts/hitflash.tres" id="1_7k0jb"]
+[ext_resource type="Shader" uid="uid://coyggroig6t4b" path="res://Demo/Scenes/glitchy.gdshader" id="1_7ethr"]
 [ext_resource type="Texture2D" uid="uid://canfsqyqpe8qy" path="res://Folder/Assets/Sprites/Player Animation/idle/0.png" id="1_i7wno"]
 [ext_resource type="PackedScene" uid="uid://wj61kt8sa2wn" path="res://Folder/Scenes/gun.tscn" id="3_bijw4"]
 [ext_resource type="Script" uid="uid://ckbcbouawdeeo" path="res://Demo/Scripts/dash_sfx.gd" id="5_2pset"]
 [ext_resource type="AudioStream" uid="uid://c8ti7vpuxc3y3" path="res://Demo/Stuff/music/dash2.wav" id="5_7k0jb"]
 [ext_resource type="AudioStream" uid="uid://dvrvblfg1cd5s" path="res://Demo/Stuff/music/TP Goku.mp3" id="7_7k0jb"]
 [ext_resource type="Script" uid="uid://b8dvnvp6uf1r4" path="res://Demo/Scripts/tp_1.gd" id="7_y2uok"]
+[ext_resource type="AudioStream" uid="uid://csjdd4oequ3cv" path="res://Demo/Stuff/music/fast glitch 22.mp3" id="8_wf6if"]
+[ext_resource type="Script" uid="uid://d25i0sevnvkaa" path="res://Demo/Scenes/DG.gd" id="9_hvqp6"]
 
 [sub_resource type="GDScript" id="GDScript_vxcno"]
 script/source = "extends CharacterBody2D
 class_name Player
-
+signal player_damaged
 @onready var dash_sfx = $DashSFX
 
 @export var walk_speed = 150.0
@@ -82,6 +84,8 @@ func _physics_process(delta):
 	var overlapping_mobs = %HurtBox.get_overlapping_bodies()
 	if overlapping_mobs.size() > 0: 
 		health -= DAMAGE_RATE * overlapping_mobs.size() * delta 
+		anim_player.play(\"Damage\")
+		player_damaged.emit()
 		for bar in get_tree().get_nodes_in_group(\"HPBAR\"):
 			bar.value = health
 
@@ -252,6 +256,65 @@ func _on_game_over_triggered():
 	print(\"🧊 Player frozen — input disabled\")
 "
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wf6if"]
+resource_local_to_scene = true
+shader = ExtResource("1_7ethr")
+shader_parameter/glitch_intensity = 0.0
+shader_parameter/glitch_offset = 0.0
+shader_parameter/glitch_speed = 0.0
+
+[sub_resource type="Animation" id="Animation_7ethr"]
+resource_name = "Damage"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:material:shader_parameter/glitch_intensity")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.13, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:material:shader_parameter/glitch_offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.366, 0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PlayerSprite:material:shader_parameter/glitch_speed")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 3.771, 0.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("DG:playing")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
 [sub_resource type="Animation" id="Animation_vxcno"]
 resource_name = "Idle"
 length = 1.5
@@ -330,6 +393,54 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [0.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("PlayerSprite:material:shader_parameter/glitch_intensity")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("PlayerSprite:material:shader_parameter/glitch_offset")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("PlayerSprite:material:shader_parameter/glitch_speed")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("DG:playing")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
 }
 
 [sub_resource type="Animation" id="Animation_1wgvf"]
@@ -518,6 +629,7 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_kn884"]
 _data = {
+&"Damage": SubResource("Animation_7ethr"),
 &"Idle": SubResource("Animation_vxcno"),
 &"RESET": SubResource("Animation_qjmxq"),
 &"TP": SubResource("Animation_1wgvf"),
@@ -664,7 +776,7 @@ script = SubResource("GDScript_vxcno")
 [node name="PlayerSprite" type="Sprite2D" parent="."]
 light_mask = 5
 visibility_layer = 5
-material = ExtResource("1_7k0jb")
+material = SubResource("ShaderMaterial_wf6if")
 scale = Vector2(0.0380787, 0.0380787)
 texture = ExtResource("1_i7wno")
 
@@ -714,3 +826,8 @@ unique_name_in_owner = true
 stream = ExtResource("7_7k0jb")
 volume_db = -12.0
 script = ExtResource("7_y2uok")
+
+[node name="DG" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_wf6if")
+volume_db = -16.0
+script = ExtResource("9_hvqp6")
