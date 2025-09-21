@@ -8,6 +8,8 @@ signal game_over_triggered
 @onready var game_over_screen = %"Game Over"
 @onready var music: AudioStreamPlayer = $Music
 @onready var path_follow = %PathFollow2D
+@onready var score: Label = $CanvasLayer4/Score
+@onready var animation_player: AnimationPlayer = $CanvasLayer4/Score/AnimationPlayer
 
 # 💬 Dialog System
 @onready var text_box_scene = preload("res://Demo/Scenes/text_box.tscn")
@@ -30,6 +32,8 @@ var allow_spawning := true
 
 func _ready(): 
 	
+	PointsManager.points_changed.connect(_on_points_changed)
+	score.text = "Score: %d" % PointsManager.points
 	
 	randomize()
 	IntroMusic1.stop_IntroMusic()
@@ -47,8 +51,8 @@ func _ready():
 	
 
 # second speech 
-	await get_tree().create_timer(20.0).timeout
-	start_dialog(position, [""])	
+	await get_tree().create_timer(5.0).timeout
+	start_dialog(position, ["Advanced Aliens will begin their invasion in 67 seconds"])	
 
 
 func _process(delta):
@@ -199,3 +203,42 @@ func fade_out_music(duration := 5.0):
 		time_passed += 0.05
 
 	music.volume_db = end_volume 
+
+var last_milestone := 0
+
+
+func _on_points_changed(new_value: int) -> void:
+	# Update score text
+	score.text = "Score: %d" % new_value
+
+	# Ensure bounce scales from the center
+	score.pivot_offset = score.size / 2
+
+	# Check if we've crossed the next 100-point milestone
+	if new_value >= last_milestone + 10:
+		last_milestone = new_value - (new_value % 10)  # Snap to nearest lower 100
+
+		# 🔊 Play the Epic sound effect
+		$Epic.play()
+		animation_player.play("glow")
+		# 💙 Special milestone bounce + glow
+		var big_tween = create_tween()
+		big_tween.tween_property(score, "scale", Vector2(1.45, 1.45), 0.12)\
+			.set_trans(Tween.TRANS_SINE)\
+			.set_ease(Tween.EASE_OUT)
+		big_tween.tween_property(score, "scale", Vector2(1, 1), 0.12)\
+			.set_trans(Tween.TRANS_SINE)\
+			.set_ease(Tween.EASE_IN)
+
+		var flash = create_tween()
+		flash.tween_property(score, "modulate", Color(0.3, 0.6, 1.0), 0.1)
+		flash.tween_property(score, "modulate", Color(1, 1, 1), 0.2).set_delay(0.1)
+	else:
+		# ⚪ Normal bounce
+		var tween = create_tween()
+		tween.tween_property(score, "scale", Vector2(1.1, 1.1), 0.08)\
+			.set_trans(Tween.TRANS_SINE)\
+			.set_ease(Tween.EASE_OUT)
+		tween.tween_property(score, "scale", Vector2(1, 1), 0.08)\
+			.set_trans(Tween.TRANS_SINE)\
+			.set_ease(Tween.EASE_IN)

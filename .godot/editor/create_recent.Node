@@ -1,14 +1,14 @@
-Label
+PointLight2D
 AnimationPlayer
+AudioStreamPlayer
+Label
 Panel
 CanvasLayer
 AudioStreamPlayer2D
-AudioStreamPlayer
 RichTextLabel
 Timer
 MarginContainer
 NinePatchRect
 Node
-PointLight2D
 Button
 VBoxContainer

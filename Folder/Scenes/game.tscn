@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://17ihev8gmx8p"]
+[gd_scene load_steps=43 format=3 uid="uid://17ihev8gmx8p"]
 
 [ext_resource type="Script" uid="uid://be05spmmaewml" path="res://Demo/Scripts/game.gd" id="1_naqcg"]
 [ext_resource type="Texture2D" uid="uid://bnmfh85lwxuid" path="res://Demo/Stuff/sprites/world_tileset.png" id="1_wi88m"]
@@ -19,6 +19,7 @@
 [ext_resource type="Texture2D" uid="uid://dv8q78bspppr2" path="res://Folder/Assets/Sprites/final blue line.png" id="8_14idw"]
 [ext_resource type="Script" uid="uid://dwmnuhgxrlc5g" path="res://Demo/Scripts/node.gd" id="8_sfajg"]
 [ext_resource type="Texture2D" uid="uid://daq51b7c6g0cy" path="res://Folder/Assets/Sprites/Player Animation/idle_right/Scripts/BGv7.png" id="10_14idw"]
+[ext_resource type="AudioStream" uid="uid://dg5yucn8p5t8t" path="res://Demo/Stuff/music/Epic.mp3" id="20_66lna"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vonys"]
 texture = ExtResource("2_61t74")
@@ -58,6 +59,101 @@ tracks/0/keys = {
 _data = {
 &"RESET": SubResource("Animation_66lna"),
 &"Red": SubResource("Animation_61t74")
+}
+
+[sub_resource type="Gradient" id="Gradient_66lna"]
+colors = PackedColorArray(0.0470588, 0.313726, 0.780392, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_2x3so"]
+gradient = SubResource("Gradient_66lna")
+width = 455
+height = 455
+fill = 1
+fill_from = Vector2(0.5, 0.489316)
+
+[sub_resource type="Animation" id="Animation_3t5m4"]
+resource_name = "glow"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PointLight2D:texture:width")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.166667, 0.3),
+"transitions": PackedFloat32Array(-2, -2, -2),
+"update": 1,
+"values": [1, 455, 1]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PointLight2D:texture:height")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.166667, 0.3),
+"transitions": PackedFloat32Array(-2, -2, -2),
+"update": 1,
+"values": [1, 455, 1]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PointLight2D:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_j32mq"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PointLight2D:texture:width")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [455]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PointLight2D:texture:height")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [455]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PointLight2D:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_yh3bl"]
+_data = {
+&"RESET": SubResource("Animation_j32mq"),
+&"glow": SubResource("Animation_3t5m4")
 }
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yojxo"]
@@ -307,18 +403,19 @@ libraries = {
 &"": SubResource("AnimationLibrary_vonys")
 }
 
-[node name="Label" type="Label" parent="CanvasLayer4"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -77.5
-offset_top = -25.5
-offset_right = 77.5
-offset_bottom = 25.5
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Score" type="Label" parent="CanvasLayer4"]
+light_mask = 0
+visibility_layer = 8
+anchors_preset = -1
+anchor_left = 0.026
+anchor_top = 0.866
+anchor_right = 0.103
+anchor_bottom = 0.918
+offset_left = -6.92
+offset_top = 4.71991
+offset_right = 0.23999
+offset_bottom = -0.440063
+grow_vertical = 0
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = -3
@@ -326,7 +423,21 @@ theme_override_constants/shadow_offset_y = 3
 theme_override_constants/outline_size = 10
 theme_override_fonts/font = ExtResource("2_d18qc")
 theme_override_font_sizes/font_size = 50
+text = "0"
+horizontal_alignment = 1
 script = ExtResource("4_vonys")
+
+[node name="PointLight2D" type="PointLight2D" parent="CanvasLayer4/Score"]
+visible = false
+light_mask = 8
+visibility_layer = 0
+position = Vector2(78.5, 19.5)
+texture = SubResource("GradientTexture2D_2x3so")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer4/Score"]
+libraries = {
+&"": SubResource("AnimationLibrary_yh3bl")
+}
 
 [node name="CanvasLayer3" type="CanvasLayer" parent="."]
 
@@ -345,6 +456,7 @@ offset_bottom = 436.0
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="WhiteFlash" type="Panel" parent="CanvasLayer"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -627,6 +739,11 @@ volume_db = -30.0
 unique_name_in_owner = true
 stream = ExtResource("8_4bs2y")
 volume_db = -28.0
+
+[node name="Epic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("20_66lna")
+volume_db = -5.0
+bus = &"SFX"
 
 [connection signal="pressed" from="CanvasLayer/Game Over/Restart" to="." method="_on_restart_pressed"]
 [connection signal="pressed" from="CanvasLayer/Game Over/Main Menu" to="." method="_on_main_menu_pressed"]
