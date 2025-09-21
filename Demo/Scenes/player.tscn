@@ -190,7 +190,9 @@ func _physics_process(delta):
 			velocity = Vector2.ZERO
 			$PlayerSprite/AnimationPlayer.play(\"Idle\")
 			$TP1.play()
-			tp_anim_player.play(\"TP\") 
+			tp_anim_player.play(\"TP\")  
+			
+
 			
 			is_hidden_from_mobs = true
 			await get_tree().create_timer(0.4).timeout
@@ -215,6 +217,8 @@ func _physics_process(delta):
 					$PlayerSprite/AnimationPlayer.play(\"Idle\")
 					$TP1.play()
 					tp_anim_player.play(\"TP\") 
+					
+			
 					
 					is_hidden_from_mobs = true
 					await get_tree().create_timer(0.2).timeout

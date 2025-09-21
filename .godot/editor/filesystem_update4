@@ -19,3 +19,7 @@ res://Demo/Scripts/progress_bar.gd
 res://Demo/Scripts/game.gd
 res://text_box.gd
 res://Demo/Scripts/mob.gd
+res://Demo/Scripts/background_music.gd
+res://Demo/Scripts/mob_2.gd
+res://Demo/Scripts/2.gd
+res://Demo/Scripts/mobsprite2.gd

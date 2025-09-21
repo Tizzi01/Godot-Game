@@ -19,7 +19,11 @@ var teleport_cooldown := 5.0
 var teleport_timer := 0.0
 
 func _ready():
+# Inside _ready()
+	if $"2":
+		$"2".modulate = Color(1, 1, 1, 0.5)
 	add_to_group("Mob2")
+
 	var speed_options = [150.0, 200.0, 250.0, 300.0]
 	move_speed = speed_options[randi() % speed_options.size()]
 
@@ -134,7 +138,19 @@ func tp_glitch():
 
 		for sprite in sprites:
 			if sprite:
-				sprite.modulate = Color(0.4, 0.0, 0.6) if i % 2 == 0 else Color(0.2, 0.4, 1.0)
+				var alpha = 1.0
+				if sprite == $"2":
+					alpha = 0.5
+
+				var r = 0.4
+				var g = 0.0
+				var b = 0.6
+				if i % 2 != 0:
+					r = 0.2
+					g = 0.4
+					b = 1.0
+
+				sprite.modulate = Color(r, g, b, alpha)
 
 	is_teleporting = false
 
@@ -147,14 +163,29 @@ func tp_glitch():
 
 		for sprite in sprites:
 			if sprite:
-				sprite.modulate = Color(0.4, 0.0, 0.6) if i % 2 == 0 else Color(0.2, 0.4, 1.0)
+				var alpha = 1.0
+				if sprite == $"2":
+					alpha = 0.5
+
+				var r = 0.4
+				var g = 0.0
+				var b = 0.6
+				if i % 2 != 0:
+					r = 0.2
+					g = 0.4
+					b = 1.0
+
+				sprite.modulate = Color(r, g, b, alpha)
 
 	position = original_pos
 	await get_tree().create_timer(0.1).timeout
 
 	for sprite in sprites:
 		if sprite:
-			sprite.modulate = Color(1, 1, 1)
+			var alpha = 1.0
+			if sprite == $"2":
+				alpha = 0.5
+			sprite.modulate = Color(1, 1, 1, alpha)
 
 func play_glitch_animation():
 	var original_pos = position
@@ -169,13 +200,19 @@ func play_glitch_animation():
 
 		for sprite in sprites:
 			if sprite:
-				sprite.modulate = Color(randf(), randf(), randf())
+				var alpha = 1.0
+				if sprite == $"2":
+					alpha = 0.5
+				sprite.modulate = Color(randf(), randf(), randf(), alpha)
 
 	await get_tree().create_timer(0.1).timeout
 
 	for sprite in sprites:
 		if sprite:
-			sprite.modulate = Color(1, 1, 1)
+			var alpha = 1.0
+			if sprite == $"2":
+				alpha = 0.5
+			sprite.modulate = Color(1, 1, 1, alpha)
 
 func glitch_out():
 	is_glitching = true
