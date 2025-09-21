@@ -1,9 +1,9 @@
+Label
 AnimationPlayer
 Panel
 CanvasLayer
 AudioStreamPlayer2D
 AudioStreamPlayer
-Label
 RichTextLabel
 Timer
 MarginContainer

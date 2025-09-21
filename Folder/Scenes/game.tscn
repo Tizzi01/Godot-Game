@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://17ihev8gmx8p"]
+[gd_scene load_steps=37 format=3 uid="uid://17ihev8gmx8p"]
 
 [ext_resource type="Script" uid="uid://be05spmmaewml" path="res://Demo/Scripts/game.gd" id="1_naqcg"]
 [ext_resource type="Texture2D" uid="uid://bnmfh85lwxuid" path="res://Demo/Stuff/sprites/world_tileset.png" id="1_wi88m"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://ptyc2pnotr62" path="res://Demo/Scenes/text_box.tscn" id="3_s0xpa"]
 [ext_resource type="Script" uid="uid://by72bvasui27b" path="res://Demo/Scripts/progress_bar.gd" id="3_ur6pw"]
 [ext_resource type="PackedScene" uid="uid://d1mkdm54ef6sl" path="res://Folder/Scenes/chest.tscn" id="4_naqcg"]
+[ext_resource type="Script" uid="uid://w1xex8xu6taw" path="res://Demo/Scripts/label.gd" id="4_vonys"]
 [ext_resource type="Script" uid="uid://bnbqvlqrg70nu" path="res://Demo/Scripts/game_over.gd" id="4_vyor8"]
 [ext_resource type="AudioStream" uid="uid://cuutt7cj2ai0f" path="res://Demo/Stuff/music/glitch1.wav" id="6_vyor8"]
 [ext_resource type="AudioStream" uid="uid://cvdi6lca0gk0n" path="res://Demo/Stuff/music/Godot BG music.MP3" id="8_4bs2y"]
@@ -305,6 +306,27 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_vonys")
 libraries = {
 &"": SubResource("AnimationLibrary_vonys")
 }
+
+[node name="Label" type="Label" parent="CanvasLayer4"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -77.5
+offset_top = -25.5
+offset_right = 77.5
+offset_bottom = 25.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = -3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("2_d18qc")
+theme_override_font_sizes/font_size = 50
+script = ExtResource("4_vonys")
 
 [node name="CanvasLayer3" type="CanvasLayer" parent="."]
 

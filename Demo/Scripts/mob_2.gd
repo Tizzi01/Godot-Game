@@ -19,6 +19,7 @@ var teleport_cooldown := 5.0
 var teleport_timer := 0.0
 
 func _ready():
+	add_to_group("Mob2")
 	var speed_options = [150.0, 200.0, 250.0, 300.0]
 	move_speed = speed_options[randi() % speed_options.size()]
 

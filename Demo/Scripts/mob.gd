@@ -10,6 +10,7 @@ var health = 10
 signal died
 
 func _ready():
+	add_to_group("Mob")
 	var game_node = get_tree().get_root().get_node("Game")
 	if game_node:
 		game_node.game_over_triggered.connect(_on_game_over_triggered)

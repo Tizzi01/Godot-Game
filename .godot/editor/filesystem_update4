@@ -16,3 +16,8 @@ res://Demo/Scenes/text_box.tscn
 res://Demo/Scenes/beepy.tscn
 res://Demo/Scripts/camera_2d.gd
 res://Demo/Scripts/PointsManager.gd
+res://Demo/Scripts/mob.gd
+res://Demo/Scripts/mob_2.gd
+res://text_box.gd
+res://Demo/Scripts/game.gd
+res://Demo/Scripts/DialogManager.gd

@@ -67,6 +67,12 @@ var last_facing_dir = 1
 signal health_depleted
 
 func _ready():
+	for mob in get_tree().get_nodes_in_group(\"Mob\"):
+		mob.died.connect(_on_mob_died)
+
+	for mob2 in get_tree().get_nodes_in_group(\"Mob2\"):
+		mob2.died.connect(_on_mob2_died)
+	
 	anim_player.play(\"Idle\")
 
 	var game_node = get_tree().get_root().get_node(\"Game\")
@@ -245,11 +251,13 @@ func _input(event: InputEvent) -> void:
 			
 func _on_mob_died():
 	kill_count += 1
-	print(\"💀 Kill count:\", kill_count)
-	
+	PointsManager.add_points(1)
+	print(\"+1\")
+
 func _on_mob2_died():
 	kill_count += 5
-	print(\"💀 Kill count:\", kill_count)
+	PointsManager.add_points(5)
+	print(\"+5\")
 
 func _on_game_over_triggered():
 	frozen = true

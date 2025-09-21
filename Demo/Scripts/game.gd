@@ -85,7 +85,7 @@ func spawn_mob2():
 	new_mob2.global_position = path_follow.global_position
 	add_child(new_mob2)
 	new_mob2.add_to_group("Mob2")
-	new_mob2.died.connect(player._on_mob_died)
+	new_mob2.died.connect(player._on_mob2_died)
 	print("🚀 Spawned Mob2 with speed:", new_mob2.move_speed, "and health:", new_mob2.health)
 
 func _on_game_over():

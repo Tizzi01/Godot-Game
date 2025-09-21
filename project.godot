@@ -23,6 +23,7 @@ AnimeShine="*res://Folder/Scenes/anime_shine.tscn"
 TeleportManager="*res://TeleportManager.tscn"
 DialogManager="*res://Demo/Scripts/DialogManager.gd"
 Beepy="*res://Demo/scenes/beepy.tscn"
+PointsManager="*res://Demo/Scripts/PointsManager.gd"
 
 [display]
 
