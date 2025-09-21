@@ -368,8 +368,8 @@ texture = ExtResource("1_wi88m")
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_8i32r")
 
-[sub_resource type="Curve" id="Curve_s0xpa"]
-_data = [Vector2(0, 0.278977), 0.0, 0.0, 0, 0, Vector2(0.101639, 0.911895), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+[sub_resource type="Curve" id="Curve_66lna"]
+_data = [Vector2(0, 0.244813), 0.0, 0.0, 0, 0, Vector2(0.1, 0.899308), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 3
 
 [sub_resource type="Curve2D" id="Curve2D_naqcg"]
@@ -456,7 +456,6 @@ offset_bottom = 436.0
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="WhiteFlash" type="Panel" parent="CanvasLayer"]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -587,7 +586,7 @@ format = 2
 unique_name_in_owner = true
 z_index = 1
 position = Vector2(-134, 33)
-dash_curve = SubResource("Curve_s0xpa")
+dash_curve = SubResource("Curve_66lna")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2(0, -1)

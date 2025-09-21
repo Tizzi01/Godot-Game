@@ -3,9 +3,10 @@ extends MarginContainer
 @onready var label: Label = $MarginContainer/Label
 @onready var letter_display_timer: Timer = $LetterDisplayTimer
 @onready var background: NinePatchRect = $NinePatchRect
-@onready var beep: AudioStreamPlayer = $Beep  # 🔊 Reference to beep node
+@onready var beep: AudioStreamPlayer = $Beep
 
 const MAX_WIDTH = 655
+const PADDING = Vector2(32, 32)
 
 var text: String = ""
 var letter_index: int = 0
@@ -19,43 +20,57 @@ signal finished_displaying()
 
 func _ready():
 	letter_display_timer.timeout.connect(_on_letter_display_timer_timeout)
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD
+	label.text = ""
+	label.custom_minimum_size.x = MAX_WIDTH
+	custom_minimum_size.x = MAX_WIDTH
 
 func display_text(text_to_display: String):
 	text = text_to_display
 	letter_index = 0
 	word_count = 0
 	label.text = ""
-	custom_minimum_size.x = 655
-	label.custom_minimum_size.x = 655
-
-	if size.x > MAX_WIDTH:
-		label.autowrap_mode = TextServer.AUTOWRAP_WORD
-		custom_minimum_size.y = size.y
 
 	await get_tree().process_frame
 
+	# Calculate final position
 	var screen_size = get_viewport().get_visible_rect().size
-	var box_size = background.size
-	var margin = Vector2(-12, 980)
-	global_position = screen_size - box_size - margin
+	var label_size = label.get_combined_minimum_size()
+	var padded_size = label_size + PADDING
+	background.custom_minimum_size = padded_size
 
+	var final_position = Vector2(screen_size.x - MAX_WIDTH - 70, screen_size.y - 1055)
+
+	# Start off-screen to the right
+	global_position = Vector2(screen_size.x + 150, final_position.y)
+
+	# Animate smooth slide-in
+	var tween = create_tween()
+	tween.tween_property(self, "global_position", final_position, 0.7)\
+		.set_trans(Tween.TRANS_QUINT)\
+		.set_ease(Tween.EASE_OUT)
+
+	await tween.finished
 	_display_letter()
 
 func _display_letter():
 	if letter_index >= text.length():
 		finished_displaying.emit()
+		await get_tree().create_timer(1.0).timeout  # ⏳ Wait 1 second
+		animate_exit()
 		return
 
 	var char = text[letter_index]
 	label.text += char
 
-	# 🔊 Play beep sound with randomized pitch
+	# 🔊 Beep for non-space characters
 	if char != " " and char != "\n":
-		if beep != null and beep.stream != null and beep.is_inside_tree():
+		if beep and beep.stream and beep.is_inside_tree():
 			beep.pitch_scale = randf_range(0.95, 1.05)
 			beep.stop()
 			beep.play()
 
+	# Line break after 12 words
 	if char == " ":
 		word_count += 1
 		if word_count >= 12:
@@ -63,9 +78,11 @@ func _display_letter():
 			word_count = 0
 
 	await get_tree().process_frame
+
+	# Resize background based on label content
 	var label_size = label.get_combined_minimum_size()
-	var padded_size = label_size + Vector2(32, 32)
-	background.size = padded_size
+	var padded_size = label_size + PADDING
+	background.custom_minimum_size = padded_size
 
 	letter_index += 1
 
@@ -79,3 +96,21 @@ func _display_letter():
 
 func _on_letter_display_timer_timeout():
 	_display_letter()
+
+func animate_exit():
+	var current_pos = global_position
+	var pullback_pos = current_pos - Vector2(40, 0)  # Gentle slide left
+	var exit_pos = Vector2(get_viewport().get_visible_rect().size.x + 150, current_pos.y)  # Off-screen right
+
+	var tween = create_tween()
+
+	# Step 1: Pull back slightly
+	tween.tween_property(self, "global_position", pullback_pos, 0.4)\
+		.set_trans(Tween.TRANS_QUAD)\
+		.set_ease(Tween.EASE_IN_OUT)
+
+	# Step 2: Smooth swoosh out right
+	tween.tween_property(self, "global_position", exit_pos, 0.8)\
+		.set_trans(Tween.TRANS_QUINT)\
+		.set_ease(Tween.EASE_IN)\
+		.set_delay(0.1) 

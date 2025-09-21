@@ -21,7 +21,7 @@ var is_dialog_active = false
 var can_advance_line = false
 
 # 🧟 Mob Spawning
-var mob2_spawn_block_time := 18.0
+var mob2_spawn_block_time := 97.0
 var mob_spawn_interval := 0.4
 var mob2_spawn_interval := 5.0
 var mob_spawn_timer := 0.0
@@ -51,9 +51,12 @@ func _ready():
 	
 
 # second speech 
-	await get_tree().create_timer(5.0).timeout
+	await get_tree().create_timer(30.0).timeout
 	start_dialog(position, ["Advanced Aliens will begin their invasion in 67 seconds"])	
 
+
+	await get_tree().create_timer(45.0).timeout
+	start_dialog(position, ["Each advanced alien is worth 5 points. The faster they move, the less HP they have."])	
 
 func _process(delta):
 	if not allow_spawning:
@@ -205,7 +208,7 @@ func fade_out_music(duration := 5.0):
 	music.volume_db = end_volume 
 
 var last_milestone := 0
-
+var is_milestone_animating := false
 
 func _on_points_changed(new_value: int) -> void:
 	# Update score text
@@ -221,7 +224,10 @@ func _on_points_changed(new_value: int) -> void:
 		# 🔊 Play the Epic sound effect
 		$Epic.play()
 		animation_player.play("glow")
+
 		# 💙 Special milestone bounce + glow
+		is_milestone_animating = true  # 🔒 Lock normal bounce
+
 		var big_tween = create_tween()
 		big_tween.tween_property(score, "scale", Vector2(1.45, 1.45), 0.12)\
 			.set_trans(Tween.TRANS_SINE)\
@@ -233,7 +239,14 @@ func _on_points_changed(new_value: int) -> void:
 		var flash = create_tween()
 		flash.tween_property(score, "modulate", Color(0.3, 0.6, 1.0), 0.1)
 		flash.tween_property(score, "modulate", Color(1, 1, 1), 0.2).set_delay(0.1)
+
+		await get_tree().create_timer(0.2).timeout  # ⏳ Unlock after 0.2s
+		is_milestone_animating = false
+
 	else:
+		if is_milestone_animating:
+			return  # 🚫 Skip normal bounce during milestone animation
+
 		# ⚪ Normal bounce
 		var tween = create_tween()
 		tween.tween_property(score, "scale", Vector2(1.1, 1.1), 0.08)\

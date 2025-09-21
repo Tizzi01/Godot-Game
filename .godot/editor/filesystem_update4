@@ -17,3 +17,5 @@ res://Demo/Scenes/beepy.tscn
 res://timer.tscn
 res://Demo/Scripts/progress_bar.gd
 res://Demo/Scripts/game.gd
+res://text_box.gd
+res://Demo/Scripts/mob.gd

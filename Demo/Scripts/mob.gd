@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 var health = 10
+var last_known_direction := Vector2.ZERO
 
 @onready var player = get_node("/root/Game/Player")
 @onready var animation_player = $AnimationPlayer
@@ -17,8 +18,12 @@ func _ready():
 
 func _physics_process(delta):
 	# Movement toward player
-	var direction = global_position.direction_to(player.global_position)
-	velocity = direction * 100.0
+	if not player.is_hidden_from_mobs:
+		var direction = global_position.direction_to(player.global_position)
+		last_known_direction = direction
+		velocity = direction * 100.0
+	else:
+		velocity = last_known_direction * 100.0
 	move_and_slide()
 
 	# Flip visuals to face player
@@ -49,4 +54,4 @@ func take_damage():
 		smoke.global_position = global_position
 
 func _on_game_over_triggered():
-	queue_free()
+	queue_free() 

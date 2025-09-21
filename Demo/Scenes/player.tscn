@@ -15,7 +15,7 @@ script/source = "extends CharacterBody2D
 class_name Player
 signal player_damaged
 @onready var dash_sfx = $DashSFX
-
+var is_hidden_from_mobs := false
 @export var walk_speed = 150.0
 @export var run_speed = 250.0
 @export_range(0,1) var acceleration = 0.1
@@ -190,7 +190,12 @@ func _physics_process(delta):
 			velocity = Vector2.ZERO
 			$PlayerSprite/AnimationPlayer.play(\"Idle\")
 			$TP1.play()
-			tp_anim_player.play(\"TP\")
+			tp_anim_player.play(\"TP\") 
+			
+			is_hidden_from_mobs = true
+			await get_tree().create_timer(0.4).timeout
+			is_hidden_from_mobs = false
+			
 		else:
 			var collision = result[0]
 			if collision.has(\"normal\"):
@@ -209,7 +214,12 @@ func _physics_process(delta):
 					velocity = Vector2.ZERO
 					$PlayerSprite/AnimationPlayer.play(\"Idle\")
 					$TP1.play()
-					tp_anim_player.play(\"TP\")
+					tp_anim_player.play(\"TP\") 
+					
+					is_hidden_from_mobs = true
+					await get_tree().create_timer(0.2).timeout
+					is_hidden_from_mobs = false
+					
 				else:
 					print(\"Blocked! Can't teleport too close to wall.\")
 			else:
