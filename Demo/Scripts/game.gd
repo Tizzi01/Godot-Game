@@ -30,33 +30,29 @@ const MAX_SLIMES := 500
 const MAX_MOB2 := 50
 var allow_spawning := true
 
-func _ready(): 
-	
+func _ready():
+	PointsManager.points = 0
 	PointsManager.points_changed.connect(_on_points_changed)
 	score.text = "Score: %d" % PointsManager.points
-	
+
 	randomize()
 	IntroMusic1.stop_IntroMusic()
 	player.health_depleted.connect(_on_game_over)
 	game_over_screen.game_over_glitched.connect(_on_game_over_glitched)
 	music.play()
 
-	# 🗨️ Start dialog after short delay
 	await get_tree().create_timer(1.0).timeout
 	var screen_size = get_viewport().get_visible_rect().size
 	var box_width = 400
 	var margin = 32
 	var position = Vector2(screen_size.x - box_width - margin, screen_size.y - 96)
 	start_dialog(position, ["Incoming Threat: Space Slimes are launching an invasion"])
-	
 
-# second speech 
 	await get_tree().create_timer(30.0).timeout
-	start_dialog(position, ["Advanced Aliens will begin their invasion in 67 seconds"])	
-
+	start_dialog(position, ["Advanced Aliens will begin their invasion in 67 seconds"])
 
 	await get_tree().create_timer(45.0).timeout
-	start_dialog(position, ["Each advanced alien is worth 5 points. The faster they move, the less HP they have."])	
+	start_dialog(position, ["Each advanced alien is worth 5 points. The faster they move, the less HP they have."])
 
 func _process(delta):
 	if not allow_spawning:
@@ -99,7 +95,7 @@ func _on_game_over():
 	game_over_screen.trigger_game_over()
 	allow_spawning = false
 	emit_signal("game_over_triggered")
-	fade_out_music()
+	await fade_out_music()
 
 func _on_game_over_glitched():
 	allow_spawning = false
@@ -116,13 +112,12 @@ func _on_restart_pressed():
 			AudioServer.remove_bus_effect(bus_index, i)
 			break
 
+	PointsManager.points = 0
 	get_tree().reload_current_scene()
-	
 
 func _on_main_menu_pressed():
 	print("🏠 Main Menu button pressed")
 
-	# 🧼 Remove reverb effect from Master bus
 	var bus_index := AudioServer.get_bus_index("Master")
 	for i in range(AudioServer.get_bus_effect_count(bus_index)):
 		var effect := AudioServer.get_bus_effect(bus_index, i)
@@ -134,7 +129,8 @@ func _on_main_menu_pressed():
 
 func _input(event):
 	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
-		game_over_screen.visible = not game_over_screen.visible
+		if allow_spawning:
+			game_over_screen.visible = not game_over_screen.visible
 
 # 💬 Dialog System
 func start_dialog(position: Vector2, lines: Array[String]):
@@ -185,48 +181,40 @@ func _on_text_box_finished_displaying():
 	print("✅ Text box removed. Dialog reset.")
 
 # 🔊 Music Fade-Out
-func fade_out_music(duration := 5.0):
+func fade_out_music(duration := 5.0) -> void:
+	# Make sure music is routed to Master bus
+	music.bus = "Master"
+
+	# Add reverb effect to Master bus
 	var bus_index := AudioServer.get_bus_index("Master")
-	if AudioServer.get_bus_effect_count(bus_index) == 0:
-		var reverb := AudioEffectReverb.new()
-		reverb.room_size = 0.8
-		reverb.damping = 0.3
-		reverb.wet = 0.6
-		reverb.dry = 0.4
-		AudioServer.add_bus_effect(bus_index, reverb, 0)
+	var reverb := AudioEffectReverb.new()
+	reverb.room_size = 0.8
+	reverb.damping = 0.3
+	reverb.wet = 0.6
+	reverb.dry = 0.4
+	AudioServer.add_bus_effect(bus_index, reverb, 0)
 
-	var start_volume := music.volume_db
-	var end_volume := -80.0
-	var time_passed := 0.0
+	# Use Tween to fade out volume_db
+	var tween := create_tween()
+	tween.tween_property(music, "volume_db", -80.0, duration)\
+		.set_trans(Tween.TRANS_LINEAR)\
+		.set_ease(Tween.EASE_IN_OUT)
 
-	while time_passed < duration:
-		var t := time_passed / duration
-		music.volume_db = lerp(start_volume, end_volume, t)
-		await get_tree().create_timer(0.05).timeout
-		time_passed += 0.05
+	await tween.finished
 
-	music.volume_db = end_volume 
-
+# 🏆 Score Update
 var last_milestone := 0
 var is_milestone_animating := false
 
 func _on_points_changed(new_value: int) -> void:
-	# Update score text
 	score.text = "Score: %d" % new_value
-
-	# Ensure bounce scales from the center
 	score.pivot_offset = score.size / 2
 
-	# Check if we've crossed the next 100-point milestone
 	if new_value >= last_milestone + 10:
-		last_milestone = new_value - (new_value % 10)  # Snap to nearest lower 100
-
-		# 🔊 Play the Epic sound effect
+		last_milestone = new_value - (new_value % 10)
 		$Epic.play()
 		animation_player.play("glow")
-
-		# 💙 Special milestone bounce + glow
-		is_milestone_animating = true  # 🔒 Lock normal bounce
+		is_milestone_animating = true
 
 		var big_tween = create_tween()
 		big_tween.tween_property(score, "scale", Vector2(1.45, 1.45), 0.12)\
@@ -240,14 +228,12 @@ func _on_points_changed(new_value: int) -> void:
 		flash.tween_property(score, "modulate", Color(0.3, 0.6, 1.0), 0.1)
 		flash.tween_property(score, "modulate", Color(1, 1, 1), 0.2).set_delay(0.1)
 
-		await get_tree().create_timer(0.2).timeout  # ⏳ Unlock after 0.2s
+		await get_tree().create_timer(0.2).timeout
 		is_milestone_animating = false
-
 	else:
 		if is_milestone_animating:
-			return  # 🚫 Skip normal bounce during milestone animation
+			return
 
-		# ⚪ Normal bounce
 		var tween = create_tween()
 		tween.tween_property(score, "scale", Vector2(1.1, 1.1), 0.08)\
 			.set_trans(Tween.TRANS_SINE)\

@@ -1,8 +1,8 @@
+Panel
 PointLight2D
 AnimationPlayer
 AudioStreamPlayer
 Label
-Panel
 CanvasLayer
 AudioStreamPlayer2D
 RichTextLabel
