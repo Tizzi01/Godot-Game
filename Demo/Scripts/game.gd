@@ -19,7 +19,6 @@ var dialog_lines: Array[String]
 var current_line_index: int = 0
 var is_dialog_active = false
 var can_advance_line = false
-
 # 🧟 Mob Spawning
 var mob2_spawn_block_time := 97.0
 var mob_spawn_interval := 0.4
@@ -121,7 +120,7 @@ func _on_restart_pressed():
 			break
 
 	PointsManager.points = 0
-	get_tree().reload_current_scene()
+	get_tree().reload_current_scene() 
 
 func _on_main_menu_pressed():
 	print("🏠 Main Menu button pressed")
@@ -255,6 +254,12 @@ func _on_points_changed(new_value: int) -> void:
 
 func _on_shop_pressed() -> void:
 	Click.play_ClickSound()
+
+	var shop_instance = shop_scene.instantiate()
+	shop_instance.name = "ShopOverlay"
+
+	# ✅ Connect the signal AFTER shop_instance is created
+	shop_instance.space_shift_button_pressed.connect(player._on_tp_signal_received)
 	
 	# Disable the shop button immediately
 	shop.disabled = true
@@ -264,7 +269,6 @@ func _on_shop_pressed() -> void:
 		print("🛍️ Shop already open.")
 		return
 
-	var shop_instance = shop_scene.instantiate()
 	shop_instance.name = "ShopOverlay"
 
 	var ui_layer = get_tree().current_scene.get_node("CanvasLayer3")

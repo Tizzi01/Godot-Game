@@ -3,7 +3,10 @@ extends Control
 @onready var space_shift_button = $SpaceShift
 @onready var back_button = $Back
 var shop_open = false
+
+# 📢 Signals
 signal shop_closed
+signal space_shift_button_pressed  # ✅ New signal
 
 func _ready() -> void:
 	# Scale the shop to 80% of its original size
@@ -25,24 +28,25 @@ func _ready() -> void:
 		print("❌ Back button not found")
 
 func _on_space_shift_pressed() -> void:
-	var player = get_tree().current_scene.get_node("Player")
-	print("🔍 Shop: player node =", player)
+	var player_list = get_tree().get_nodes_in_group("player")
+	if player_list.size() == 0:
+		print("❌ No player found in 'player' group")
+		return
 
-	if player and player.has_method("activate_space_shift"):
-		player.activate_space_shift()
+	var player = player_list[0]
+	print("🔍 Shop: player from group =", player)
 
 	var cost = 5
 	if PointsManager.points >= cost:
 		PointsManager.add_points(-cost)
 		print("🛸 SpaceShift purchased! -5 points")
 
-		if player and player.has_method("activate_space_shift"):
-			player.activate_space_shift()
+		player.has_space_shift = true
+		print("🛠️ Shop: has_space_shift set to", player.has_space_shift)
 
-			# ✅ Unlock teleport and confirm
-			print("🛠️ Shop: Setting has_space_shift to true on player")
-			player.has_space_shift = true
-			print("🛠️ Shop: player.has_space_shift =", player.has_space_shift)
+		# ✅ Emit signal ONLY after successful purchase
+		emit_signal("space_shift_button_pressed")
+		print("📡 Signal emitted: space_shift_button_pressed")
 	else:
 		print("❌ Not enough money for SpaceShift")
 
