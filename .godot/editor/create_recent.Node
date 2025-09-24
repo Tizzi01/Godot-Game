@@ -1,9 +1,10 @@
+AnimationPlayer
+PointLight2D
+AnimationTree
 Panel
 Control
 Timer
-AnimationPlayer
 Sprite2D
-PointLight2D
 AudioStreamPlayer
 Label
 CanvasLayer
@@ -11,4 +12,3 @@ AudioStreamPlayer2D
 RichTextLabel
 MarginContainer
 NinePatchRect
-Node

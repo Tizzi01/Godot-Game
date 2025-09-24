@@ -3,12 +3,14 @@ extends Control
 @onready var space_shift_button = $SpaceShift
 @onready var back_button = $Back
 var shop_open = false
+@onready var animation_player: AnimationPlayer = $Panel/Sprite2D/AnimationPlayer
 
 # 📢 Signals
 signal shop_closed
 signal space_shift_button_pressed  # ✅ New signal
 
 func _ready() -> void:
+	animation_player.play("ShopIdle")
 	# Scale the shop to 80% of its original size
 	scale = Vector2(0.75, 0.75)
 

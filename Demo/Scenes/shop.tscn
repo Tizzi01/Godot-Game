@@ -1,7 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://bwc6d4yf3g328"]
+[gd_scene load_steps=20 format=3 uid="uid://bwc6d4yf3g328"]
 
 [ext_resource type="Script" uid="uid://csyxdcof2prv5" path="res://Demo/Scripts/shop.gd" id="1_kwrf6"]
 [ext_resource type="Texture2D" uid="uid://canfsqyqpe8qy" path="res://Folder/Assets/Sprites/Player Animation/idle/0.png" id="2_de8nq"]
+[ext_resource type="Shader" uid="uid://coyggroig6t4b" path="res://Demo/Scenes/glitchy.gdshader" id="2_kwrf6"]
 [ext_resource type="Script" uid="uid://byvel7rp6w11c" path="res://Demo/Scripts/sprite_2d.gd" id="3_osvdh"]
 [ext_resource type="FontFile" uid="uid://ctp71ddagy2v8" path="res://Demo/Stuff/fonts/Roquen DEMO.otf" id="4_x00t5"]
 
@@ -13,6 +14,185 @@ border_width_right = 11
 border_width_bottom = 11
 border_color = Color(0, 0, 0, 1)
 shadow_color = Color(0, 0, 0, 0.658824)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_t5een"]
+shader = ExtResource("2_kwrf6")
+shader_parameter/glitch_intensity = 0.0
+shader_parameter/glitch_offset = 0.5
+shader_parameter/glitch_speed = 1.0
+
+[sub_resource type="Animation" id="Animation_u52t5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/glitch_offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.5]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:material:shader_parameter/glitch_intensity")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:material:shader_parameter/glitch_speed")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(341, 558)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("PointLight2D:enabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("PointLight2D:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_ltrih"]
+resource_name = "ShopIdle"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/glitch_offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1),
+"transitions": PackedFloat32Array(-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2),
+"update": 0,
+"values": [0.5, 0.565, 0.0, 0.121, 0.056, 0.0, 0.082, 0.0, 0.05, 0.05, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:material:shader_parameter/glitch_intensity")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1),
+"transitions": PackedFloat32Array(-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2),
+"update": 0,
+"values": [0.0, 0.017, 0.0, 0.282, 0.148, 0.0, 0.21, 0.0, 0.381, 0.143, 0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:material:shader_parameter/glitch_speed")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1),
+"transitions": PackedFloat32Array(-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2),
+"update": 0,
+"values": [1.0, 2.645, 0.0, 5.22, 1.8, 1.8, 1.324, 1.757, 4.96, 4.21, 0.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(-2, -2, -2),
+"update": 0,
+"values": [Vector2(341, 558), Vector2(341, 539.75), Vector2(341, 558)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("PointLight2D:enabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [false, false, false, true, true, false, true, false, true, true, false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("PointLight2D:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [true, true, true, false, true, false, false, true, false]
+}
+
+[sub_resource type="Animation" id="Animation_kwrf6"]
+resource_name = "float"
+length = 1.5
+loop_mode = 1
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_yhb8x"]
+_data = {
+&"RESET": SubResource("Animation_u52t5"),
+&"ShopIdle": SubResource("Animation_ltrih"),
+&"float": SubResource("Animation_kwrf6")
+}
+
+[sub_resource type="Gradient" id="Gradient_kwrf6"]
+colors = PackedColorArray(0.99779, 0.99779, 0.99779, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_t5een"]
+gradient = SubResource("Gradient_kwrf6")
+width = 999
+height = 999
+fill = 1
+fill_from = Vector2(0.485043, 0.508547)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kwrf6"]
 
@@ -62,6 +242,7 @@ grow_vertical = 2
 script = ExtResource("1_kwrf6")
 
 [node name="Panel" type="Panel" parent="."]
+light_mask = 0
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -71,15 +252,21 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_x00t5")
 
 [node name="Sprite2D" type="Sprite2D" parent="Panel"]
-position = Vector2(937, 419)
+material = SubResource("ShaderMaterial_t5een")
+position = Vector2(341, 558)
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("2_de8nq")
 script = ExtResource("3_osvdh")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Panel/Sprite2D"]
+libraries = {
+&"": SubResource("AnimationLibrary_yhb8x")
+}
+autoplay = "ShopIdle"
 
-[node name="GlitchTimer" type="Timer" parent="Panel/Sprite2D"]
-autostart = true
+[node name="PointLight2D" type="PointLight2D" parent="Panel/Sprite2D"]
+visible = false
+texture = SubResource("GradientTexture2D_t5een")
 
 [node name="Back" type="Button" parent="Panel"]
 layout_mode = 1
@@ -88,10 +275,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -229.0
-offset_top = 346.0
-offset_right = 229.0
-offset_bottom = 422.0
+offset_left = -230.0
+offset_top = 398.0
+offset_right = 228.0
+offset_bottom = 474.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
@@ -109,10 +296,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 385.0
-offset_top = 344.0
-offset_right = 843.0
-offset_bottom = 420.0
+offset_left = -817.0
+offset_top = 322.0
+offset_right = -359.0
+offset_bottom = 398.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
@@ -121,7 +308,8 @@ theme_override_font_sizes/font_size = 33
 theme_override_styles/focus = SubResource("StyleBoxEmpty_t5een")
 theme_override_styles/hover = SubResource("StyleBoxFlat_u52t5")
 theme_override_styles/normal = SubResource("StyleBoxFlat_yhb8x")
-text = "Space Shift"
+text = "Space Shift 
+5 points"
 
 [connection signal="pressed" from="Panel/Back" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="SpaceShift" to="." method="_on_space_shift_pressed"]
