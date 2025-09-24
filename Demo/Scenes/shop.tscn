@@ -1,9 +1,56 @@
-[gd_scene load_steps=3 format=3 uid="uid://bwc6d4yf3g328"]
+[gd_scene load_steps=12 format=3 uid="uid://bwc6d4yf3g328"]
 
-[ext_resource type="Texture2D" uid="uid://cnui8pn0grhx" path="res://Demo/Stuff/sprites/Screenshot 2025-09-08 205345.png" id="1_kupst"]
+[ext_resource type="Script" uid="uid://csyxdcof2prv5" path="res://Demo/Scripts/shop.gd" id="1_kwrf6"]
+[ext_resource type="Texture2D" uid="uid://canfsqyqpe8qy" path="res://Folder/Assets/Sprites/Player Animation/idle/0.png" id="2_de8nq"]
+[ext_resource type="Script" uid="uid://byvel7rp6w11c" path="res://Demo/Scripts/sprite_2d.gd" id="3_osvdh"]
+[ext_resource type="FontFile" uid="uid://ctp71ddagy2v8" path="res://Demo/Stuff/fonts/Roquen DEMO.otf" id="4_x00t5"]
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_de8nq"]
-texture = ExtResource("1_kupst")
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x00t5"]
+bg_color = Color(0.180392, 0.247059, 0.368627, 1)
+border_width_left = 11
+border_width_top = 11
+border_width_right = 11
+border_width_bottom = 11
+border_color = Color(0, 0, 0, 1)
+shadow_color = Color(0, 0, 0, 0.658824)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kwrf6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t5een"]
+bg_color = Color(0.396078, 0.686275, 1, 1)
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ltrih"]
+bg_color = Color(0.105882, 0.156863, 0.270588, 1)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+shadow_color = Color(0, 0, 0, 0.521569)
+shadow_size = 3
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t5een"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u52t5"]
+bg_color = Color(0.396078, 0.686275, 1, 1)
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yhb8x"]
+bg_color = Color(0.105882, 0.156863, 0.270588, 1)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+shadow_color = Color(0, 0, 0, 0.521569)
+shadow_size = 3
 
 [node name="Shop" type="Control"]
 layout_mode = 3
@@ -12,6 +59,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_kwrf6")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1
@@ -20,4 +68,61 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxTexture_de8nq")
+theme_override_styles/panel = SubResource("StyleBoxFlat_x00t5")
+
+[node name="Sprite2D" type="Sprite2D" parent="Panel"]
+position = Vector2(937, 419)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_de8nq")
+script = ExtResource("3_osvdh")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Panel/Sprite2D"]
+
+[node name="GlitchTimer" type="Timer" parent="Panel/Sprite2D"]
+autostart = true
+
+[node name="Back" type="Button" parent="Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -229.0
+offset_top = 346.0
+offset_right = 229.0
+offset_bottom = 422.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_x00t5")
+theme_override_font_sizes/font_size = 33
+theme_override_styles/focus = SubResource("StyleBoxEmpty_kwrf6")
+theme_override_styles/hover = SubResource("StyleBoxFlat_t5een")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ltrih")
+text = "Space Shift"
+
+[node name="SpaceShift" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 385.0
+offset_top = 344.0
+offset_right = 843.0
+offset_bottom = 420.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_x00t5")
+theme_override_font_sizes/font_size = 33
+theme_override_styles/focus = SubResource("StyleBoxEmpty_t5een")
+theme_override_styles/hover = SubResource("StyleBoxFlat_u52t5")
+theme_override_styles/normal = SubResource("StyleBoxFlat_yhb8x")
+text = "Back
+"
+
+[connection signal="pressed" from="Panel/Back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="SpaceShift" to="." method="_on_space_shift_pressed"]

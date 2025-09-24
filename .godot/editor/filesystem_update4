@@ -1,4 +1,4 @@
-res://Folder/Scenes/game.tscn
+res://Demo/scenes/shop.tscn
 res://Demo/Scripts/hitflash.tres
 res://Folder/Scenes/White2.tres
 res://Demo/Scenes/glitchy.gdshader
@@ -7,14 +7,12 @@ res://Demo/Scripts/bulletglow.gdshader
 res://Demo/Scripts/hitflash2.tres
 res://Folder/Scenes/white.tres
 res://Demo/Scenes/Glitch.tres
+res://Demo/Scripts/shop.gd
+res://Folder/Scenes/game.tscn
 res://Demo/Scenes/player.tscn
 res://Folder/Scenes/mob.tscn
 res://Folder/Scenes/mob2.tscn
 res://Folder/Scenes/main_menu.tscn
 res://Folder/Scenes/settings.tscn
-res://Demo/Scenes/text_box.tscn
-res://Demo/Scenes/beepy.tscn
-res://timer.tscn
 res://Demo/Scripts/game.gd
-res://Demo/Scripts/background_music.gd
-res://Demo/Scripts/music.gd
+res://Demo/Scripts/sprite_2d.gd

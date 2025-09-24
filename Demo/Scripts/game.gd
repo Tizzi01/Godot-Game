@@ -10,7 +10,7 @@ signal game_over_triggered
 @onready var path_follow = %PathFollow2D
 @onready var score: Label = $CanvasLayer4/Score
 @onready var animation_player: AnimationPlayer = $CanvasLayer4/Score/AnimationPlayer
-
+@onready var shop_scene = preload("res://Demo/Scenes/shop.tscn")
 # 💬 Dialog System
 @onready var text_box_scene = preload("res://Demo/Scenes/text_box.tscn")
 var text_box
@@ -241,3 +241,53 @@ func _on_points_changed(new_value: int) -> void:
 		tween.tween_property(score, "scale", Vector2(1, 1), 0.08)\
 			.set_trans(Tween.TRANS_SINE)\
 			.set_ease(Tween.EASE_IN)
+			
+			
+func _on_shop_closed() -> void:
+	$ShopButton.disabled = false
+	print("✅ Shop closed, button re-enabled")
+	
+func _on_shop_pressed() -> void:
+	Click.play_ClickSound()
+
+	# Disable the shop button so it can't be pressed again
+	$ShopButton.disabled = true
+
+	# Prevent duplicate shop opening
+	if get_tree().current_scene.has_node("ShopOverlay"):
+		print("🛍️ Shop already open.")
+		return
+
+	var shop_instance = shop_scene.instantiate()
+	shop_instance.name = "ShopOverlay"
+
+	var ui_layer = get_tree().current_scene.get_node("CanvasLayer3")
+	if ui_layer:
+		ui_layer.add_child(shop_instance)
+
+		# Connect shop_closed signal to re-enable the button
+		shop_instance.shop_closed.connect(_on_shop_closed)
+
+		# Glitch effect
+		shop_instance.scale = Vector2(0.75, 0.75)
+		shop_instance.modulate = Color(0.2, 0.4, 1.0, 0.0)
+
+		var tween = create_tween()
+		tween.tween_property(shop_instance, "modulate:a", 1.0, 0.02)\
+			.set_trans(Tween.TRANS_LINEAR)\
+			.set_ease(Tween.EASE_OUT)
+
+		for i in range(6):
+			await get_tree().create_timer(0.008).timeout
+			shop_instance.visible = false
+			await get_tree().create_timer(0.008).timeout
+			shop_instance.visible = true
+
+			var r = 0.2 + randf() * 0.1
+			var g = 0.4 + randf() * 0.1
+			var b = 1.0
+			shop_instance.modulate = Color(r, g, b, 1.0)
+
+		shop_instance.modulate = Color(1, 1, 1, 1)
+	else:
+		print("❌ CanvasLayer3 not found. Cannot open shop.")
