@@ -31,6 +31,14 @@ const MAX_MOB2 := 50
 var allow_spawning := true
 
 func _ready():
+	# 🧼 Clean up any leftover reverb effects
+	var bus_index := AudioServer.get_bus_index("Master")
+	for i in range(AudioServer.get_bus_effect_count(bus_index)):
+		var effect := AudioServer.get_bus_effect(bus_index, i)
+		if effect is AudioEffectReverb:
+			AudioServer.remove_bus_effect(bus_index, i)
+			break
+
 	PointsManager.points = 0
 	PointsManager.points_changed.connect(_on_points_changed)
 	score.text = "Score: %d" % PointsManager.points
@@ -243,15 +251,13 @@ func _on_points_changed(new_value: int) -> void:
 			.set_ease(Tween.EASE_IN)
 			
 			
-func _on_shop_closed() -> void:
-	$ShopButton.disabled = false
-	print("✅ Shop closed, button re-enabled")
-	
+@onready var shop: Button = $CanvasLayer4/ShopButton/Shop
+
 func _on_shop_pressed() -> void:
 	Click.play_ClickSound()
-
-	# Disable the shop button so it can't be pressed again
-	$ShopButton.disabled = true
+	
+	# Disable the shop button immediately
+	shop.disabled = true
 
 	# Prevent duplicate shop opening
 	if get_tree().current_scene.has_node("ShopOverlay"):
@@ -265,7 +271,7 @@ func _on_shop_pressed() -> void:
 	if ui_layer:
 		ui_layer.add_child(shop_instance)
 
-		# Connect shop_closed signal to re-enable the button
+		# Re-enable the button when shop closes
 		shop_instance.shop_closed.connect(_on_shop_closed)
 
 		# Glitch effect
@@ -291,3 +297,7 @@ func _on_shop_pressed() -> void:
 		shop_instance.modulate = Color(1, 1, 1, 1)
 	else:
 		print("❌ CanvasLayer3 not found. Cannot open shop.")
+
+func _on_shop_closed() -> void:
+	shop.disabled = false
+	print("✅ Shop closed, button re-enabled")

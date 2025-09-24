@@ -20,7 +20,7 @@ var is_hidden_from_mobs := false
 @export var run_speed = 250.0
 @export_range(0,1) var acceleration = 0.1
 @export_range(0,1) var decceleration = 0.1
-
+var has_space_shift := false
 var health = 100.0
 
 @onready var tp_anim_player: AnimationPlayer = $PlayerSprite/HitFlash
@@ -168,6 +168,13 @@ func _physics_process(delta):
 		dash_timer -= delta
 
 	if Input.is_action_just_pressed(\"tp\"):
+		print(\"🎯 TP key pressed\")
+	print(\"👀 has_space_shift =\", has_space_shift)
+
+	if has_space_shift:
+		print(\"✅ TP unlocked — running teleport\")
+
+		# ✅ teleport logic...
 		var target_pos = get_global_mouse_position()
 		var space_state = get_world_2d().direct_space_state
 		var shape = $CollisionShape2D.shape.duplicate()
@@ -191,13 +198,11 @@ func _physics_process(delta):
 			$PlayerSprite/AnimationPlayer.play(\"Idle\")
 			$TP1.play()
 			tp_anim_player.play(\"TP\")  
-			
 
-			
 			is_hidden_from_mobs = true
 			await get_tree().create_timer(0.4).timeout
 			is_hidden_from_mobs = false
-			
+
 		else:
 			var collision = result[0]
 			if collision.has(\"normal\"):
@@ -217,25 +222,17 @@ func _physics_process(delta):
 					$PlayerSprite/AnimationPlayer.play(\"Idle\")
 					$TP1.play()
 					tp_anim_player.play(\"TP\") 
-					
-			
-					
+
 					is_hidden_from_mobs = true
 					await get_tree().create_timer(0.2).timeout
 					is_hidden_from_mobs = false
-					
+
 				else:
 					print(\"Blocked! Can't teleport too close to wall.\")
 			else:
 				print(\"Collision has no normal — skipping safe push.\")
-
-	if velocity == Vector2.ZERO and not teleporting and not is_dashing:
-		if Input.is_action_pressed(\"left\") or Input.is_action_pressed(\"right\") or Input.is_action_pressed(\"up\") or Input.is_action_pressed(\"down\"):
-			velocity = input_vector * walk_speed
-			print(\"✅ Unstuck player with input\")
-
-	if is_on_floor() and velocity.x == 0:
-		$PlayerSprite/AnimationPlayer.play(\"Idle\") 
+	else:
+		print(\"❌ TP locked — not purchased\")
 		
 	move_and_slide() 
 	
