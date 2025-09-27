@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=3 uid="uid://17ihev8gmx8p"]
+[gd_scene load_steps=53 format=3 uid="uid://17ihev8gmx8p"]
 
 [ext_resource type="Script" uid="uid://be05spmmaewml" path="res://Demo/Scripts/game.gd" id="1_naqcg"]
 [ext_resource type="Texture2D" uid="uid://bnmfh85lwxuid" path="res://Demo/Stuff/sprites/world_tileset.png" id="1_wi88m"]
@@ -19,9 +19,15 @@
 [ext_resource type="AudioStream" uid="uid://cvdi6lca0gk0n" path="res://Demo/Stuff/music/Godot BG music.MP3" id="8_4bs2y"]
 [ext_resource type="Texture2D" uid="uid://dv8q78bspppr2" path="res://Folder/Assets/Sprites/final blue line.png" id="8_14idw"]
 [ext_resource type="Script" uid="uid://dwmnuhgxrlc5g" path="res://Demo/Scripts/node.gd" id="8_sfajg"]
+[ext_resource type="Script" uid="uid://bdftalitd7jex" path="res://Folder/Scenes/tpcd.gd" id="8_yh3bl"]
+[ext_resource type="Script" uid="uid://413vw4gquxvy" path="res://Folder/Scenes/label.gd" id="9_j32mq"]
 [ext_resource type="Texture2D" uid="uid://daq51b7c6g0cy" path="res://Folder/Assets/Sprites/Player Animation/idle_right/Scripts/BGv7.png" id="10_14idw"]
 [ext_resource type="Script" uid="uid://6jmu2j03dt71" path="res://Demo/Scripts/background_music.gd" id="20_2x3so"]
 [ext_resource type="AudioStream" uid="uid://dg5yucn8p5t8t" path="res://Demo/Stuff/music/Epic.mp3" id="20_66lna"]
+
+[sub_resource type="Curve" id="Curve_yh3bl"]
+_data = [Vector2(0, 0.22), 0.0, 0.0, 0, 0, Vector2(0.214765, 0.904276), 0.0, 0.0, 0, 0, Vector2(0.535235, 0.383319), 0.0, 0.0, 0, 0, Vector2(1, 0.97791), 0.0, 0.0, 0, 0]
+point_count = 4
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vonys"]
 texture = ExtResource("2_61t74")
@@ -178,15 +184,15 @@ corner_radius_bottom_left = 8
 shadow_color = Color(0, 0, 0, 0.521569)
 shadow_size = 3
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ec27x"]
-bg_color = Color(0.105882, 0.156863, 0.270588, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j32mq"]
+bg_color = Color(0.396078, 0.686275, 1, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_stcor"]
-bg_color = Color(0.396078, 0.686275, 1, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nq47c"]
+bg_color = Color(0.105882, 0.156863, 0.270588, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
@@ -219,6 +225,20 @@ corner_radius_top_left = 22
 corner_radius_top_right = 22
 corner_radius_bottom_right = 22
 corner_radius_bottom_left = 22
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ec27x"]
+bg_color = Color(0.105882, 0.156863, 0.270588, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_stcor"]
+bg_color = Color(0.396078, 0.686275, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8i32r"]
 texture = ExtResource("1_wi88m")
@@ -406,6 +426,7 @@ point_count = 5
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_naqcg")
+cooldown_curve = SubResource("Curve_yh3bl")
 metadata/_edit_horizontal_guides_ = [-287.0]
 
 [node name="CanvasLayer4" type="CanvasLayer" parent="."]
@@ -511,20 +532,34 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -636.0
-offset_top = 384.0
-offset_right = -604.0
-offset_bottom = 664.0
+offset_left = -681.0
+offset_top = 429.0
+offset_right = -659.0
+offset_bottom = 670.0
 grow_horizontal = 2
 grow_vertical = 2
 rotation = 1.5787
-theme_override_styles/background = SubResource("StyleBoxFlat_ec27x")
-theme_override_styles/fill = SubResource("StyleBoxFlat_stcor")
+theme_override_styles/background = SubResource("StyleBoxFlat_j32mq")
+theme_override_styles/fill = SubResource("StyleBoxFlat_nq47c")
 step = 0.0
 value = 100.0
-fill_mode = 3
+fill_mode = 2
 show_percentage = false
-script = ExtResource("3_ur6pw")
+script = ExtResource("8_yh3bl")
+
+[node name="Label" type="Label" parent="CanvasLayer3/TPCD"]
+layout_mode = 0
+offset_left = 2.88098
+offset_top = 237.985
+offset_right = 240.881
+offset_bottom = 267.985
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_d18qc")
+text = "Space Shift"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("9_j32mq")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -650,6 +685,27 @@ value = 100.0
 fill_mode = 3
 show_percentage = false
 script = ExtResource("3_ur6pw")
+
+[node name="Label" type="Label" parent="CanvasLayer2"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -999.0
+offset_top = 454.0
+offset_right = -693.0
+offset_bottom = 510.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_d18qc")
+theme_override_font_sizes/font_size = 22
+text = "health bar"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("9_j32mq")
 
 [node name="TileMap" type="TileMap" parent="."]
 z_index = -5
@@ -783,6 +839,7 @@ scale = Vector2(2, 2)
 texture = ExtResource("8_14idw")
 
 [node name="Sprite2D4" type="Sprite2D" parent="Borders/right"]
+visible = false
 position = Vector2(-1249.01, -2000.99)
 scale = Vector2(2, 2)
 texture = ExtResource("8_14idw")

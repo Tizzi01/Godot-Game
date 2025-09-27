@@ -14,3 +14,6 @@ res://Folder/Scenes/main_menu.tscn
 res://Folder/Scenes/settings.tscn
 res://Demo/scenes/shop.tscn
 res://Demo/Scripts/game.gd
+res://Folder/Scenes/label.gd
+res://Demo/Scripts/progress_bar.gd
+res://Folder/Scenes/tpcd.gd

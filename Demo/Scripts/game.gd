@@ -21,7 +21,7 @@ var current_line_index: int = 0
 var is_dialog_active = false
 var can_advance_line = false
 # 🧟 Mob Spawning
-var mob2_spawn_block_time := 97.0
+var mob2_spawn_block_time := 1.0
 var mob_spawn_interval := 0.4
 var mob2_spawn_interval := 5.0
 var mob_spawn_timer := 0.0
@@ -29,7 +29,7 @@ var mob2_spawn_timer := 0.0
 const MAX_SLIMES := 500
 const MAX_MOB2 := 50
 var allow_spawning := true
-
+@export var cooldown_curve: Curve
 func _ready(): 
 	
 	
@@ -317,12 +317,14 @@ func _on_shop_closed() -> void:
 	
 func _on_teleport_cooldown_started(duration: float) -> void:
 	tp_bar.max_value = 100
-	tp_bar.value = 100
+	tp_bar.value = 100  # Start full
 
 	var tween = create_tween()
 	tween.tween_property(tp_bar, "value", 0, duration)\
-		.set_trans(Tween.TRANS_QUAD)\
-		.set_ease(Tween.EASE_OUT)
+		.set_trans(Tween.TRANS_CUBIC)\
+		.set_ease(Tween.EASE_IN)
+	
+	
 
 
 func _on_teleport_unlocked() -> void:

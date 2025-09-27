@@ -1,3 +1,4 @@
+Label
 Timer
 ProgressBar
 AnimationPlayer
@@ -7,7 +8,6 @@ Panel
 Control
 Sprite2D
 AudioStreamPlayer
-Label
 CanvasLayer
 AudioStreamPlayer2D
 RichTextLabel
