@@ -1,3 +1,88 @@
-[gd_scene format=3 uid="uid://pjkx86oglngn"]
+[gd_scene load_steps=13 format=3 uid="uid://pjkx86oglngn"]
+
+[ext_resource type="Script" uid="uid://bpcnt1vh3c0pr" path="res://Demo/Scenes/power.gd" id="1_me7l1"]
+[ext_resource type="Texture2D" uid="uid://jtr0ubddwn1v" path="res://Folder/Assets/Sprites/Player Animation/idle_right/Scripts/BGv5.png" id="2_npxnb"]
+[ext_resource type="Shader" uid="uid://b8ahgadq21abh" path="res://Demo/Scenes/blackhole.gdshader" id="3_t8ji5"]
+[ext_resource type="Texture2D" uid="uid://dmylvjrwheobd" path="res://icon.svg" id="4_nhkeu"]
+[ext_resource type="Texture2D" uid="uid://s7yv3iw61f5" path="res://Demo/Stuff/sprites/Black_Circle-removebg-preview.png" id="5_wwjmc"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6qsxx"]
+
+[sub_resource type="Animation" id="Animation_kya1k"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_5p3vy"]
+resource_name = "shockwave"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(0.5, 0.5),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(10, 10)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_npxnb"]
+_data = {
+&"RESET": SubResource("Animation_kya1k"),
+&"shockwave": SubResource("Animation_5p3vy")
+}
+
+[sub_resource type="Curve" id="Curve_mxlpx"]
+_limits = [-1.0, 1.0, -1.0, 1.0]
+_data = [Vector2(-1, -0.00235426), 0.0, 0.0, 0, 0, Vector2(-0.621937, -0.37218), 0.0, 0.0, 0, 0, Vector2(-0.173862, 0.678635), 0.0, 0.0, 0, 0, Vector2(0.3979, -0.61958), 0.0, 0.0, 0, 0, Vector2(0.715286, 0.109869), 0.0, 0.0, 0, 0, Vector2(0.941657, 0.0129489), 0.0, 0.0, 0, 0]
+point_count = 6
+
+[sub_resource type="CurveTexture" id="CurveTexture_01j2l"]
+curve = SubResource("Curve_mxlpx")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kumjr"]
+resource_local_to_scene = true
+shader = ExtResource("3_t8ji5")
+shader_parameter/strength = -0.911
+shader_parameter/curve = SubResource("CurveTexture_01j2l")
 
 [node name="Power" type="Area2D"]
+collision_mask = 7
+script = ExtResource("1_me7l1")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(-8, 28)
+scale = Vector2(0.386841, 0.36263)
+texture = ExtResource("2_npxnb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource("CircleShape2D_6qsxx")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_npxnb")
+}
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_kumjr")
+scale = Vector2(1.46582, 1.46582)
+texture = ExtResource("4_nhkeu")
+
+[node name="Sprite2D3" type="Sprite2D" parent="Sprite2D2"]
+scale = Vector2(0.079587, 0.079587)
+texture = ExtResource("5_wwjmc")

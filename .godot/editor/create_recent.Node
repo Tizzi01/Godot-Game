@@ -1,6 +1,8 @@
 Sprite2D
-AnimationPlayer
+MarginContainer
 CollisionShape2D
+Node
+AnimationPlayer
 Area2D
 PointLight2D
 AudioStreamPlayer
@@ -10,5 +12,3 @@ ProgressBar
 AnimationTree
 Panel
 Control
-CanvasLayer
-AudioStreamPlayer2D
