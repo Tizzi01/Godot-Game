@@ -1,10 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://ptyc2pnotr62"]
+[gd_scene load_steps=8 format=3 uid="uid://ptyc2pnotr62"]
 
 [ext_resource type="Script" uid="uid://dtm1jip00dyyn" path="res://text_box.gd" id="1_6n3nt"]
 [ext_resource type="Texture2D" uid="uid://bwsgygmvitlw7" path="res://Folder/Assets/Sprites/Blank.png" id="2_2oilc"]
 [ext_resource type="Script" uid="uid://bjn0m2d8db6rw" path="res://Demo/Scripts/nine_patch_rect.gd" id="3_2oilc"]
 [ext_resource type="FontFile" uid="uid://b8hcr1w4xjlbo" path="res://Demo/Stuff/fonts/arial.ttf" id="3_ac73j"]
 [ext_resource type="AudioStream" uid="uid://ihp6vmy21f27" path="res://Demo/Stuff/music/Beep .mp3" id="5_ac73j"]
+[ext_resource type="AudioStream" uid="uid://dgi7pj30ch1qe" path="res://Demo/Stuff/music/Woosh1.mp3" id="6_a5cv8"]
+[ext_resource type="AudioStream" uid="uid://des2f0ddqnibl" path="res://Demo/Stuff/music/Woosh2.mp3" id="7_x030t"]
 
 [node name="TextBox" type="MarginContainer"]
 anchors_preset = 8
@@ -49,5 +51,12 @@ one_shot = true
 [node name="Beep" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_ac73j")
 bus = &"SFX"
+
+[node name="woosh" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_a5cv8")
+volume_db = -10.0
+
+[node name="woosh2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_x030t")
 
 [connection signal="timeout" from="LetterDisplayTimer" to="." method="_on_letter_display_timer_timeout"]

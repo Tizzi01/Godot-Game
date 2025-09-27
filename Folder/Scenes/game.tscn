@@ -186,17 +186,17 @@ shadow_size = 3
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j32mq"]
 bg_color = Color(0.396078, 0.686275, 1, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nq47c"]
 bg_color = Color(0.105882, 0.156863, 0.270588, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yojxo"]
 bg_color = Color(1, 1, 1, 1)
@@ -533,9 +533,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -681.0
-offset_top = 429.0
-offset_right = -659.0
-offset_bottom = 670.0
+offset_top = 421.0
+offset_right = -649.0
+offset_bottom = 662.0
 grow_horizontal = 2
 grow_vertical = 2
 rotation = 1.5787
@@ -553,7 +553,10 @@ offset_left = 2.88098
 offset_top = 237.985
 offset_right = 240.881
 offset_bottom = 267.985
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = -2
+theme_override_constants/shadow_offset_y = 3
 theme_override_constants/outline_size = 8
 theme_override_fonts/font = ExtResource("2_d18qc")
 text = "Space Shift"
@@ -698,7 +701,10 @@ offset_right = -693.0
 offset_bottom = 510.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = -3
+theme_override_constants/shadow_offset_y = 2
 theme_override_constants/outline_size = 8
 theme_override_fonts/font = ExtResource("2_d18qc")
 theme_override_font_sizes/font_size = 22
@@ -746,14 +752,12 @@ position = Vector2(-183, 34)
 [node name="BG" type="Node" parent="."]
 
 [node name="BGv7" type="Sprite2D" parent="BG"]
-visible = false
 z_index = -55
 position = Vector2(-151, 32)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("10_14idw")
 
 [node name="BGv8" type="Sprite2D" parent="BG"]
-visible = false
 z_index = -55
 position = Vector2(1487, 32)
 scale = Vector2(0.2, 0.2)
@@ -761,7 +765,6 @@ texture = ExtResource("10_14idw")
 flip_h = true
 
 [node name="BGv9" type="Sprite2D" parent="BG"]
-visible = false
 z_index = -55
 position = Vector2(-1789, 32)
 scale = Vector2(0.2, 0.2)
@@ -769,7 +772,6 @@ texture = ExtResource("10_14idw")
 flip_h = true
 
 [node name="BGv13" type="Sprite2D" parent="BG"]
-visible = false
 z_index = -55
 position = Vector2(-151, 953)
 scale = Vector2(0.2, 0.2)
@@ -777,7 +779,6 @@ texture = ExtResource("10_14idw")
 flip_v = true
 
 [node name="BGv14" type="Sprite2D" parent="BG"]
-visible = false
 z_index = -55
 position = Vector2(1487, 953)
 scale = Vector2(0.2, 0.2)
@@ -839,7 +840,6 @@ scale = Vector2(2, 2)
 texture = ExtResource("8_14idw")
 
 [node name="Sprite2D4" type="Sprite2D" parent="Borders/right"]
-visible = false
 position = Vector2(-1249.01, -2000.99)
 scale = Vector2(2, 2)
 texture = ExtResource("8_14idw")

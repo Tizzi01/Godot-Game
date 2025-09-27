@@ -4,6 +4,7 @@ extends Control
 @onready var back_button = $Back
 var shop_open = false
 @onready var animation_player: AnimationPlayer = $Panel/Sprite2D/AnimationPlayer
+@onready var woosh: AudioStreamPlayer = $woosh
 
 # 📢 Signals
 signal shop_closed
@@ -60,10 +61,13 @@ func _on_back_pressed() -> void:
 			.set_trans(Tween.TRANS_SINE)\
 			.set_ease(Tween.EASE_OUT)
 
+	if woosh:
+		woosh.play()
+
 	var tween = create_tween()
 	var end_y = -get_viewport().get_visible_rect().size.y
 	tween.tween_property(self, "position:y", end_y, 0.25)\
-		.set_trans(Tween.TRANS_EXPO)\
+		.set_trans(Tween.TRANS_CUBIC)\
 		.set_ease(Tween.EASE_IN)
 
 	await tween.finished

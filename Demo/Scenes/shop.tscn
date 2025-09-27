@@ -1,10 +1,11 @@
-[gd_scene load_steps=20 format=3 uid="uid://bwc6d4yf3g328"]
+[gd_scene load_steps=21 format=3 uid="uid://bwc6d4yf3g328"]
 
 [ext_resource type="Script" uid="uid://csyxdcof2prv5" path="res://Demo/Scripts/shop.gd" id="1_kwrf6"]
 [ext_resource type="Texture2D" uid="uid://canfsqyqpe8qy" path="res://Folder/Assets/Sprites/Player Animation/idle/0.png" id="2_de8nq"]
 [ext_resource type="Shader" uid="uid://coyggroig6t4b" path="res://Demo/Scenes/glitchy.gdshader" id="2_kwrf6"]
 [ext_resource type="Script" uid="uid://byvel7rp6w11c" path="res://Demo/Scripts/sprite_2d.gd" id="3_osvdh"]
 [ext_resource type="FontFile" uid="uid://ctp71ddagy2v8" path="res://Demo/Stuff/fonts/Roquen DEMO.otf" id="4_x00t5"]
+[ext_resource type="AudioStream" uid="uid://dgi7pj30ch1qe" path="res://Demo/Stuff/music/Woosh1.mp3" id="6_t5een"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x00t5"]
 bg_color = Color(0.180392, 0.247059, 0.368627, 1)
@@ -310,6 +311,9 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_u52t5")
 theme_override_styles/normal = SubResource("StyleBoxFlat_yhb8x")
 text = "Space Shift 
 5 points"
+
+[node name="woosh" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_t5een")
 
 [connection signal="pressed" from="Panel/Back" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="SpaceShift" to="." method="_on_space_shift_pressed"]

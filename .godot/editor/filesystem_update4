@@ -17,3 +17,7 @@ res://Demo/Scripts/game.gd
 res://Folder/Scenes/label.gd
 res://Demo/Scripts/progress_bar.gd
 res://Folder/Scenes/tpcd.gd
+res://timer.tscn
+res://Demo/Scripts/shop.gd
+res://Demo/Scenes/text_box.tscn
+res://text_box.gd

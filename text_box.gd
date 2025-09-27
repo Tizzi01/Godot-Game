@@ -4,6 +4,7 @@ extends MarginContainer
 @onready var letter_display_timer: Timer = $LetterDisplayTimer
 @onready var background: NinePatchRect = $NinePatchRect
 @onready var beep: AudioStreamPlayer = $Beep
+@onready var woosh: AudioStreamPlayer = $woosh
 
 const MAX_WIDTH = 655
 const PADDING = Vector2(32, 32)
@@ -45,6 +46,9 @@ func display_text(text_to_display: String):
 	global_position = Vector2(screen_size.x + 150, final_position.y)
 
 	# Animate smooth slide-in
+	if woosh:
+		woosh.play()
+
 	var tween = create_tween()
 	tween.tween_property(self, "global_position", final_position, 0.7)\
 		.set_trans(Tween.TRANS_QUINT)\
@@ -99,18 +103,16 @@ func _on_letter_display_timer_timeout():
 
 func animate_exit():
 	var current_pos = global_position
-	var pullback_pos = current_pos - Vector2(40, 0)  # Gentle slide left
 	var exit_pos = Vector2(get_viewport().get_visible_rect().size.x + 150, current_pos.y)  # Off-screen right
 
 	var tween = create_tween()
 
-	# Step 1: Pull back slightly
-	tween.tween_property(self, "global_position", pullback_pos, 0.4)\
-		.set_trans(Tween.TRANS_QUAD)\
-		.set_ease(Tween.EASE_IN_OUT)
-
-	# Step 2: Smooth swoosh out right
+	# Start slide-out immediately
 	tween.tween_property(self, "global_position", exit_pos, 0.8)\
 		.set_trans(Tween.TRANS_QUINT)\
-		.set_ease(Tween.EASE_IN)\
-		.set_delay(0.1) 
+		.set_ease(Tween.EASE_IN)
+
+	# 🔊 Play woosh 0.2 seconds later (independent of tween)
+	await get_tree().create_timer(0.2).timeout
+	if woosh:
+		woosh.play() 
