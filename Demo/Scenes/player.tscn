@@ -35,6 +35,7 @@ var frozen := false
 @onready var hitbox: Area2D = %Gun
 @onready var slash_anim: AnimationPlayer = gun_node.get_node(\"AnimationPlayer\")
 var kill_count := 0
+var tp_ready := true
 # dashing
 @export var dash_speed = 950.0
 @export var dash_max_distance = 100.0
@@ -53,16 +54,16 @@ var was_on_floor = true
 var is_jumping = false
 @export var max_jumps = 99
 var jump_count = 0
-
+@onready var tp_bar := get_node(\"/root/Game/CanvasLayer/TeleportCooldownBar\")
 @onready var sprite: Sprite2D = $PlayerSprite
-
+signal teleport_cooldown_started(duration: float)
 # teleport hover
 var teleporting = false
 var teleport_hovering = false
 var teleport_hover_timer = 0.0
 var teleport_hover_max_time = 2.0
 var last_facing_dir = 1
-
+signal teleport_unlocked
 # damage
 signal health_depleted
 
@@ -173,6 +174,10 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed(\"tp\"):
 		if not tp_unlocked:
 			print(\"❌ TP blocked — signal not received\")
+			return 
+			
+		if not tp_ready:
+			print(\"⏳ TP on cooldown\")
 			return
 
 	# ✅ teleport logic...
@@ -189,6 +194,9 @@ func _physics_process(delta):
 		var result = space_state.intersect_shape(query)
 
 		if result.is_empty():
+			tp_ready = false
+			emit_signal(\"teleport_cooldown_started\", $TeleportCooldownTimer.wait_time)
+			$TeleportCooldownTimer.start()
 			global_position = target_pos
 			$Camera2D.add_vertical_trauma(0.3)
 
@@ -215,6 +223,10 @@ func _physics_process(delta):
 				var recheck = space_state.intersect_shape(query)
 
 				if recheck.is_empty():
+					tp_ready = false
+					emit_signal(\"teleport_cooldown_started\", $TeleportCooldownTimer.wait_time)
+					$TeleportCooldownTimer.start()
+					
 					global_position = safe_pos
 					$Camera2D.add_trauma(0.4)
 
@@ -261,6 +273,7 @@ func _physics_process(delta):
 func _on_tp_signal_received():
 	tp_unlocked = true
 	print(\"📡 TP signal received — teleport unlocked\")
+	emit_signal(\"teleport_unlocked\")
 
 
 func _input(event: InputEvent) -> void:
@@ -289,6 +302,11 @@ func _on_mob2_died():
 func _on_game_over_triggered():
 	frozen = true
 	print(\"🧊 Player frozen — input disabled\")
+
+
+func _on_teleport_cooldown_timer_timeout() -> void:
+	tp_ready = true
+	print(\"✅ TP cooldown finished\")
 "
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wf6if"]
@@ -866,3 +884,9 @@ script = ExtResource("7_y2uok")
 stream = ExtResource("8_hvqp6")
 volume_db = -3.0
 script = ExtResource("9_hvqp6")
+
+[node name="TeleportCooldownTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[connection signal="timeout" from="TeleportCooldownTimer" to="." method="_on_teleport_cooldown_timer_timeout"]

@@ -163,19 +163,34 @@ _data = {
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yh3bl"]
 bg_color = Color(0.180392, 0.247059, 0.368627, 1)
 border_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 22
-corner_radius_top_right = 22
-corner_radius_bottom_right = 22
-corner_radius_bottom_left = 22
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_va5fx"]
 bg_color = Color(0.396078, 0.686275, 1, 1)
-corner_radius_top_left = 22
-corner_radius_top_right = 22
-corner_radius_bottom_right = 22
-corner_radius_bottom_left = 22
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 shadow_color = Color(0, 0, 0, 0.521569)
 shadow_size = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ec27x"]
+bg_color = Color(0.105882, 0.156863, 0.270588, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_stcor"]
+bg_color = Color(0.396078, 0.686275, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yojxo"]
 bg_color = Color(1, 1, 1, 1)
@@ -204,20 +219,6 @@ corner_radius_top_left = 22
 corner_radius_top_right = 22
 corner_radius_bottom_right = 22
 corner_radius_bottom_left = 22
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ec27x"]
-bg_color = Color(0.105882, 0.156863, 0.270588, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_stcor"]
-bg_color = Color(0.396078, 0.686275, 1, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8i32r"]
 texture = ExtResource("1_wi88m")
@@ -477,11 +478,12 @@ anchor_right = 23.325
 anchor_bottom = 21.72
 offset_left = -901.0
 offset_top = -843.8
-offset_right = -713.0
-offset_bottom = -802.8
+offset_right = -676.0
+offset_bottom = -794.8
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 10
 theme_override_fonts/font = ExtResource("2_d18qc")
 theme_override_font_sizes/font_size = 27
 theme_override_styles/focus = SubResource("StyleBoxEmpty_j32mq")
@@ -502,6 +504,27 @@ offset_left = 517.0
 offset_top = 395.0
 offset_right = 901.0
 offset_bottom = 436.0
+
+[node name="TPCD" type="ProgressBar" parent="CanvasLayer3"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -636.0
+offset_top = 384.0
+offset_right = -604.0
+offset_bottom = 664.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 1.5787
+theme_override_styles/background = SubResource("StyleBoxFlat_ec27x")
+theme_override_styles/fill = SubResource("StyleBoxFlat_stcor")
+step = 0.0
+value = 100.0
+fill_mode = 3
+show_percentage = false
+script = ExtResource("3_ur6pw")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -667,12 +690,14 @@ position = Vector2(-183, 34)
 [node name="BG" type="Node" parent="."]
 
 [node name="BGv7" type="Sprite2D" parent="BG"]
+visible = false
 z_index = -55
 position = Vector2(-151, 32)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("10_14idw")
 
 [node name="BGv8" type="Sprite2D" parent="BG"]
+visible = false
 z_index = -55
 position = Vector2(1487, 32)
 scale = Vector2(0.2, 0.2)
@@ -680,6 +705,7 @@ texture = ExtResource("10_14idw")
 flip_h = true
 
 [node name="BGv9" type="Sprite2D" parent="BG"]
+visible = false
 z_index = -55
 position = Vector2(-1789, 32)
 scale = Vector2(0.2, 0.2)
@@ -687,6 +713,7 @@ texture = ExtResource("10_14idw")
 flip_h = true
 
 [node name="BGv13" type="Sprite2D" parent="BG"]
+visible = false
 z_index = -55
 position = Vector2(-151, 953)
 scale = Vector2(0.2, 0.2)
@@ -694,6 +721,7 @@ texture = ExtResource("10_14idw")
 flip_v = true
 
 [node name="BGv14" type="Sprite2D" parent="BG"]
+visible = false
 z_index = -55
 position = Vector2(1487, 953)
 scale = Vector2(0.2, 0.2)

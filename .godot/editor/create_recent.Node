@@ -1,9 +1,10 @@
+Timer
+ProgressBar
 AnimationPlayer
 PointLight2D
 AnimationTree
 Panel
 Control
-Timer
 Sprite2D
 AudioStreamPlayer
 Label
@@ -11,4 +12,3 @@ CanvasLayer
 AudioStreamPlayer2D
 RichTextLabel
 MarginContainer
-NinePatchRect

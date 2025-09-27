@@ -11,6 +11,7 @@ signal game_over_triggered
 @onready var score: Label = $CanvasLayer4/Score
 @onready var animation_player: AnimationPlayer = $CanvasLayer4/Score/AnimationPlayer
 @onready var shop_scene = preload("res://Demo/Scenes/shop.tscn")
+@onready var tp_bar: ProgressBar = $CanvasLayer3/TPCD
 # 💬 Dialog System
 @onready var text_box_scene = preload("res://Demo/Scenes/text_box.tscn")
 var text_box
@@ -29,7 +30,11 @@ const MAX_SLIMES := 500
 const MAX_MOB2 := 50
 var allow_spawning := true
 
-func _ready():
+func _ready(): 
+	
+	
+	tp_bar.visible = false
+	player.teleport_unlocked.connect(_on_teleport_unlocked)
 	# 🧼 Clean up any leftover reverb effects
 	var bus_index := AudioServer.get_bus_index("Master")
 	for i in range(AudioServer.get_bus_effect_count(bus_index)):
@@ -46,7 +51,9 @@ func _ready():
 	IntroMusic1.stop_IntroMusic()
 	player.health_depleted.connect(_on_game_over)
 	game_over_screen.game_over_glitched.connect(_on_game_over_glitched)
-	music.play()
+	music.play() 
+	
+	player.teleport_cooldown_started.connect(_on_teleport_cooldown_started)
 
 	await get_tree().create_timer(1.0).timeout
 	var screen_size = get_viewport().get_visible_rect().size
@@ -60,7 +67,9 @@ func _ready():
 
 	await get_tree().create_timer(45.0).timeout
 	start_dialog(position, ["Each advanced alien is worth 5 points. The faster they move, the less HP they have."])
+  
 
+	
 func _process(delta):
 	if not allow_spawning:
 		return
@@ -304,4 +313,17 @@ func _on_shop_pressed() -> void:
 
 func _on_shop_closed() -> void:
 	shop.disabled = false
-	print("✅ Shop closed, button re-enabled")
+	print("✅ Shop closed, button re-enabled") 
+	
+func _on_teleport_cooldown_started(duration: float) -> void:
+	tp_bar.max_value = 100
+	tp_bar.value = 100
+
+	var tween = create_tween()
+	tween.tween_property(tp_bar, "value", 0, duration)\
+		.set_trans(Tween.TRANS_QUAD)\
+		.set_ease(Tween.EASE_OUT)
+
+
+func _on_teleport_unlocked() -> void:
+	tp_bar.visible = true
