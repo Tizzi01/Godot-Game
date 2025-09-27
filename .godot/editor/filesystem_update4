@@ -24,3 +24,5 @@ res://text_box.gd
 res://Folder/Scenes/gun2.tscn
 res://Folder/Scenes/gun.tscn
 res://Folder/Scenes/bullet_v_2.tscn
+res://Demo/Scripts/gun.gd
+res://Demo/Scripts/gun2.gd

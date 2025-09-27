@@ -1,7 +1,10 @@
 extends Area2D
 
+var can_fire := true
+signal request_weapon_switch
 const BULLET = preload("res://Folder/Scenes/bullet_v_2.tscn")
 const ROTATION_OFFSET := PI / 2  # ✅ Correct offset for upward-facing gun
+@onready var omni: AudioStreamPlayer = $Omni
 
 @onready var gun_pivot = $GunPivot
 @onready var shooting_point = $GunPivot/Sprite2D/ShootingPoint
@@ -23,7 +26,7 @@ func _physics_process(delta):
 	var target_angle = (mouse_pos - gun_pivot.global_position).angle() + ROTATION_OFFSET
 	gun_pivot.rotation = lerp_angle(gun_pivot.rotation, target_angle, 10 * delta)
 
-	if Input.is_action_just_pressed("slash"):
+	if can_fire and Input.is_action_just_pressed("slash"):
 		$AnimationPlayer.play("slash")
 		shoot()
 
@@ -45,5 +48,12 @@ func shoot():
 
 
 	
+func play_change_animation():
+	var anim = get_node_or_null("AnimationPlayer")
+	if anim:
+		anim.play("change")
+	if omni:
+		omni.play()
+		
 
 	

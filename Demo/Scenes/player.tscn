@@ -1,13 +1,15 @@
-[gd_scene load_steps=29 format=3 uid="uid://dikfgaeqdng3d"]
+[gd_scene load_steps=31 format=3 uid="uid://dikfgaeqdng3d"]
 
 [ext_resource type="Shader" uid="uid://coyggroig6t4b" path="res://Demo/Scenes/glitchy.gdshader" id="1_7ethr"]
 [ext_resource type="Texture2D" uid="uid://canfsqyqpe8qy" path="res://Folder/Assets/Sprites/Player Animation/idle/0.png" id="1_i7wno"]
+[ext_resource type="PackedScene" uid="uid://wj61kt8sa2wn" path="res://Folder/Scenes/gun.tscn" id="3_bijw4"]
 [ext_resource type="Script" uid="uid://ckbcbouawdeeo" path="res://Demo/Scripts/dash_sfx.gd" id="5_2pset"]
 [ext_resource type="AudioStream" uid="uid://c8ti7vpuxc3y3" path="res://Demo/Stuff/music/dash2.wav" id="5_7k0jb"]
 [ext_resource type="AudioStream" uid="uid://dvrvblfg1cd5s" path="res://Demo/Stuff/music/TP Goku.mp3" id="7_7k0jb"]
 [ext_resource type="Script" uid="uid://b8dvnvp6uf1r4" path="res://Demo/Scripts/tp_1.gd" id="7_y2uok"]
 [ext_resource type="AudioStream" uid="uid://brx7af5hj5o52" path="res://Demo/Stuff/music/DG4.mp3" id="8_hvqp6"]
 [ext_resource type="Script" uid="uid://d25i0sevnvkaa" path="res://Demo/Scenes/DG.gd" id="9_hvqp6"]
+[ext_resource type="AudioStream" uid="uid://c5q50qqifx07u" path="res://Demo/Stuff/music/omni1.mp3" id="10_74cf5"]
 
 [sub_resource type="GDScript" id="GDScript_vxcno"]
 script/source = "extends CharacterBody2D
@@ -54,6 +56,7 @@ var is_dashing = false
 var dash_start_position = Vector2.ZERO
 var dash_direction = Vector2.ZERO
 var dash_timer = 0.0
+@onready var omni: AudioStreamPlayer = $Omni
 
 var was_on_floor = true
 var is_jumping = false
@@ -285,22 +288,29 @@ func _on_tp_signal_received():
 	emit_signal(\"teleport_unlocked\")
 
 
-func _input(event: InputEvent) -> void: 
-	
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_WHEEL_UP and event.pressed:
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed:
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			if current_weapon and current_weapon.has_method(\"play_change_animation\"):
+				current_weapon.play_change_animation()
+				await get_tree().create_timer(0.2).timeout
 			weapon_index = (weapon_index + 1) % weapon_scenes.size()
 			_spawn_weapon(weapon_index)
-		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:
+
+		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			if current_weapon and current_weapon.has_method(\"play_change_animation\"):
+				current_weapon.play_change_animation()
+				await get_tree().create_timer(0.2).timeout
 			weapon_index = (weapon_index - 1 + weapon_scenes.size()) % weapon_scenes.size()
 			_spawn_weapon(weapon_index)
 	
 	if frozen:
 		return
 
-	if gun_node.visible and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		if slash_anim and not slash_anim.is_playing():
-			slash_anim.play(\"slash\")
+	if current_weapon and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		var anim = current_weapon.get_node_or_null(\"AnimationPlayer\")
+		if anim and not anim.is_playing():
+			anim.play(\"slash\")
 
 		if teleporting:
 			teleport_hovering = false
@@ -328,13 +338,20 @@ func _on_teleport_cooldown_timer_timeout() -> void:
 	
 	
 func _spawn_weapon(index: int):
-	if current_weapon:
-		current_weapon.queue_free()
+	if index == 1:
+		gun_node.visible = false
+		gun_node.can_fire = false  # 🔒 Disable firing
 
-	var weapon_scene = weapon_scenes[index]
-	current_weapon = weapon_scene.instantiate()
-	add_child(current_weapon)
-	current_weapon.position = Vector2.ZERO  # Or wherever you want it
+		current_weapon = weapon_scenes[1].instantiate()
+		add_child(current_weapon)
+		current_weapon.position = gun_node.position
+	else:
+		if current_weapon and current_weapon != gun_node:
+			current_weapon.queue_free()
+
+		gun_node.visible = true
+		gun_node.can_fire = true  # 🔓 Enable firing
+		current_weapon = gun_node
 "
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wf6if"]
@@ -883,6 +900,10 @@ texture = SubResource("GradientTexture2D_7k0jb")
 position = Vector2(0, 2)
 shape = SubResource("CapsuleShape2D_guesk")
 
+[node name="Gun" parent="." instance=ExtResource("3_bijw4")]
+unique_name_in_owner = true
+collision_layer = 4
+
 [node name="HurtBox" type="Area2D" parent="."]
 unique_name_in_owner = true
 collision_layer = 0
@@ -912,5 +933,8 @@ script = ExtResource("9_hvqp6")
 [node name="TeleportCooldownTimer" type="Timer" parent="."]
 wait_time = 5.0
 one_shot = true
+
+[node name="Omni" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_74cf5")
 
 [connection signal="timeout" from="TeleportCooldownTimer" to="." method="_on_teleport_cooldown_timer_timeout"]
