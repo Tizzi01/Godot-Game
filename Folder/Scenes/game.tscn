@@ -421,6 +421,7 @@ _data = {
 point_count = 5
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_8i32r"]
+normal = Vector2(0.0404786, -0.99918)
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_sfajg"]
 
@@ -742,7 +743,7 @@ rotation = -1.5618
 [node name="killzone" parent="." instance=ExtResource("3_221o8")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="killzone"]
-position = Vector2(274, 1560)
+position = Vector2(275, 1560)
 rotation = -0.040491
 shape = SubResource("WorldBoundaryShape2D_8i32r")
 

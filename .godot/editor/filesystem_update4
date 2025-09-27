@@ -21,3 +21,6 @@ res://timer.tscn
 res://Demo/Scripts/shop.gd
 res://Demo/Scenes/text_box.tscn
 res://text_box.gd
+res://Folder/Scenes/gun2.tscn
+res://Folder/Scenes/gun.tscn
+res://Folder/Scenes/bullet_v_2.tscn

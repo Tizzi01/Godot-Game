@@ -1,8 +1,7 @@
-[gd_scene load_steps=30 format=3 uid="uid://dikfgaeqdng3d"]
+[gd_scene load_steps=29 format=3 uid="uid://dikfgaeqdng3d"]
 
 [ext_resource type="Shader" uid="uid://coyggroig6t4b" path="res://Demo/Scenes/glitchy.gdshader" id="1_7ethr"]
 [ext_resource type="Texture2D" uid="uid://canfsqyqpe8qy" path="res://Folder/Assets/Sprites/Player Animation/idle/0.png" id="1_i7wno"]
-[ext_resource type="PackedScene" uid="uid://wj61kt8sa2wn" path="res://Folder/Scenes/gun.tscn" id="3_bijw4"]
 [ext_resource type="Script" uid="uid://ckbcbouawdeeo" path="res://Demo/Scripts/dash_sfx.gd" id="5_2pset"]
 [ext_resource type="AudioStream" uid="uid://c8ti7vpuxc3y3" path="res://Demo/Stuff/music/dash2.wav" id="5_7k0jb"]
 [ext_resource type="AudioStream" uid="uid://dvrvblfg1cd5s" path="res://Demo/Stuff/music/TP Goku.mp3" id="7_7k0jb"]
@@ -45,6 +44,12 @@ var tp_ready := true
 @export var Gun_radius: float = 20.0
 @export var Gun_follow_speed: float = 10.0
 
+
+var current_weapon: Node = null
+var weapon_index := 0
+var weapon_scenes := [preload(\"res://Folder/Scenes/gun.tscn\"),preload(\"res://Folder/Scenes/gun2.tscn\") ]
+
+
 var is_dashing = false
 var dash_start_position = Vector2.ZERO
 var dash_direction = Vector2.ZERO
@@ -68,6 +73,10 @@ signal teleport_unlocked
 signal health_depleted
 
 func _ready(): 
+	
+
+	_spawn_weapon(0)
+	
 	add_to_group(\"player\")
 	for mob in get_tree().get_nodes_in_group(\"Mob\"):
 		mob.died.connect(_on_mob_died)
@@ -276,7 +285,16 @@ func _on_tp_signal_received():
 	emit_signal(\"teleport_unlocked\")
 
 
-func _input(event: InputEvent) -> void:
+func _input(event: InputEvent) -> void: 
+	
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP and event.pressed:
+			weapon_index = (weapon_index + 1) % weapon_scenes.size()
+			_spawn_weapon(weapon_index)
+		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:
+			weapon_index = (weapon_index - 1 + weapon_scenes.size()) % weapon_scenes.size()
+			_spawn_weapon(weapon_index)
+	
 	if frozen:
 		return
 
@@ -306,7 +324,17 @@ func _on_game_over_triggered():
 
 func _on_teleport_cooldown_timer_timeout() -> void:
 	tp_ready = true
-	print(\"✅ TP cooldown finished\")
+	print(\"✅ TP cooldown finished\") 
+	
+	
+func _spawn_weapon(index: int):
+	if current_weapon:
+		current_weapon.queue_free()
+
+	var weapon_scene = weapon_scenes[index]
+	current_weapon = weapon_scene.instantiate()
+	add_child(current_weapon)
+	current_weapon.position = Vector2.ZERO  # Or wherever you want it
 "
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wf6if"]
@@ -854,10 +882,6 @@ texture = SubResource("GradientTexture2D_7k0jb")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 2)
 shape = SubResource("CapsuleShape2D_guesk")
-
-[node name="Gun" parent="." instance=ExtResource("3_bijw4")]
-unique_name_in_owner = true
-collision_layer = 4
 
 [node name="HurtBox" type="Area2D" parent="."]
 unique_name_in_owner = true

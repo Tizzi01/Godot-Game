@@ -1,0 +1,425 @@
+[gd_scene load_steps=10 format=3 uid="uid://bmtxhxetmbosa"]
+
+[ext_resource type="Script" uid="uid://bqm2rrxf4gfn3" path="res://Demo/Scripts/gun2.gd" id="1_7ecvl"]
+[ext_resource type="Texture2D" uid="uid://dnmo0qivmo8rl" path="res://Demo/Stuff/sprites/Pentagon.png" id="2_ri1ra"]
+[ext_resource type="AudioStream" uid="uid://br23h6nq4b727" path="res://Demo/Stuff/sounds/Rumble2fixed.mp3" id="3_s80ih"]
+
+[sub_resource type="Gradient" id="Gradient_0ve7x"]
+offsets = PackedFloat32Array(0, 0.228972, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.228527, 0.62113, 1, 1, 0.0352941, 0.0352941, 0.0352941, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_0ve7x"]
+gradient = SubResource("Gradient_0ve7x")
+width = 1
+height = 1
+fill = 1
+fill_from = Vector2(0.5, 0.49359)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="Animation" id="Animation_0ve7x"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SlashSFX:playing")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("GunPivot/Sprite2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -23)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("GunPivot/Sprite2D:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("GunPivot/Sprite2D:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.044, 0.041)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("GunPivot/Sprite2D/PointLight2D:texture:fill_to")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.5, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("GunPivot/Sprite2D/PointLight2D:texture:height")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("GunPivot/Sprite2D/PointLight2D:texture:width")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath(".:rotation")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.5708]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath(".:scale")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_hmsyr"]
+resource_name = "slash"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SlashSFX:playing")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("GunPivot/Sprite2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.03, 0.05, 0.06, 0.08, 0.1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, -23), Vector2(-1.9233e-06, -22), Vector2(-1.9233e-06, -22), Vector2(5.84722e-05, -23), Vector2(0, -23.333), Vector2(0, -23)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("GunPivot/Sprite2D:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.03, 0.05, 0.06, 0.08, 0.1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("GunPivot/Sprite2D:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.03, 0.05, 0.06, 0.08, 0.1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0.044, 0.041), Vector2(0.044, 0.0343936), Vector2(0.044, 0.0343936), Vector2(0.044, 0.0586246), Vector2(0.044, 0.0338358), Vector2(0.044, 0.041)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("GunPivot/Sprite2D/PointLight2D:texture:fill_to")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0.5, 0), Vector2(0, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("GunPivot/Sprite2D/PointLight2D:texture:height")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [55, 1]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("GunPivot/Sprite2D/PointLight2D:texture:width")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [55, 1]
+}
+tracks/7/type = "method"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("SlashSFX")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"play_with_variation"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_7ecvl"]
+resource_name = "Idle"
+length = 4.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 4),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 0,
+"values": [0.0, 3.14159]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1, 2, 3, 4),
+"transitions": PackedFloat32Array(-2, -2, -2, -2, -2),
+"update": 0,
+"values": [Vector2(0.85, 0.85), Vector2(1.25, 1.25), Vector2(0.85, 0.85), Vector2(1.25, 1.25), Vector2(0.85, 0.85)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hco14"]
+_data = {
+&"Idle": SubResource("Animation_7ecvl"),
+&"RESET": SubResource("Animation_0ve7x"),
+&"slash": SubResource("Animation_hmsyr")
+}
+
+[node name="Gun2" type="Area2D"]
+rotation = 1.5708
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("1_7ecvl")
+
+[node name="GunPivot" type="Marker2D" parent="."]
+rotation = 3.14159
+
+[node name="Sprite2D" type="Sprite2D" parent="GunPivot"]
+position = Vector2(0, -23)
+scale = Vector2(0.044, 0.041)
+texture = ExtResource("2_ri1ra")
+offset = Vector2(-8.665, 14.38)
+
+[node name="ShootingPoint" type="Marker2D" parent="GunPivot/Sprite2D"]
+unique_name_in_owner = true
+position = Vector2(-5.76196e-05, -146.341)
+scale = Vector2(0.75, 0.199187)
+
+[node name="PointLight2D" type="PointLight2D" parent="GunPivot/Sprite2D"]
+position = Vector2(-4.43459e-05, 9.53674e-07)
+scale = Vector2(37.5638, 37.5638)
+texture = SubResource("GradientTexture2D_0ve7x")
+
+[node name="Sprite2D2" type="Sprite2D" parent="GunPivot"]
+position = Vector2(0, 23)
+rotation = 3.14159
+scale = Vector2(0.044, 0.041)
+texture = ExtResource("2_ri1ra")
+offset = Vector2(-8.665, 14.38)
+
+[node name="ShootingPoint" type="Marker2D" parent="GunPivot/Sprite2D2"]
+position = Vector2(-5.76196e-05, -146.341)
+scale = Vector2(0.75, 0.199187)
+
+[node name="PointLight2D" type="PointLight2D" parent="GunPivot/Sprite2D2"]
+position = Vector2(-4.43459e-05, 9.53674e-07)
+scale = Vector2(37.5638, 37.5638)
+texture = SubResource("GradientTexture2D_0ve7x")
+
+[node name="GunPivot2" type="Marker2D" parent="."]
+rotation = 1.5708
+
+[node name="Sprite2D" type="Sprite2D" parent="GunPivot2"]
+position = Vector2(0, -23)
+scale = Vector2(0.044, 0.041)
+texture = ExtResource("2_ri1ra")
+offset = Vector2(-8.665, 14.38)
+
+[node name="ShootingPoint" type="Marker2D" parent="GunPivot2/Sprite2D"]
+position = Vector2(-5.76196e-05, -146.341)
+scale = Vector2(0.75, 0.199187)
+
+[node name="PointLight2D" type="PointLight2D" parent="GunPivot2/Sprite2D"]
+position = Vector2(-4.43459e-05, 9.53674e-07)
+scale = Vector2(37.5638, 37.5638)
+texture = SubResource("GradientTexture2D_0ve7x")
+
+[node name="Sprite2D2" type="Sprite2D" parent="GunPivot2"]
+position = Vector2(0, 23)
+rotation = 3.14159
+scale = Vector2(0.044, 0.041)
+texture = ExtResource("2_ri1ra")
+offset = Vector2(-8.665, 14.38)
+
+[node name="ShootingPoint" type="Marker2D" parent="GunPivot2/Sprite2D2"]
+position = Vector2(-5.76196e-05, -146.341)
+scale = Vector2(0.75, 0.199187)
+
+[node name="PointLight2D" type="PointLight2D" parent="GunPivot2/Sprite2D2"]
+position = Vector2(-4.43459e-05, 9.53674e-07)
+scale = Vector2(37.5638, 37.5638)
+texture = SubResource("GradientTexture2D_0ve7x")
+
+[node name="GunPivot3" type="Marker2D" parent="."]
+rotation = 0.785398
+
+[node name="Sprite2D" type="Sprite2D" parent="GunPivot3"]
+position = Vector2(0, -23)
+scale = Vector2(0.044, 0.041)
+texture = ExtResource("2_ri1ra")
+offset = Vector2(-8.665, 14.38)
+
+[node name="ShootingPoint" type="Marker2D" parent="GunPivot3/Sprite2D"]
+position = Vector2(-5.76196e-05, -146.341)
+scale = Vector2(0.75, 0.199187)
+
+[node name="PointLight2D" type="PointLight2D" parent="GunPivot3/Sprite2D"]
+position = Vector2(-4.43459e-05, 9.53674e-07)
+scale = Vector2(37.5638, 37.5638)
+texture = SubResource("GradientTexture2D_0ve7x")
+
+[node name="Sprite2D2" type="Sprite2D" parent="GunPivot3"]
+position = Vector2(0, 23)
+rotation = 3.14159
+scale = Vector2(0.044, 0.041)
+texture = ExtResource("2_ri1ra")
+offset = Vector2(-8.665, 14.38)
+
+[node name="ShootingPoint" type="Marker2D" parent="GunPivot3/Sprite2D2"]
+position = Vector2(-5.76196e-05, -146.341)
+scale = Vector2(0.75, 0.199187)
+
+[node name="PointLight2D" type="PointLight2D" parent="GunPivot3/Sprite2D2"]
+position = Vector2(-4.43459e-05, 9.53674e-07)
+scale = Vector2(37.5638, 37.5638)
+texture = SubResource("GradientTexture2D_0ve7x")
+
+[node name="GunPivot4" type="Marker2D" parent="."]
+rotation = -0.785398
+
+[node name="Sprite2D" type="Sprite2D" parent="GunPivot4"]
+position = Vector2(0, -23)
+scale = Vector2(0.044, 0.041)
+texture = ExtResource("2_ri1ra")
+offset = Vector2(-8.665, 14.38)
+
+[node name="ShootingPoint" type="Marker2D" parent="GunPivot4/Sprite2D"]
+position = Vector2(-5.76196e-05, -146.341)
+scale = Vector2(0.75, 0.199187)
+
+[node name="PointLight2D" type="PointLight2D" parent="GunPivot4/Sprite2D"]
+position = Vector2(-4.43459e-05, 9.53674e-07)
+scale = Vector2(37.5638, 37.5638)
+texture = SubResource("GradientTexture2D_0ve7x")
+
+[node name="Sprite2D2" type="Sprite2D" parent="GunPivot4"]
+position = Vector2(0, 23)
+rotation = 3.14159
+scale = Vector2(0.044, 0.041)
+texture = ExtResource("2_ri1ra")
+offset = Vector2(-8.665, 14.38)
+
+[node name="ShootingPoint" type="Marker2D" parent="GunPivot4/Sprite2D2"]
+position = Vector2(-5.76196e-05, -146.341)
+scale = Vector2(0.75, 0.199187)
+
+[node name="PointLight2D" type="PointLight2D" parent="GunPivot4/Sprite2D2"]
+position = Vector2(-4.43459e-05, 9.53674e-07)
+scale = Vector2(37.5638, 37.5638)
+texture = SubResource("GradientTexture2D_0ve7x")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.1
+autostart = true
+
+[node name="SlashSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_s80ih")
+bus = &"SFX"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_hco14")
+}
+autoplay = "Idle"
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
