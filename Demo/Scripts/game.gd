@@ -21,7 +21,7 @@ var current_line_index: int = 0
 var is_dialog_active = false
 var can_advance_line = false
 # 🧟 Mob Spawning
-var mob2_spawn_block_time := 1.0
+var mob2_spawn_block_time := 97.0
 var mob_spawn_interval := 0.4
 var mob2_spawn_interval := 5.0
 var mob_spawn_timer := 0.0
