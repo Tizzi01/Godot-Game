@@ -2,11 +2,11 @@ extends Area2D
 
 @onready var omni: AudioStreamPlayer = $Omni
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var up: AudioStreamPlayer = $up
 
 var hold_timer := 0.0
 var hold_threshold := 1.5
 var has_spawned := false
-@onready var up: AudioStreamPlayer = $up
 
 func _physics_process(delta: float) -> void:
 	print("🔄 _physics_process running | delta:", delta)
@@ -17,24 +17,39 @@ func _physics_process(delta: float) -> void:
 		print("⏱️ Hold timer:", hold_timer, "| Threshold:", hold_threshold, "| Spawned:", has_spawned)
 
 		if animation_player and animation_player.current_animation != "charge":
+			print("🎞️ Playing charge animation")
 			animation_player.play("charge") 
 			up.play() 
 
 		if hold_timer >= hold_threshold and not has_spawned:
+			print("🚀 Threshold reached — spawning black hole")
 			var power = preload("res://Demo/Scenes/power.tscn").instantiate()
 			power.global_position = get_global_mouse_position()
 			get_tree().current_scene.add_child(power)
-			
+			print("🌀 Black hole instance added to scene")
 
-	# 🔗 Connect the signal to the camera for screen shake
+			power.add_to_group("black")
+			print("📦 Added black hole to group 'black'")
+
+			# 🔗 Connect signal to camera
 			var camera = get_tree().get_root().get_node("Game/Player/Camera2D")
 			if camera:
-				power.black_hole_spawned.connect(camera._on_black_hole_spawned)
+				print("🎯 Found camera node:", camera.name)
+				if power.has_signal("black_hole_spawned"):
+					print("📡 Signal 'black_hole_spawned' exists on power")
+					var result = power.black_hole_spawned.connect(Callable(camera, "_on_black_hole_spawned"))
+					if result == OK:
+						print("✅ Connected black hole signal to camera")
+					else:
+						print("❌ Failed to connect signal to camera")
+				else:
+					print("⚠️ Signal 'black_hole_spawned' NOT found on power")
+			else:
+				print("🚫 Camera node not found")
 
 			has_spawned = true
 	else:
 		print("🛑 'slash' not held")
-		# Removed animation_player.stop() so charge animation fades out naturally
 
 	if Input.is_action_just_released("slash"):
 		print("🔁 'slash' released — resetting timer and spawn flag")

@@ -103,7 +103,7 @@ _data = {
 &"RESET": SubResource("Animation_t8ji5")
 }
 
-[node name="Power" type="Area2D"]
+[node name="Power" type="Area2D" groups=["black"]]
 z_index = 1
 collision_mask = 7
 script = ExtResource("1_me7l1")

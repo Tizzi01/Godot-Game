@@ -1,5 +1,8 @@
 extends Area2D
+
+# 📢 Signal for camera shake
 signal black_hole_spawned
+
 @onready var anim = $AnimationPlayer
 @onready var lifetime_timer = $LifetimeTimer
 @onready var pull_zone = $PullZone
@@ -14,11 +17,17 @@ var affected_mobs: Array = []
 var affected_player: CharacterBody2D = null
 
 func _ready():
+	add_to_group("black")
+	print("⚡ Power bullet ready — starting shockwave")
+
+	await get_tree().create_timer(0.1).timeout
 	emit_signal("black_hole_spawned")
+	print("📢 Delayed signal emitted: black_hole_spawned")
+
 	ka.play()
 	idle.play()
 	_update_idle_volume()
-	print("⚡ Power bullet ready — starting shockwave")
+
 	monitoring = true
 	anim.play("shockwave")
 
