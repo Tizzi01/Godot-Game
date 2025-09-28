@@ -1,10 +1,12 @@
-[gd_scene load_steps=17 format=3 uid="uid://pjkx86oglngn"]
+[gd_scene load_steps=19 format=3 uid="uid://pjkx86oglngn"]
 
 [ext_resource type="Script" uid="uid://bpcnt1vh3c0pr" path="res://Demo/Scenes/power.gd" id="1_me7l1"]
 [ext_resource type="Texture2D" uid="uid://jtr0ubddwn1v" path="res://Folder/Assets/Sprites/Player Animation/idle_right/Scripts/BGv5.png" id="2_npxnb"]
 [ext_resource type="Shader" uid="uid://b8ahgadq21abh" path="res://Demo/Scenes/blackhole.gdshader" id="3_t8ji5"]
 [ext_resource type="Texture2D" uid="uid://dmylvjrwheobd" path="res://icon.svg" id="4_nhkeu"]
 [ext_resource type="Texture2D" uid="uid://s7yv3iw61f5" path="res://Demo/Stuff/sprites/Black_Circle-removebg-preview.png" id="5_wwjmc"]
+[ext_resource type="AudioStream" uid="uid://dorfvy6swavcc" path="res://Demo/Stuff/music/Fire2.mp3" id="6_nhkeu"]
+[ext_resource type="AudioStream" uid="uid://det7p77ie3krb" path="res://Demo/Stuff/music/cyborg .ogg" id="6_t8ji5"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6qsxx"]
 radius = 1.0
@@ -146,5 +148,12 @@ autoplay = "Black"
 [node name="LifetimeTimer" type="Timer" parent="."]
 wait_time = 4.0
 one_shot = true
+
+[node name="ka" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_nhkeu")
+volume_db = -13.0
+
+[node name="Idle" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_t8ji5")
 
 [connection signal="body_entered" from="PullZone" to="." method="_on_pull_zone_body_entered"]

@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://det7p77ie3krb"
+path="res://.godot/imported/cyborg .ogg-8f41f3982af3ad6f6935061446b58c4a.oggvorbisstr"
+
+[deps]
+
+source_file="res://Demo/Stuff/music/cyborg .ogg"
+dest_files=["res://.godot/imported/cyborg .ogg-8f41f3982af3ad6f6935061446b58c4a.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

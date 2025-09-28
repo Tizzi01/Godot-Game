@@ -1,13 +1,23 @@
 extends Area2D
-
+signal black_hole_spawned
 @onready var anim = $AnimationPlayer
 @onready var lifetime_timer = $LifetimeTimer
 @onready var pull_zone = $PullZone
+@onready var idle: AudioStreamPlayer2D = $Idle
+@onready var ka: AudioStreamPlayer = $ka
+
+# 🎚️ Audio range control
+var min_audio_distance: float = 0.0
+var max_audio_distance: float = 1111.0
 
 var affected_mobs: Array = []
 var affected_player: CharacterBody2D = null
 
 func _ready():
+	emit_signal("black_hole_spawned")
+	ka.play()
+	idle.play()
+	_update_idle_volume()
 	print("⚡ Power bullet ready — starting shockwave")
 	monitoring = true
 	anim.play("shockwave")
@@ -83,6 +93,19 @@ func _physics_process(delta: float) -> void:
 		var suction_strength = lerp(10000.0, 20000.0, pow(t, 2.5)) * 0.10
 		print("🧲 Suction applied to player | Strength:", suction_strength)
 		affected_player.velocity += direction * suction_strength * delta
+
+	_update_idle_volume()
+
+func _update_idle_volume():
+	var players = get_tree().get_nodes_in_group("player")
+	if players.size() > 0:
+		var player = players[0] as CharacterBody2D
+		if player and player.is_inside_tree():
+			var distance = global_position.distance_to(player.global_position)
+			var audio_t = clamp(1.0 - ((distance - min_audio_distance) / (max_audio_distance - min_audio_distance)), 0.0, 1.0)
+			idle.volume_db = lerp(-40.0, 15.0, audio_t)
+			return
+	idle.volume_db = -40.0
 
 func _on_lifetime_timeout():
 	print("🕒 Black hole lifetime ended — cleaning up")

@@ -21,3 +21,5 @@ res://Demo/Scripts/mob_2.gd
 res://Folder/Scenes/mob2.tscn
 res://Demo/Scripts/gun2.gd
 res://Demo/Scripts/bullet_v_2.gd
+res://Demo/Scripts/gun.gd
+res://Demo/Scripts/camera_2d.gd

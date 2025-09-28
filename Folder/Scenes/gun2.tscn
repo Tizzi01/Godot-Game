@@ -1,9 +1,10 @@
-[gd_scene load_steps=14 format=3 uid="uid://bmtxhxetmbosa"]
+[gd_scene load_steps=16 format=3 uid="uid://bmtxhxetmbosa"]
 
 [ext_resource type="Script" uid="uid://bqm2rrxf4gfn3" path="res://Demo/Scripts/gun2.gd" id="1_7ecvl"]
 [ext_resource type="Texture2D" uid="uid://dnmo0qivmo8rl" path="res://Demo/Stuff/sprites/Pentagon.png" id="2_ri1ra"]
 [ext_resource type="AudioStream" uid="uid://br23h6nq4b727" path="res://Demo/Stuff/sounds/Rumble2fixed.mp3" id="3_s80ih"]
 [ext_resource type="AudioStream" uid="uid://c5q50qqifx07u" path="res://Demo/Stuff/music/omni1.mp3" id="4_vgnh8"]
+[ext_resource type="AudioStream" uid="uid://u7eilcf8w2wc" path="res://Demo/Stuff/music/Power Up Sci-Fi (1) (SFX).mp3" id="5_ri1ra"]
 
 [sub_resource type="Gradient" id="Gradient_0ve7x"]
 offsets = PackedFloat32Array(0, 0.228972, 1)
@@ -176,6 +177,18 @@ tracks/9/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("PointLight2D:scale")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_s80ih"]
 resource_name = "change"
@@ -188,7 +201,7 @@ tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.1, 0.2),
-"transitions": PackedFloat32Array(1, 1, 1),
+"transitions": PackedFloat32Array(-2, -2, -2),
 "update": 1,
 "values": [true, true, true]
 }
@@ -200,7 +213,7 @@ tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(1, 1),
+"transitions": PackedFloat32Array(-2, -2),
 "update": 0,
 "values": [1.5708, 3.14159]
 }
@@ -307,11 +320,52 @@ tracks/7/keys = {
 }]
 }
 
+[sub_resource type="Animation" id="Animation_vgnh8"]
+resource_name = "charge"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5, 2),
+"transitions": PackedFloat32Array(4.14106, 4.14106, 0.5),
+"update": 0,
+"values": [0.0, 18.8496, 25.1327]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PointLight2D:enabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.00466507, 1.49282, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [false, true, true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PointLight2D:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(2, 2)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_hco14"]
 _data = {
 &"Idle": SubResource("Animation_7ecvl"),
 &"RESET": SubResource("Animation_0ve7x"),
 &"change": SubResource("Animation_s80ih"),
+&"charge": SubResource("Animation_vgnh8"),
 &"slash": SubResource("Animation_hmsyr")
 }
 
@@ -478,5 +532,9 @@ autoplay = "Idle"
 
 [node name="Omni" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_vgnh8")
+
+[node name="up" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_ri1ra")
+volume_db = -11.0
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -727,7 +727,7 @@ dash_curve = SubResource("Curve_2x3so")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2(0, -1)
-zoom = Vector2(3, 3)
+zoom = Vector2(1.7, 1.7)
 rotation_smoothing_enabled = true
 script = ExtResource("3_naqcg")
 

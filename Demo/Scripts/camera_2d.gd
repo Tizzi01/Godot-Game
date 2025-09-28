@@ -60,7 +60,11 @@ func startup_zoom_and_shake():
 
 	add_trauma(0.5)  # Light shake
 
-var shake_on_cooldown := false
+var shake_on_cooldown := false 
+
+
+func _on_black_hole_spawned():
+	add_trauma(0.4)  # 💥 Shake strength when black hole spawns
 
 func _on_player_damaged() -> void:
 	if shake_on_cooldown:
