@@ -1,13 +1,13 @@
+Area2D
+CollisionShape2D
+Timer
+AnimationPlayer
 Sprite2D
 MarginContainer
-CollisionShape2D
 Node
-AnimationPlayer
-Area2D
 PointLight2D
 AudioStreamPlayer
 Label
-Timer
 ProgressBar
 AnimationTree
 Panel

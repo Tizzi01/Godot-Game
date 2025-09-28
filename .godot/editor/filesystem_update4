@@ -17,3 +17,6 @@ res://Folder/Scenes/gun2.tscn
 res://Demo/Scenes/power.tscn
 res://Demo/Scenes/power2.tscn
 res://Demo/Scenes/blackhole.gdshader
+res://Demo/Scenes/power.gd
+res://Demo/Scripts/mob.gd
+res://Demo/Scripts/gun2.gd

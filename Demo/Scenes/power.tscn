@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://pjkx86oglngn"]
+[gd_scene load_steps=17 format=3 uid="uid://pjkx86oglngn"]
 
 [ext_resource type="Script" uid="uid://bpcnt1vh3c0pr" path="res://Demo/Scenes/power.gd" id="1_me7l1"]
 [ext_resource type="Texture2D" uid="uid://jtr0ubddwn1v" path="res://Folder/Assets/Sprites/Player Animation/idle_right/Scripts/BGv5.png" id="2_npxnb"]
@@ -7,6 +7,10 @@
 [ext_resource type="Texture2D" uid="uid://s7yv3iw61f5" path="res://Demo/Stuff/sprites/Black_Circle-removebg-preview.png" id="5_wwjmc"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6qsxx"]
+radius = 4.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_npxnb"]
+radius = 107.005
 
 [sub_resource type="Animation" id="Animation_kya1k"]
 length = 0.001
@@ -47,7 +51,7 @@ _data = {
 
 [sub_resource type="Curve" id="Curve_mxlpx"]
 _limits = [-1.0, 1.0, -1.0, 1.0]
-_data = [Vector2(-1, -0.00235426), 0.0, 0.0, 0, 0, Vector2(-0.621937, -0.37218), 0.0, 0.0, 0, 0, Vector2(-0.173862, 0.678635), 0.0, 0.0, 0, 0, Vector2(0.3979, -0.61958), 0.0, 0.0, 0, 0, Vector2(0.715286, 0.109869), 0.0, 0.0, 0, 0, Vector2(0.941657, 0.0129489), 0.0, 0.0, 0, 0]
+_data = [Vector2(-1, -0.00235426), 0.0, 0.0, 0, 0, Vector2(-0.526254, -0.208946), 0.0, 0.0, 0, 0, Vector2(-0.127188, 0.112419), 0.0, 0.0, 0, 0, Vector2(0.134189, -0.254856), 0.0, 0.0, 0, 0, Vector2(0.649942, 0.0716108), 0.0, 0.0, 0, 0, Vector2(0.941657, 0.0129489), 0.0, 0.0, 0, 0]
 point_count = 6
 
 [sub_resource type="CurveTexture" id="CurveTexture_01j2l"]
@@ -56,22 +60,67 @@ curve = SubResource("Curve_mxlpx")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kumjr"]
 resource_local_to_scene = true
 shader = ExtResource("3_t8ji5")
-shader_parameter/strength = -0.911
+shader_parameter/strength = -0.477
 shader_parameter/curve = SubResource("CurveTexture_01j2l")
+
+[sub_resource type="Animation" id="Animation_npxnb"]
+resource_name = "Black"
+length = 4.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/strength")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.8, 1.73333, 2.46667, 3.23333, 3.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [-0.477, -0.846, -0.402, -0.616, 0.477, -0.477]
+}
+
+[sub_resource type="Animation" id="Animation_t8ji5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/strength")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-0.477]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nhkeu"]
+_data = {
+&"Black": SubResource("Animation_npxnb"),
+&"RESET": SubResource("Animation_t8ji5")
+}
 
 [node name="Power" type="Area2D"]
 collision_mask = 7
 script = ExtResource("1_me7l1")
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_6qsxx")
+
+[node name="PullZone" type="Area2D" parent="."]
+visible = false
+visibility_layer = 7
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PullZone"]
+shape = SubResource("CircleShape2D_npxnb")
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 visible = false
-position = Vector2(-8, 28)
-scale = Vector2(0.386841, 0.36263)
+position = Vector2(-562.243, -264.25)
+scale = Vector2(0.251528, 0.235786)
 texture = ExtResource("2_npxnb")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
-shape = SubResource("CircleShape2D_6qsxx")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -80,9 +129,23 @@ libraries = {
 
 [node name="Sprite2D2" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_kumjr")
-scale = Vector2(1.46582, 1.46582)
+position = Vector2(-3.8147e-06, -3.8147e-06)
+scale = Vector2(0.592285, 0.592285)
 texture = ExtResource("4_nhkeu")
 
 [node name="Sprite2D3" type="Sprite2D" parent="Sprite2D2"]
-scale = Vector2(0.079587, 0.079587)
+position = Vector2(7.15256e-06, 7.15256e-06)
+scale = Vector2(0.060054, 0.060054)
 texture = ExtResource("5_wwjmc")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D2"]
+libraries = {
+&"": SubResource("AnimationLibrary_nhkeu")
+}
+autoplay = "Black"
+
+[node name="LifetimeTimer" type="Timer" parent="."]
+wait_time = 4.0
+one_shot = true
+
+[connection signal="body_entered" from="PullZone" to="." method="_on_pull_zone_body_entered"]
