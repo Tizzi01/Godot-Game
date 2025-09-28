@@ -4,7 +4,7 @@ var move_speed := 150.0
 var health := 70
 var is_glitching := false
 var is_teleporting := false
-
+@export var is_being_pulled := false
 @onready var gl: AudioStreamPlayer = $GL
 @onready var zero: AudioStreamPlayer = $Zero
 @onready var player = get_node("/root/Game/Player")
@@ -41,6 +41,11 @@ func _ready():
 		game_node.game_over_triggered.connect(_on_game_over_triggered)
 
 func _physics_process(delta):
+	
+	if is_being_pulled:
+		move_and_slide()
+		return
+	
 	if not is_glitching and not is_teleporting:
 		var direction = global_position.direction_to(player.global_position)
 		velocity = direction * move_speed
@@ -74,16 +79,19 @@ func can_attempt_teleport() -> bool:
 func is_too_close_to_player() -> bool:
 	return global_position.distance_to(player.global_position) < 60.0
 
-func take_damage():
+func take_damage(amount: int = 10, source: String = "") -> void:
 	if is_glitching:
 		return
 
-	health -= 10
-	hit_flash.play("Hitflash")
+	if source == "blackhole" or source == "bullet":
+		health -= amount
+		hit_flash.play("Hitflash")
 
-	if health <= 0:
-		died.emit()
-		await glitch_out()
+		if health <= 0:
+			died.emit()
+			await glitch_out()
+	else:
+		print("❌ Mob2 ignored damage from:", source)
 
 func teleport_near_player():
 	TeleportManager.start_cooldown()

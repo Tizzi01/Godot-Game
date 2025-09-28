@@ -10,8 +10,10 @@ func _physics_process(delta):
 	if travelled_distance > RANGE:
 		queue_free()
 
-
 func _on_body_entered(body):
-	if body.has_method("take_damage"):
-		body.take_damage()
+	if body and body.is_inside_tree():
+		if body.is_in_group("Mob2"):
+			body.take_damage(10, "bullet")
+		elif body.has_method("take_damage"):
+			body.take_damage(10)
 	queue_free()

@@ -91,7 +91,24 @@ func _ready():
 
 	var game_node = get_tree().get_root().get_node(\"Game\")
 	if game_node:
-		game_node.game_over_triggered.connect(_on_game_over_triggered)
+		game_node.game_over_triggered.connect(_on_game_over_triggered) 
+		
+		
+		
+func take_damage(amount: float) -> void:
+	if frozen:
+		return
+
+	health -= amount
+	player_damaged.emit()
+	anim_player.play(\"Damage\")
+	omni.play()  # Plays your damage sound
+
+	for bar in get_tree().get_nodes_in_group(\"HPBAR\"):
+		bar.value = health
+
+	if health <= 0.0:
+		health_depleted.emit()
 
 # gun tracking
 var Gun_mouse_pos: Vector2 = Vector2.ZERO

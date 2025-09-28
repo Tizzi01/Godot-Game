@@ -7,10 +7,10 @@
 [ext_resource type="Texture2D" uid="uid://s7yv3iw61f5" path="res://Demo/Stuff/sprites/Black_Circle-removebg-preview.png" id="5_wwjmc"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6qsxx"]
-radius = 4.0
+radius = 1.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_npxnb"]
-radius = 107.005
+radius = 164.027
 
 [sub_resource type="Animation" id="Animation_kya1k"]
 length = 0.001
@@ -102,6 +102,7 @@ _data = {
 }
 
 [node name="Power" type="Area2D"]
+z_index = 1
 collision_mask = 7
 script = ExtResource("1_me7l1")
 
@@ -109,7 +110,6 @@ script = ExtResource("1_me7l1")
 shape = SubResource("CircleShape2D_6qsxx")
 
 [node name="PullZone" type="Area2D" parent="."]
-visible = false
 visibility_layer = 7
 collision_mask = 7
 
@@ -129,13 +129,12 @@ libraries = {
 
 [node name="Sprite2D2" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_kumjr")
-position = Vector2(-3.8147e-06, -3.8147e-06)
-scale = Vector2(0.592285, 0.592285)
+scale = Vector2(1.32599, 1.32599)
 texture = ExtResource("4_nhkeu")
 
 [node name="Sprite2D3" type="Sprite2D" parent="Sprite2D2"]
-position = Vector2(7.15256e-06, 7.15256e-06)
-scale = Vector2(0.060054, 0.060054)
+position = Vector2(-2.38419e-07, -2.38419e-07)
+scale = Vector2(0.032359, 0.032359)
 texture = ExtResource("5_wwjmc")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D2"]

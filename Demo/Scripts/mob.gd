@@ -49,8 +49,8 @@ func _physics_process(delta):
 	elif not is_moving and current_anim != "idle":
 		animation_player.play("walk")
 
-func take_damage():
-	health -= 10
+func take_damage(amount: int = 10) -> void:
+	health -= amount
 	hit_flash.play("Hitflash")
 
 	if health <= 0:
