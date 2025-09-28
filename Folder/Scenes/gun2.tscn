@@ -537,4 +537,8 @@ stream = ExtResource("4_vgnh8")
 stream = ExtResource("5_ri1ra")
 volume_db = -11.0
 
+[node name="BlackHoleCooldownTimer" type="Timer" parent="."]
+wait_time = 4.0
+one_shot = true
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

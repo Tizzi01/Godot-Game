@@ -3,12 +3,16 @@ extends Area2D
 signal black_hole_spawned  # 📢 Signal for camera shake
 
 @onready var anim = $AnimationPlayer
+@onready var animation_player_2: AnimationPlayer = $Sprite2D2/AnimationPlayer2
 @onready var pull_zone = $PullZone
 @onready var idle: AudioStreamPlayer2D = $Idle
 @onready var ka: AudioStreamPlayer = $ka
 @onready var pf: AudioStreamPlayer = $PF
-@onready var timer_10s: Timer = $J  # ⏱️ Reference to the Timer node
+@onready var timer_10s: Timer = $J
+@onready var cooldown_timer: Timer = $CooldownTimer
+@onready var cooldown_bar: ProgressBar = get_node("/root/Game/CanvasLayer3/BHCD")
 
+var is_on_cooldown := false
 var min_audio_distance: float = 0.0
 var max_audio_distance: float = 888.0
 
@@ -30,15 +34,22 @@ func _ready():
 	pull_zone.connect("body_entered", Callable(self, "_on_pull_zone_entered"))
 	pull_zone.connect("body_exited", Callable(self, "_on_pull_zone_exited"))
 
-	# 🔧 Start the timer and connect its timeout
 	timer_10s.timeout.connect(_on_10s_timeout)
 	timer_10s.start()
+
+	cooldown_timer.timeout.connect(_on_cooldown_finished)
+
+	print("⏱️ Timer started — waiting for close sequence")
 
 func emit_black_hole_signal():
 	emit_signal("black_hole_spawned")
 	print("📢 Signal emitted: black_hole_spawned")
 
 func _on_damage_zone_entered(body):
+	if is_on_cooldown:
+		print("🛑 Black hole on cooldown — no damage applied")
+		return
+
 	if body.is_in_group("Mob") and body.has_method("take_damage"):
 		body.take_damage(10)
 	elif body.is_in_group("Mob2") and body.has_method("take_damage"):
@@ -47,6 +58,10 @@ func _on_damage_zone_entered(body):
 		body.take_damage(10)
 
 func _on_pull_zone_entered(body):
+	if is_on_cooldown:
+		print("🛑 Black hole on cooldown — no pull applied")
+		return
+
 	if body.is_in_group("Mob") or body.is_in_group("Mob2"):
 		body.is_being_pulled = true
 		affected_mobs.append(body)
@@ -61,6 +76,9 @@ func _on_pull_zone_exited(body):
 		affected_player = null
 
 func _physics_process(delta: float) -> void:
+	if is_on_cooldown:
+		return
+
 	var max_range: float = 500.0
 
 	for mob in affected_mobs:
@@ -95,10 +113,51 @@ func _on_idle_finished():
 	idle.play()
 
 func _on_10s_timeout():
-	anim.play("close")
-	pf.play()
+	print("⏰ Timer fired — starting close sequence")
 
-	# Wait for animation and sound to finish before freeing
-	await anim.animation_finished
+	if not animation_player_2.has_animation("close"):
+		print("❌ Animation 'close' not found in animation_player_2!")
+		return
+
+	animation_player_2.play("close")
+	print("🎞️ Playing 'close' animation from animation_player_2")
+
+	if not pf.stream:
+		print("❌ PF sound stream is missing!")
+	else:
+		pf.play()
+		print("🔊 Playing PF sound")
+
+	print("⏳ Waiting for animation and sound to finish...")
+
+	await animation_player_2.animation_finished
+	print("✅ Close animation finished")
+
 	await pf.finished
+	print("✅ PF sound finished")
+
+	trigger_black_hole_cooldown(cooldown_timer.wait_time)
+
+	print("🧹 Cleaning up black hole")
 	queue_free()
+
+func trigger_black_hole_cooldown(duration: float):
+	is_on_cooldown = true
+	cooldown_bar.visible = true
+	cooldown_bar.max_value = 100
+	cooldown_bar.value = 100
+
+	cooldown_timer.wait_time = duration
+	cooldown_timer.start()
+
+	var tween := create_tween()
+	tween.tween_property(cooldown_bar, "value", 0, duration) \
+		.set_trans(Tween.TRANS_CUBIC) \
+		.set_ease(Tween.EASE_IN)
+
+	print("🌀 Black hole cooldown started for", duration, "seconds")
+
+func _on_cooldown_finished():
+	is_on_cooldown = false
+	cooldown_bar.visible = false
+	print("✅ Black hole cooldown finished")

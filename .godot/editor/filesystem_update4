@@ -17,3 +17,7 @@ res://Folder/Scenes/mob.tscn
 res://Folder/Scenes/White2.tres
 res://Folder/Scenes/white.tres
 res://Demo/Scenes/power.gd
+res://Demo/Scripts/bhcd.gd
+res://Demo/Scripts/label.gd
+res://Folder/Scenes/label2.gd
+res://Demo/Scripts/gun2.gd
