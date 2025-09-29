@@ -45,8 +45,11 @@ var tp_ready := true
 
 @export var Gun_radius: float = 20.0
 @export var Gun_follow_speed: float = 10.0
-
-
+@onready var black_hole_cooldown_timer: Timer = $BlackHoleCooldownTimer
+@onready var black_hole_cooldown_bar: ProgressBar = get_node(\"/root/Game/CanvasLayer3/BHCD\")
+var black_hole_ready := true
+var black_hole_tween: Tween = null
+var black_hole_unlocked := false
 var current_weapon: Node = null
 var weapon_index := 0
 var weapon_scenes := [preload(\"res://Folder/Scenes/gun.tscn\"),preload(\"res://Folder/Scenes/gun2.tscn\") ]
@@ -77,7 +80,8 @@ signal health_depleted
 
 func _ready(): 
 	
-
+	black_hole_cooldown_timer.timeout.connect(_on_black_hole_cooldown_timer_timeout)
+	black_hole_cooldown_bar.visible = false
 	_spawn_weapon(0)
 	
 	add_to_group(\"player\")
@@ -303,23 +307,49 @@ func _on_tp_signal_received():
 	tp_unlocked = true
 	print(\"📡 TP signal received — teleport unlocked\")
 	emit_signal(\"teleport_unlocked\")
-
+	
+func _on_black_hole_signal_received():
+	black_hole_unlocked = true
+	print(\"🌀 Black hole unlocked — ready to use\")
+	black_hole_cooldown_bar.visible = true
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
+		var next_index := weapon_index
+
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
-			if current_weapon and current_weapon.has_method(\"play_change_animation\"):
-				current_weapon.play_change_animation()
-				await get_tree().create_timer(0.2).timeout
-			weapon_index = (weapon_index + 1) % weapon_scenes.size()
-			_spawn_weapon(weapon_index)
+			next_index = (weapon_index + 1) % weapon_scenes.size()
 
 		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			next_index = (weapon_index - 1 + weapon_scenes.size()) % weapon_scenes.size()
+
+		# 🛑 Block Gun2 if not unlocked
+		if next_index == 1 and not black_hole_unlocked:
+			print(\"❌ Gun2 blocked — black hole not purchased\")
+			return
+
+		# ✅ Play animation only if weapon is allowed
+		if next_index != weapon_index:
 			if current_weapon and current_weapon.has_method(\"play_change_animation\"):
 				current_weapon.play_change_animation()
 				await get_tree().create_timer(0.2).timeout
-			weapon_index = (weapon_index - 1 + weapon_scenes.size()) % weapon_scenes.size()
-			_spawn_weapon(weapon_index)
+
+		weapon_index = next_index
+		_spawn_weapon(weapon_index)
+		if get_viewport().gui_get_focus_owner() and get_viewport().gui_get_focus_owner().is_in_group(\"shop_ui\"):
+			return
+	if frozen:
+		return
+
+	if current_weapon and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		var anim = current_weapon.get_node_or_null(\"AnimationPlayer\")
+		if anim and not anim.is_playing():
+			anim.play(\"slash\")
+
+		if teleporting:
+			teleport_hovering = false
+			teleporting = false
+			teleport_hover_timer = 0.0
 	
 	if frozen:
 		return
@@ -356,9 +386,12 @@ func _on_teleport_cooldown_timer_timeout() -> void:
 	
 func _spawn_weapon(index: int):
 	if index == 1:
-		gun_node.visible = false
-		gun_node.can_fire = false  # 🔒 Disable firing
+		if not black_hole_unlocked:
+			print(\"❌ Gun2 blocked — black hole not purchased\")
+			return
 
+		gun_node.visible = false
+		gun_node.can_fire = false
 		current_weapon = weapon_scenes[1].instantiate()
 		add_child(current_weapon)
 		current_weapon.position = gun_node.position
@@ -369,6 +402,41 @@ func _spawn_weapon(index: int):
 		gun_node.visible = true
 		gun_node.can_fire = true  # 🔓 Enable firing
 		current_weapon = gun_node
+
+
+func can_spawn_black_hole() -> bool:
+	return black_hole_ready
+
+func start_black_hole_cooldown():
+	black_hole_ready = false
+	black_hole_cooldown_timer.start()
+	start_black_hole_cooldown_bar()
+
+func _on_black_hole_cooldown_timer_timeout():
+	black_hole_ready = true
+	reset_black_hole_cooldown_bar()
+	print(\"✅ Black hole cooldown finished\")
+
+func start_black_hole_cooldown_bar():
+	black_hole_cooldown_bar.visible = true
+	black_hole_cooldown_bar.max_value = 100
+	black_hole_cooldown_bar.value = 100
+
+	if black_hole_tween:
+		black_hole_tween.kill()
+
+	black_hole_tween = create_tween()
+	black_hole_tween.tween_property(black_hole_cooldown_bar, \"value\", 0, black_hole_cooldown_timer.wait_time) \\
+		.set_trans(Tween.TRANS_CUBIC) \\
+		.set_ease(Tween.EASE_IN)
+
+func reset_black_hole_cooldown_bar():
+	if black_hole_tween:
+		black_hole_tween.kill()
+		black_hole_tween = null
+
+	black_hole_cooldown_bar.value = 0
+	black_hole_cooldown_bar.visible = true
 "
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wf6if"]
@@ -953,5 +1021,9 @@ one_shot = true
 
 [node name="Omni" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("10_74cf5")
+
+[node name="BlackHoleCooldownTimer" type="Timer" parent="."]
+wait_time = 20.0
+one_shot = true
 
 [connection signal="timeout" from="TeleportCooldownTimer" to="." method="_on_teleport_cooldown_timer_timeout"]

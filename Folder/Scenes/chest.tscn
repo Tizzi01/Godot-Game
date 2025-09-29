@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://d1mkdm54ef6sl"]
 
 [ext_resource type="Script" uid="uid://0lxj4k642akl" path="res://Demo/Scripts/chest.gd" id="1_5chet"]
-[ext_resource type="Texture2D" uid="uid://bsrsm6rgvt86a" path="res://Folder/Assets/Sprites/Adobe Express - file.png" id="2_t1hi0"]
+[ext_resource type="Texture2D" uid="uid://drualp5j556m4" path="res://Folder/Assets/Sprites/Player Animation/idle_right/Screenshot_2025-09-28_193549-removebg-preview.png" id="2_38yu5"]
 [ext_resource type="AudioStream" uid="uid://py2bwe3s613i" path="res://Demo/Stuff/sounds/Rumble1fixed .mp3" id="3_llhw8"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_t1hi0"]
@@ -226,14 +226,14 @@ _data = {
 script = ExtResource("1_5chet")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.022, 0.022)
-texture = ExtResource("2_t1hi0")
+scale = Vector2(0.0472903, 0.0472903)
+texture = ExtResource("2_38yu5")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 shape = SubResource("CircleShape2D_t1hi0")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
+visible = false
 texture = SubResource("GradientTexture2D_sq82o")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

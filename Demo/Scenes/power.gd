@@ -55,7 +55,7 @@ func _on_damage_zone_entered(body):
 	elif body.is_in_group("Mob2") and body.has_method("take_damage"):
 		body.take_damage(30, "blackhole")
 	elif body.is_in_group("player") and body.has_method("take_damage"):
-		body.take_damage(10)
+		body.take_damage(5)
 
 func _on_pull_zone_entered(body):
 	if is_on_cooldown:

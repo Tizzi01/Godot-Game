@@ -645,7 +645,7 @@ libraries = {
 }
 autoplay = "Idle"
 
-[node name="SpaceShift2" type="Button" parent="."]
+[node name="Singularity" type="Button" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -665,9 +665,8 @@ theme_override_font_sizes/font_size = 33
 theme_override_styles/focus = SubResource("StyleBoxEmpty_t5een")
 theme_override_styles/hover = SubResource("StyleBoxFlat_u52t5")
 theme_override_styles/normal = SubResource("StyleBoxFlat_yhb8x")
-text = "gun that shoots black holes
-free for now 
-(work in progress)"
+text = "Singularity"
 
 [connection signal="pressed" from="Panel/Back" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="SpaceShift" to="." method="_on_space_shift_pressed"]
+[connection signal="pressed" from="Singularity" to="." method="_on_singularity_pressed"]

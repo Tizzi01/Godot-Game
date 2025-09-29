@@ -5,11 +5,11 @@ extends Control
 var shop_open = false
 @onready var animation_player: AnimationPlayer = $Panel/Sprite2D/AnimationPlayer
 @onready var woosh: AudioStreamPlayer = $woosh
-
+@onready var singularity_button = $Singularity
 # 📢 Signals
 signal shop_closed
 signal space_shift_button_pressed  # ✅ New signal
-
+signal black_hole_button_pressed
 func _ready() -> void:
 	animation_player.play("ShopIdle")
 	# Scale the shop to 80% of its original size
@@ -73,3 +73,28 @@ func _on_back_pressed() -> void:
 	await tween.finished
 	emit_signal("shop_closed")
 	queue_free()
+
+
+func _on_singularity_pressed() -> void:
+	var player_list = get_tree().get_nodes_in_group("player")
+	if player_list.size() == 0:
+		print("❌ No player found in 'player' group")
+		return
+
+	var player = player_list[0] 
+	if player.black_hole_unlocked:
+		print("❌ Already purchased — can't buy again")
+		return
+	
+	print("🔍 Shop: player from group =", player)
+
+	var cost = 5
+	if PointsManager.points >= cost:
+		PointsManager.add_points(-cost)
+		print("🌌 Black Hole purchased! -5 points")
+
+		player._on_black_hole_signal_received()
+		emit_signal("black_hole_button_pressed")
+		print("📡 Signal emitted: black_hole_button_pressed")
+	else:
+		print("❌ Not enough money for Black Hole")

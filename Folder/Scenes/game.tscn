@@ -813,7 +813,6 @@ texture = ExtResource("10_14idw")
 flip_h = true
 
 [node name="BGv13" type="Sprite2D" parent="BG"]
-visible = false
 z_index = -55
 position = Vector2(-151, 953)
 scale = Vector2(0.2, 0.2)

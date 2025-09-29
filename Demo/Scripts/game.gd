@@ -269,7 +269,7 @@ func _on_shop_pressed() -> void:
 
 	# ✅ Connect the signal AFTER shop_instance is created
 	shop_instance.space_shift_button_pressed.connect(player._on_tp_signal_received)
-	
+	shop_instance.black_hole_button_pressed.connect(player._on_black_hole_signal_received)
 	# Disable the shop button immediately
 	shop.disabled = true
 
