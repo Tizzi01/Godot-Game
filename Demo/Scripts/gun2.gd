@@ -3,7 +3,7 @@ extends Area2D
 @onready var omni: AudioStreamPlayer = $Omni
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var up: AudioStreamPlayer = $up
-
+var is_active := false
 var hold_timer := 0.0
 var hold_threshold := 1.5
 var has_spawned := false

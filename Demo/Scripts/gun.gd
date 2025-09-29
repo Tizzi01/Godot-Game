@@ -5,7 +5,7 @@ signal request_weapon_switch
 const BULLET = preload("res://Folder/Scenes/bullet_v_2.tscn")
 const ROTATION_OFFSET := PI / 2  # ✅ Correct offset for upward-facing gun
 @onready var omni: AudioStreamPlayer = $Omni
-
+var is_active := true  # ✅ Starts active since player has it from the beginning
 @onready var gun_pivot = $GunPivot
 @onready var shooting_point = $GunPivot/Sprite2D/ShootingPoint
 
@@ -22,6 +22,9 @@ func _on_body_entered(body: Node) -> void:
 		queue_free()
 
 func _physics_process(delta):
+	if not is_active:
+		return  # ❌ Don't fire or rotate unless active
+
 	var mouse_pos = get_global_mouse_position()
 	var target_angle = (mouse_pos - gun_pivot.global_position).angle() + ROTATION_OFFSET
 	gun_pivot.rotation = lerp_angle(gun_pivot.rotation, target_angle, 10 * delta)

@@ -790,6 +790,12 @@ shape = SubResource("WorldBoundaryShape2D_8i32r")
 [node name="chest" parent="." instance=ExtResource("4_naqcg")]
 position = Vector2(-183, 34)
 
+[node name="chest2" parent="." instance=ExtResource("4_naqcg")]
+position = Vector2(555, -198)
+
+[node name="chest3" parent="." instance=ExtResource("4_naqcg")]
+position = Vector2(-772, 303)
+
 [node name="BG" type="Node" parent="."]
 
 [node name="BGv7" type="Sprite2D" parent="BG"]

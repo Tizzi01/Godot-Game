@@ -383,8 +383,17 @@ func _on_teleport_cooldown_timer_timeout() -> void:
 	tp_ready = true
 	print(\"✅ TP cooldown finished\") 
 	
-	
+
+
+
 func _spawn_weapon(index: int):
+	# 🧹 Clean up old weapon if it's not the default gun
+	if current_weapon and current_weapon != gun_node:
+		current_weapon.is_active = false  # ✅ Turn off old gun
+		current_weapon.queue_free()       # ✅ Delete old gun
+		current_weapon = null
+
+	# 🔫 If index is 1, spawn gun2 (black hole gun)
 	if index == 1:
 		if not black_hole_unlocked:
 			print(\"❌ Gun2 blocked — black hole not purchased\")
@@ -392,16 +401,18 @@ func _spawn_weapon(index: int):
 
 		gun_node.visible = false
 		gun_node.can_fire = false
+
 		current_weapon = weapon_scenes[1].instantiate()
 		add_child(current_weapon)
 		current_weapon.position = gun_node.position
-	else:
-		if current_weapon and current_weapon != gun_node:
-			current_weapon.queue_free()
+		current_weapon.is_active = true  # ✅ Turn on gun2
 
+	# 🔫 If index is 0, use default gun
+	else:
 		gun_node.visible = true
-		gun_node.can_fire = true  # 🔓 Enable firing
+		gun_node.can_fire = true
 		current_weapon = gun_node
+		current_weapon.is_active = true  # ✅ Turn on gun1
 
 
 func can_spawn_black_hole() -> bool:

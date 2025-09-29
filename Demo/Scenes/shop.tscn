@@ -1,11 +1,13 @@
-[gd_scene load_steps=27 format=3 uid="uid://bwc6d4yf3g328"]
+[gd_scene load_steps=23 format=3 uid="uid://bwc6d4yf3g328"]
 
 [ext_resource type="Script" uid="uid://csyxdcof2prv5" path="res://Demo/Scripts/shop.gd" id="1_kwrf6"]
 [ext_resource type="Texture2D" uid="uid://canfsqyqpe8qy" path="res://Folder/Assets/Sprites/Player Animation/idle/0.png" id="2_de8nq"]
+[ext_resource type="Texture2D" uid="uid://cs1mvtuwpmers" path="res://Demo/Stuff/sprites/Type1a.png" id="2_fs6vg"]
 [ext_resource type="Shader" uid="uid://coyggroig6t4b" path="res://Demo/Scenes/glitchy.gdshader" id="2_kwrf6"]
+[ext_resource type="Texture2D" uid="uid://dvdr523i3cv58" path="res://Demo/Stuff/sprites/type2a.png" id="2_nndrg"]
 [ext_resource type="Script" uid="uid://byvel7rp6w11c" path="res://Demo/Scripts/sprite_2d.gd" id="3_osvdh"]
 [ext_resource type="FontFile" uid="uid://ctp71ddagy2v8" path="res://Demo/Stuff/fonts/Roquen DEMO.otf" id="4_x00t5"]
-[ext_resource type="PackedScene" uid="uid://bmtxhxetmbosa" path="res://Folder/Scenes/gun2.tscn" id="6_t5een"]
+[ext_resource type="PackedScene" uid="uid://bt1jj0du5ltb8" path="res://Demo/Scenes/powershow.tscn" id="8_nndrg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x00t5"]
 bg_color = Color(0.180392, 0.247059, 0.368627, 1)
@@ -233,327 +235,6 @@ corner_radius_bottom_left = 22
 shadow_color = Color(0, 0, 0, 0.521569)
 shadow_size = 3
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_to724"]
-resource_local_to_scene = true
-shader = ExtResource("2_kwrf6")
-shader_parameter/glitch_intensity = 0.0
-shader_parameter/glitch_offset = 0.435
-shader_parameter/glitch_speed = 1.0
-
-[sub_resource type="Animation" id="Animation_7ecvl"]
-resource_name = "Idle"
-length = 2.567
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 2.56667),
-"transitions": PackedFloat32Array(-2, -2),
-"update": 0,
-"values": [0.0, 3.14159]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:scale")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.7, 1.33333, 1.96667, 2.56667),
-"transitions": PackedFloat32Array(-2, -2, -2, -2, -2),
-"update": 0,
-"values": [Vector2(5.85, 5.85), Vector2(6.25, 6.25), Vector2(5.85, 5.85), Vector2(6.25, 6.25), Vector2(5.85, 5.85)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:material:shader_parameter/glitch_offset")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.435]
-}
-
-[sub_resource type="Animation" id="Animation_0ve7x"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("SlashSFX:playing")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("GunPivot/Sprite2D:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, -23)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("GunPivot/Sprite2D:rotation")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("GunPivot/Sprite2D:scale")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0.044, 0.041)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("GunPivot/Sprite2D/PointLight2D:texture:fill_to")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0.5, 0)]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("GunPivot/Sprite2D/PointLight2D:texture:height")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [1]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("GunPivot/Sprite2D/PointLight2D:texture:width")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [1]
-}
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath(".:rotation")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [1.5708]
-}
-tracks/8/type = "value"
-tracks/8/imported = false
-tracks/8/enabled = true
-tracks/8/path = NodePath(".:scale")
-tracks/8/interp = 1
-tracks/8/loop_wrap = true
-tracks/8/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(5, 5)]
-}
-tracks/9/type = "value"
-tracks/9/imported = false
-tracks/9/enabled = true
-tracks/9/path = NodePath("PointLight2D:enabled")
-tracks/9/interp = 1
-tracks/9/loop_wrap = true
-tracks/9/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/10/type = "value"
-tracks/10/imported = false
-tracks/10/enabled = true
-tracks/10/path = NodePath(".:material:shader_parameter/glitch_offset")
-tracks/10/interp = 1
-tracks/10/loop_wrap = true
-tracks/10/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.435]
-}
-
-[sub_resource type="Animation" id="Animation_s80ih"]
-resource_name = "change"
-length = 0.2
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("PointLight2D:enabled")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 1,
-"values": [true, true, true]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [1.5708, 3.14159]
-}
-
-[sub_resource type="Animation" id="Animation_hmsyr"]
-resource_name = "slash"
-length = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("SlashSFX:playing")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("GunPivot/Sprite2D:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.03, 0.05, 0.06, 0.08, 0.1),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(0, -23), Vector2(-1.9233e-06, -22), Vector2(-1.9233e-06, -22), Vector2(5.84722e-05, -23), Vector2(0, -23.333), Vector2(0, -23)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("GunPivot/Sprite2D:rotation")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.03, 0.05, 0.06, 0.08, 0.1),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("GunPivot/Sprite2D:scale")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.03, 0.05, 0.06, 0.08, 0.1),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(0.044, 0.041), Vector2(0.044, 0.0343936), Vector2(0.044, 0.0343936), Vector2(0.044, 0.0586246), Vector2(0.044, 0.0338358), Vector2(0.044, 0.041)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("GunPivot/Sprite2D/PointLight2D:texture:fill_to")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(0.5, 0), Vector2(0, 0)]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("GunPivot/Sprite2D/PointLight2D:texture:height")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [55, 1]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("GunPivot/Sprite2D/PointLight2D:texture:width")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"times": PackedFloat32Array(0, 0.1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [55, 1]
-}
-tracks/7/type = "method"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("SlashSFX")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [0.0],
-"method": &"play_with_variation"
-}]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_hco14"]
-_data = {
-&"Idle": SubResource("Animation_7ecvl"),
-&"RESET": SubResource("Animation_0ve7x"),
-&"change": SubResource("Animation_s80ih"),
-&"slash": SubResource("Animation_hmsyr")
-}
-
 [node name="Shop" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -572,6 +253,16 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_x00t5")
+
+[node name="Sprite2D3" type="Sprite2D" parent="Panel"]
+position = Vector2(817, 541.5)
+scale = Vector2(0.665741, 0.665741)
+texture = ExtResource("2_nndrg")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Panel"]
+position = Vector2(346, 542)
+scale = Vector2(0.673148, 0.673148)
+texture = ExtResource("2_fs6vg")
 
 [node name="Sprite2D" type="Sprite2D" parent="Panel"]
 material = SubResource("ShaderMaterial_t5een")
@@ -618,10 +309,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -817.0
-offset_top = 322.0
-offset_right = -359.0
-offset_bottom = 398.0
+offset_left = -775.0
+offset_top = 179.0
+offset_right = -452.0
+offset_bottom = 255.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.00454, 1)
@@ -631,19 +322,7 @@ theme_override_font_sizes/font_size = 33
 theme_override_styles/focus = SubResource("StyleBoxEmpty_t5een")
 theme_override_styles/hover = SubResource("StyleBoxFlat_u52t5")
 theme_override_styles/normal = SubResource("StyleBoxFlat_yhb8x")
-text = "Space Shift 
-5 points"
-
-[node name="Gun2" parent="." instance=ExtResource("6_t5een")]
-material = SubResource("ShaderMaterial_to724")
-position = Vector2(1435, 554)
-scale = Vector2(5, 5)
-
-[node name="AnimationPlayer2" type="AnimationPlayer" parent="Gun2"]
-libraries = {
-&"": SubResource("AnimationLibrary_hco14")
-}
-autoplay = "Idle"
+text = "6 points"
 
 [node name="Singularity" type="Button" parent="."]
 layout_mode = 1
@@ -652,10 +331,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 223.0
-offset_top = 244.0
-offset_right = 773.0
-offset_bottom = 320.0
+offset_left = -300.0
+offset_top = 174.0
+offset_right = 22.0
+offset_bottom = 250.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.00454, 1)
@@ -665,7 +344,33 @@ theme_override_font_sizes/font_size = 33
 theme_override_styles/focus = SubResource("StyleBoxEmpty_t5een")
 theme_override_styles/hover = SubResource("StyleBoxFlat_u52t5")
 theme_override_styles/normal = SubResource("StyleBoxFlat_yhb8x")
-text = "Singularity"
+text = "7 points"
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -281.0
+offset_top = 56.0
+offset_right = 281.0
+offset_bottom = 156.0
+grow_horizontal = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = -2
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("4_x00t5")
+theme_override_font_sizes/font_size = 99
+text = "Item Shop"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Node" type="Node" parent="."]
+
+[node name="Power" parent="." instance=ExtResource("8_nndrg")]
+position = Vector2(807, 565)
 
 [connection signal="pressed" from="Panel/Back" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="SpaceShift" to="." method="_on_space_shift_pressed"]

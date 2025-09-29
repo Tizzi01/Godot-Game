@@ -15,3 +15,7 @@ res://Folder/Scenes/mob2.tscn
 res://Folder/Scenes/gun2.tscn
 res://Demo/Scenes/power.tscn
 res://Demo/Scenes/shop.tscn
+res://Demo/Scripts/gun.gd
+res://Demo/Scripts/gun2.gd
+res://Demo/Scenes/powershow.gd
+res://Demo/Scenes/powershow.tscn
