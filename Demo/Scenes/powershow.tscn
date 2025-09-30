@@ -171,17 +171,18 @@ libraries = {
 
 [node name="Sprite2D2" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_kumjr")
-position = Vector2(0, -2.38419e-07)
+position = Vector2(7.10543e-15, 1.42109e-14)
 scale = Vector2(1.32599, 1.32599)
 texture = ExtResource("4_5gwqh")
 
 [node name="Sprite2D3" type="Sprite2D" parent="Sprite2D2"]
-position = Vector2(4.76837e-07, 4.76837e-07)
-scale = Vector2(0.0417595, 0.0417595)
+position = Vector2(0, -2.38419e-07)
+scale = Vector2(0.0324203, 0.0324203)
 texture = ExtResource("5_f6alg")
 
 [node name="PointLight2D" type="PointLight2D" parent="Sprite2D2"]
-position = Vector2(-1.78814e-07, 0)
+visible = false
+position = Vector2(-1.19209e-07, -3.57628e-07)
 scale = Vector2(4.85152, 4.85152)
 texture = SubResource("GradientTexture2D_wwjmc")
 

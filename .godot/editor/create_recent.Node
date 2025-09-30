@@ -1,9 +1,10 @@
+Sprite2D
+CanvasLayer
 AnimationPlayer
 AnimationTree
 Control
 MarginContainer
 Node
-Sprite2D
 Timer
 AudioStreamPlayer
 PointLight2D
@@ -11,4 +12,3 @@ GPUParticlesCollisionHeightField3D
 AudioStreamPlayer2D
 Area2D
 CollisionShape2D
-Label
