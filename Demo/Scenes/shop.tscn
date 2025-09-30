@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://bwc6d4yf3g328"]
+[gd_scene load_steps=24 format=3 uid="uid://bwc6d4yf3g328"]
 
 [ext_resource type="Script" uid="uid://csyxdcof2prv5" path="res://Demo/Scripts/shop.gd" id="1_kwrf6"]
 [ext_resource type="Texture2D" uid="uid://canfsqyqpe8qy" path="res://Folder/Assets/Sprites/Player Animation/idle/0.png" id="2_de8nq"]
@@ -6,8 +6,9 @@
 [ext_resource type="Shader" uid="uid://coyggroig6t4b" path="res://Demo/Scenes/glitchy.gdshader" id="2_kwrf6"]
 [ext_resource type="Texture2D" uid="uid://dvdr523i3cv58" path="res://Demo/Stuff/sprites/type2a.png" id="2_nndrg"]
 [ext_resource type="Script" uid="uid://byvel7rp6w11c" path="res://Demo/Scripts/sprite_2d.gd" id="3_osvdh"]
+[ext_resource type="Script" uid="uid://f3i76h258o45" path="res://Demo/Scenes/sprite_2d_3.gd" id="3_xy8dm"]
 [ext_resource type="FontFile" uid="uid://ctp71ddagy2v8" path="res://Demo/Stuff/fonts/Roquen DEMO.otf" id="4_x00t5"]
-[ext_resource type="PackedScene" uid="uid://bt1jj0du5ltb8" path="res://Demo/Scenes/powershow.tscn" id="8_nndrg"]
+[ext_resource type="PackedScene" uid="uid://kru21d485jen" path="res://Folder/Scenes/gun2copy.tscn" id="9_xy8dm"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x00t5"]
 bg_color = Color(0.180392, 0.247059, 0.368627, 1)
@@ -255,11 +256,14 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_x00t5")
 
 [node name="Sprite2D3" type="Sprite2D" parent="Panel"]
+light_mask = 0
 position = Vector2(817, 541.5)
 scale = Vector2(0.665741, 0.665741)
 texture = ExtResource("2_nndrg")
+script = ExtResource("3_xy8dm")
 
 [node name="Sprite2D2" type="Sprite2D" parent="Panel"]
+light_mask = 0
 position = Vector2(346, 542)
 scale = Vector2(0.673148, 0.673148)
 texture = ExtResource("2_fs6vg")
@@ -369,8 +373,7 @@ vertical_alignment = 1
 
 [node name="Node" type="Node" parent="."]
 
-[node name="Power" parent="." instance=ExtResource("8_nndrg")]
-position = Vector2(807, 565)
+[node name="Gun2copy" parent="." instance=ExtResource("9_xy8dm")]
 
 [connection signal="pressed" from="Panel/Back" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="SpaceShift" to="." method="_on_space_shift_pressed"]

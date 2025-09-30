@@ -1,3 +1,7 @@
+AnimationPlayer
+AnimationTree
+Control
+MarginContainer
 Node
 Sprite2D
 Timer
@@ -7,8 +11,4 @@ GPUParticlesCollisionHeightField3D
 AudioStreamPlayer2D
 Area2D
 CollisionShape2D
-AnimationPlayer
-MarginContainer
 Label
-ProgressBar
-AnimationTree
