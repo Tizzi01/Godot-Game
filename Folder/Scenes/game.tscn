@@ -805,6 +805,7 @@ scale = Vector2(0.2, 0.2)
 texture = ExtResource("10_14idw")
 
 [node name="BGv8" type="Sprite2D" parent="BG"]
+visible = false
 z_index = -55
 position = Vector2(1487, 32)
 scale = Vector2(0.2, 0.2)

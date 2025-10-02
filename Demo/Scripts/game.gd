@@ -2,7 +2,7 @@ extends Node2D
 
 # 📢 Signals
 signal game_over_triggered
-
+var previous_score := 0
 # 🎮 Game References
 @onready var player = $Player
 @onready var game_over_screen = %"Game Over"
@@ -226,7 +226,21 @@ func _on_points_changed(new_value: int) -> void:
 	score.text = "Score: %d" % new_value
 	score.pivot_offset = score.size / 2
 
-	if new_value >= last_milestone + 10:
+	if new_value < previous_score:
+	# 🔴 Score dropped — flash red + bounce
+		var bounce = create_tween()
+		bounce.tween_property(score, "scale", Vector2(1.45, 1.45), 0.12)\
+			.set_trans(Tween.TRANS_SINE)\
+			.set_ease(Tween.EASE_OUT)
+		bounce.tween_property(score, "scale", Vector2(1, 1), 0.12)\
+			.set_trans(Tween.TRANS_SINE)\
+			.set_ease(Tween.EASE_IN)
+
+		var flash = create_tween()
+		flash.tween_property(score, "modulate", Color(1.0, 0.3, 0.3), 0.1)
+		flash.tween_property(score, "modulate", Color(1, 1, 1), 0.2).set_delay(0.1)
+
+	elif new_value >= last_milestone + 10:
 		last_milestone = new_value - (new_value % 10)
 		$Epic.play()
 		animation_player.play("glow")
@@ -246,6 +260,7 @@ func _on_points_changed(new_value: int) -> void:
 
 		await get_tree().create_timer(0.2).timeout
 		is_milestone_animating = false
+
 	else:
 		if is_milestone_animating:
 			return
@@ -257,6 +272,9 @@ func _on_points_changed(new_value: int) -> void:
 		tween.tween_property(score, "scale", Vector2(1, 1), 0.08)\
 			.set_trans(Tween.TRANS_SINE)\
 			.set_ease(Tween.EASE_IN)
+
+	# Update previous score for next check
+	previous_score = new_value 
 			
 			
 @onready var shop: Button = $CanvasLayer4/ShopButton/Shop
