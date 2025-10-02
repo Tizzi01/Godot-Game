@@ -805,7 +805,6 @@ scale = Vector2(0.2, 0.2)
 texture = ExtResource("10_14idw")
 
 [node name="BGv8" type="Sprite2D" parent="BG"]
-visible = false
 z_index = -55
 position = Vector2(1487, 32)
 scale = Vector2(0.2, 0.2)
@@ -922,7 +921,7 @@ script = ExtResource("20_2x3so")
 [node name="Music" type="AudioStreamPlayer" parent="."]
 unique_name_in_owner = true
 stream = ExtResource("8_4bs2y")
-volume_db = -28.0
+volume_db = -35.0
 
 [node name="Epic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("20_66lna")

@@ -8,7 +8,8 @@ var is_being_pulled := false  # Flag to detect suction state
 @onready var animation_player = $AnimationPlayer
 @onready var sprites = [ $"0", $"1", $"2" ]  # Visual layers
 @onready var hit_flash: AnimationPlayer = $HitFlash
-
+var push_velocity := Vector2.ZERO
+var pushback_active := false
 signal died
 
 func _ready():
@@ -18,6 +19,10 @@ func _ready():
 		game_node.game_over_triggered.connect(_on_game_over_triggered)
 
 func _physics_process(delta):
+	
+	if pushback_active:
+		position += push_velocity * delta
+		return
 	var move_direction := Vector2.ZERO
 
 	if not is_being_pulled:
@@ -60,6 +65,20 @@ func take_damage(amount: int = 10) -> void:
 		var smoke = SMOKE_SCENE.instantiate()
 		get_parent().add_child(smoke)
 		smoke.global_position = global_position
+		
+func apply_pushback(force: Vector2):
+	push_velocity = force
+	pushback_active = true
+	hit_flash.play("Hitflash")  # Optional flash
+
+	var tween = create_tween()
+	tween.tween_property(self, "push_velocity", Vector2.ZERO, 0.6)\
+		.set_trans(Tween.TRANS_SINE)\
+		.set_ease(Tween.EASE_OUT)
+
+	tween.finished.connect(func():
+		pushback_active = false
+	)
 
 func _on_game_over_triggered():
 	queue_free()

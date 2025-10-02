@@ -21,7 +21,7 @@ var current_line_index: int = 0
 var is_dialog_active = false
 var can_advance_line = false
 # 🧟 Mob Spawning
-var mob2_spawn_block_time := 1.0
+var mob2_spawn_block_time := 97.0
 var mob_spawn_interval := 0.4
 var mob2_spawn_interval := 5.0
 var mob_spawn_timer := 0.0
@@ -223,6 +223,7 @@ var last_milestone := 0
 var is_milestone_animating := false
 
 func _on_points_changed(new_value: int) -> void:
+	await celebrate_special_score(new_value)
 	score.text = "Score: %d" % new_value
 	score.pivot_offset = score.size / 2
 
@@ -347,3 +348,25 @@ func _on_teleport_cooldown_started(duration: float) -> void:
 
 func _on_teleport_unlocked() -> void:
 	tp_bar.visible = true
+ 
+
+func celebrate_special_score(new_value: int) -> void:
+	if new_value == 67 or new_value == 667:
+		$Epic.play()
+		animation_player.play("glow")
+		is_milestone_animating = true
+
+		var big_tween = get_tree().create_tween()
+		big_tween.tween_property(score, "scale", Vector2(1.45, 1.45), 0.12)\
+			.set_trans(Tween.TRANS_SINE)\
+			.set_ease(Tween.EASE_OUT)
+		big_tween.tween_property(score, "scale", Vector2(1, 1), 0.12)\
+			.set_trans(Tween.TRANS_SINE)\
+			.set_ease(Tween.EASE_IN)
+
+		var flash = get_tree().create_tween()
+		flash.tween_property(score, "modulate", Color(0.6, 0.3, 0.8), 0.1)
+		flash.tween_property(score, "modulate", Color(1, 1, 1), 0.2).set_delay(0.1)
+
+		await get_tree().create_timer(0.2).timeout
+		is_milestone_animating = false

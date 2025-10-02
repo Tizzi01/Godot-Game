@@ -118,6 +118,10 @@ func take_damage(amount: float) -> void:
 var Gun_mouse_pos: Vector2 = Vector2.ZERO
 
 func _physics_process(delta):
+	
+	if Input.is_action_just_pressed(\"shockwave\"):
+		_spawn_shockwave()
+	
 	if frozen:
 		return
 	
@@ -448,6 +452,14 @@ func reset_black_hole_cooldown_bar():
 
 	black_hole_cooldown_bar.value = 0
 	black_hole_cooldown_bar.visible = true
+
+
+func _spawn_shockwave():
+	var shockwave_scene = preload(\"res://Demo/Scenes/shockwave.tscn\")
+	var shockwave = shockwave_scene.instantiate()
+	shockwave.global_position = global_position
+	get_tree().current_scene.add_child(shockwave)
+	$Omni.play()  # Optional sound effect
 "
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wf6if"]

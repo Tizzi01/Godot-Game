@@ -7,6 +7,7 @@ var shop_open = false
 @onready var woosh: AudioStreamPlayer = $woosh
 @onready var singularity_button = $Singularity
 @onready var nop: AudioStreamPlayer = $nop  # 🔊 Add this line
+@onready var money: AudioStreamPlayer = $money
 
 const BUZZER_BUTTON_S_08TE_317__SFX_ = preload("res://Demo/Stuff/music/BuzzerButton_S08TE.317 (SFX).mp3")
 # 📢 Signals
@@ -69,6 +70,7 @@ func _on_space_shift_pressed() -> void:
 		space_shift_button.disabled = true
 		emit_signal("space_shift_button_pressed")
 		print("📡 Signal emitted: space_shift_button_pressed")
+		money.play()  # 💸 Play success sound
 	else:
 		print("❌ Not enough money for SpaceShift")
 		if nop:
@@ -92,8 +94,9 @@ func _on_back_pressed() -> void:
 		.set_ease(Tween.EASE_IN)
 
 	await tween.finished
+	await get_tree().create_timer(0.0).timeout
 	emit_signal("shop_closed")
-	queue_free()
+	queue_free() 
 
 func _on_singularity_pressed() -> void:
 	var player_list = get_tree().get_nodes_in_group("player")
@@ -118,6 +121,7 @@ func _on_singularity_pressed() -> void:
 		singularity_button.disabled = true
 		emit_signal("black_hole_button_pressed")
 		print("📡 Signal emitted: black_hole_button_pressed")
+		money.play()  # 💸 Play success sound
 	else:
 		print("❌ Not enough money for Black Hole")
 		if nop:

@@ -1,0 +1,59 @@
+[gd_scene load_steps=6 format=3 uid="uid://bpi2vy2nytph6"]
+
+[ext_resource type="Script" uid="uid://10lr1vlg5dbb" path="res://Demo/Scenes/shockwave.gd" id="1_r3eit"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_378l5"]
+
+[sub_resource type="Animation" id="Animation_xkg6n"]
+resource_name = "expand"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(7, 7)]
+}
+
+[sub_resource type="Animation" id="Animation_uv72l"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_p1kcr"]
+_data = {
+&"RESET": SubResource("Animation_uv72l"),
+&"expand": SubResource("Animation_xkg6n")
+}
+
+[node name="shockwave" type="Node2D"]
+
+[node name="Shockwave" type="Area2D" parent="."]
+script = ExtResource("1_r3eit")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Shockwave"]
+shape = SubResource("CircleShape2D_378l5")
+
+[node name="Timer" type="Timer" parent="Shockwave"]
+one_shot = true
+autostart = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Shockwave"]
+libraries = {
+&"": SubResource("AnimationLibrary_p1kcr")
+}

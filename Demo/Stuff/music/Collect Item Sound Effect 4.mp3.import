@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b8fri2p123a45"
+path="res://.godot/imported/Collect Item Sound Effect 4.mp3-c999ff445c5b0a8070bb8fa73b1cbad2.mp3str"
+
+[deps]
+
+source_file="res://Demo/Stuff/music/Collect Item Sound Effect 4.mp3"
+dest_files=["res://.godot/imported/Collect Item Sound Effect 4.mp3-c999ff445c5b0a8070bb8fa73b1cbad2.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

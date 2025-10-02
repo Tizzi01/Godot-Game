@@ -13,6 +13,9 @@ var is_teleporting := false
 @onready var hit_flash: AnimationPlayer = $HitFlash
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 
+var push_velocity := Vector2.ZERO
+var pushback_active := false
+
 signal died
 
 var teleport_cooldown := 5.0
@@ -41,6 +44,10 @@ func _ready():
 		game_node.game_over_triggered.connect(_on_game_over_triggered)
 
 func _physics_process(delta):
+	if pushback_active:
+		position += push_velocity * delta
+		return
+	
 	
 	if is_being_pulled:
 		move_and_slide()
@@ -229,7 +236,21 @@ func glitch_out():
 	collision_shape_2d.disabled = true
 
 	await play_glitch_animation()
-	queue_free()
+	queue_free() 
+	
+func apply_pushback(force: Vector2):
+	push_velocity = force
+	pushback_active = true
+	hit_flash.play("Hitflash")  # Optional flash
+
+	var tween = create_tween()
+	tween.tween_property(self, "push_velocity", Vector2.ZERO, 0.6)\
+		.set_trans(Tween.TRANS_SINE)\
+		.set_ease(Tween.EASE_OUT)
+
+	tween.finished.connect(func():
+		pushback_active = false
+	)
 
 func _on_game_over_triggered():
 	print("💥 Mob2 removed on game over:", name)
