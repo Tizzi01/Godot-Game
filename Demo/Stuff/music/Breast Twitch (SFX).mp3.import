@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cfltov0nuckt"
+path="res://.godot/imported/Breast Twitch (SFX).mp3-529cf8ce21c411d663d517b2656d53b8.mp3str"
+
+[deps]
+
+source_file="res://Demo/Stuff/music/Breast Twitch (SFX).mp3"
+dest_files=["res://.godot/imported/Breast Twitch (SFX).mp3-529cf8ce21c411d663d517b2656d53b8.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://bwc6d4yf3g328"]
+[gd_scene load_steps=27 format=3 uid="uid://bwc6d4yf3g328"]
 
 [ext_resource type="Script" uid="uid://csyxdcof2prv5" path="res://Demo/Scripts/shop.gd" id="1_kwrf6"]
 [ext_resource type="Texture2D" uid="uid://canfsqyqpe8qy" path="res://Folder/Assets/Sprites/Player Animation/idle/0.png" id="2_de8nq"]
@@ -10,6 +10,8 @@
 [ext_resource type="FontFile" uid="uid://ctp71ddagy2v8" path="res://Demo/Stuff/fonts/Roquen DEMO.otf" id="4_x00t5"]
 [ext_resource type="PackedScene" uid="uid://bt1jj0du5ltb8" path="res://Demo/Scenes/powershow.tscn" id="8_nndrg"]
 [ext_resource type="PackedScene" uid="uid://kru21d485jen" path="res://Folder/Scenes/gun2copy.tscn" id="9_xy8dm"]
+[ext_resource type="AudioStream" uid="uid://dgi7pj30ch1qe" path="res://Demo/Stuff/music/Woosh1.mp3" id="11_8bmhk"]
+[ext_resource type="AudioStream" uid="uid://bl77nb0epay4r" path="res://Demo/Stuff/music/TT.mp3" id="12_loid5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x00t5"]
 bg_color = Color(0.180392, 0.247059, 0.368627, 1)
@@ -384,6 +386,14 @@ theme_override_font_sizes/font_size = 99
 text = "Item Shop"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="woosh" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_8bmhk")
+volume_db = -10.0
+
+[node name="nop" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12_loid5")
+volume_db = -5.0
 
 [connection signal="pressed" from="Panel/Back" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="SpaceShift" to="." method="_on_space_shift_pressed"]

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bpmgt3j74vsju"
+path="res://.godot/imported/Wrong Answer (SFX).wav-9229bebc4402177f033da9f34f3942ca.sample"
+
+[deps]
+
+source_file="res://Demo/Stuff/music/Wrong Answer (SFX).wav"
+dest_files=["res://.godot/imported/Wrong Answer (SFX).wav-9229bebc4402177f033da9f34f3942ca.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

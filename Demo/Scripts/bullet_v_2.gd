@@ -12,7 +12,10 @@ func _physics_process(delta):
 
 func _on_body_entered(body):
 	if body and body.is_inside_tree():
-		if body.is_in_group("Mob2"):
+		if body.is_in_group("player"):
+			queue_free()  # Don't damage player, just remove bullet
+			return
+		elif body.is_in_group("Mob2"):
 			body.take_damage(10, "bullet")
 		elif body.has_method("take_damage"):
 			body.take_damage(10)

@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://dnmo0qivmo8rl" path="res://Demo/Stuff/sprites/Pentagon.png" id="2_ri1ra"]
 [ext_resource type="AudioStream" uid="uid://br23h6nq4b727" path="res://Demo/Stuff/sounds/Rumble2fixed.mp3" id="3_s80ih"]
 [ext_resource type="AudioStream" uid="uid://c5q50qqifx07u" path="res://Demo/Stuff/music/omni1.mp3" id="4_vgnh8"]
-[ext_resource type="AudioStream" uid="uid://u7eilcf8w2wc" path="res://Demo/Stuff/music/Power Up Sci-Fi (1) (SFX).mp3" id="5_ri1ra"]
+[ext_resource type="AudioStream" uid="uid://1g7p0eot230t" path="res://Demo/Stuff/music/Powerup55.mp3" id="5_ri1ra"]
 
 [sub_resource type="Gradient" id="Gradient_0ve7x"]
 offsets = PackedFloat32Array(0, 0.228972, 1)
