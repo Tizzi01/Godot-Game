@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://dikfgaeqdng3d"]
+[gd_scene load_steps=32 format=3 uid="uid://dikfgaeqdng3d"]
 
 [ext_resource type="Shader" uid="uid://coyggroig6t4b" path="res://Demo/Scenes/glitchy.gdshader" id="1_7ethr"]
 [ext_resource type="Texture2D" uid="uid://canfsqyqpe8qy" path="res://Folder/Assets/Sprites/Player Animation/idle/0.png" id="1_i7wno"]
@@ -10,6 +10,7 @@
 [ext_resource type="AudioStream" uid="uid://brx7af5hj5o52" path="res://Demo/Stuff/music/DG4.mp3" id="8_hvqp6"]
 [ext_resource type="Script" uid="uid://d25i0sevnvkaa" path="res://Demo/Scenes/DG.gd" id="9_hvqp6"]
 [ext_resource type="AudioStream" uid="uid://c5q50qqifx07u" path="res://Demo/Stuff/music/omni1.mp3" id="10_74cf5"]
+[ext_resource type="PackedScene" uid="uid://bpi2vy2nytph6" path="res://Demo/Scenes/shockwave.tscn" id="11_21cxv"]
 
 [sub_resource type="GDScript" id="GDScript_vxcno"]
 script/source = "extends CharacterBody2D
@@ -1048,5 +1049,7 @@ stream = ExtResource("10_74cf5")
 [node name="BlackHoleCooldownTimer" type="Timer" parent="."]
 wait_time = 20.0
 one_shot = true
+
+[node name="shockwave" parent="." instance=ExtResource("11_21cxv")]
 
 [connection signal="timeout" from="TeleportCooldownTimer" to="." method="_on_teleport_cooldown_timer_timeout"]

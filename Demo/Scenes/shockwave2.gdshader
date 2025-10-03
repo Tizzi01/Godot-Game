@@ -1,7 +1,7 @@
 shader_type canvas_item;
 
 uniform float strength = 0.04;
-uniform vec2 center = vec2(0.5, 0.5);
+uniform vec2 center = vec2(0.5, 0.5); // screen-space center
 uniform float radius = 0.15;
 uniform float aberration = 0.425;
 uniform float width = 0.02;     // thinner ripple
@@ -40,6 +40,6 @@ void fragment() {
 
 	// Final color with soft glow
 	vec4 ripple_color = vec4(red.r, ori.g, blue.b, 1.0);
-	vec4 glow = vec4(0.2, 0.2, 0.4, 0.0) * mask;  // bluish glow
+	vec4 glow = vec4(0.2, 0.2, 0.4, 0.0) * mask;
 	COLOR = ripple_color + glow;
 }

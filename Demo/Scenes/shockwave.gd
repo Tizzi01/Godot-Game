@@ -48,6 +48,7 @@ func trigger_screen_shockwave():
 		print("❌ Shader material not found")
 		return
 
+	# Since shockwave is a child of the player, its position is correct
 	var screen_size = get_viewport().get_visible_rect().size
 	var normalized_center = global_position / screen_size
 	print("📍 Normalized center:", normalized_center)
@@ -60,5 +61,7 @@ func trigger_screen_shockwave():
 		print("❌ ShockwaveAnimator not found")
 		return
 
-	print("🎞️ Playing shockwave_blast animation")
-	animator.play("shockwave_blast")
+	animator.stop()
+	print("🎞️ Playing blast animation")
+	animator.play("blast") 
+	

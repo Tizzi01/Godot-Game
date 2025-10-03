@@ -25,3 +25,8 @@ res://Demo/Scripts/shockwave.gd
 res://Folder/Scenes/mob.tscn
 res://Demo/Scenes/shockwave.tscn
 res://Folder/Scenes/game.gdshader
+res://Demo/Scenes/shockwave.gdshader
+res://Folder/Assets/Sprites/Player Animation/idle_right/game.tres
+res://Demo/Scenes/shockwave2.gdshader
+res://Demo/Scenes/shocdskwave.gdshader
+res://Demo/Scenes/shockdsdwave.gdshader

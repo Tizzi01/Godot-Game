@@ -1,11 +1,19 @@
-[gd_scene load_steps=7 format=3 uid="uid://bpi2vy2nytph6"]
+[gd_scene load_steps=9 format=3 uid="uid://bpi2vy2nytph6"]
 
 [ext_resource type="Script" uid="uid://10lr1vlg5dbb" path="res://Demo/Scenes/shockwave.gd" id="1_r3eit"]
+[ext_resource type="Shader" uid="uid://b7nqeebf36o3c" path="res://Demo/Scenes/shockdsdwave.gdshader" id="2_uv72l"]
+[ext_resource type="Texture2D" uid="uid://muuftn4ftdf" path="res://Folder/Assets/Sprites/nothing2.png" id="3_p1kcr"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_t8goq"]
+shader = ExtResource("2_uv72l")
+shader_parameter/strength = 0.04
+shader_parameter/center = Vector2(0.5, 0.5)
+shader_parameter/radius = 0.15
+shader_parameter/aberration = 0.425
+shader_parameter/width = 0.02
+shader_parameter/feather = 0.2
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_378l5"]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_r3eit"]
-radius = 8.27097
 
 [sub_resource type="Animation" id="Animation_xkg6n"]
 resource_name = "expand"
@@ -25,14 +33,14 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("CollisionShape2D2:scale")
+tracks/1/path = NodePath("Sprite2D:material:shader_parameter/radius")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(-2, -2),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(1, 1), Vector2(15, 15)]
+"values": [0.0, 0.5]
 }
 
 [sub_resource type="Animation" id="Animation_uv72l"]
@@ -52,14 +60,14 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("CollisionShape2D2:scale")
+tracks/1/path = NodePath("Sprite2D:material:shader_parameter/radius")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(15, 15)]
+"values": [0.15]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_p1kcr"]
@@ -74,13 +82,13 @@ _data = {
 collision_mask = 5
 script = ExtResource("1_r3eit")
 
+[node name="Sprite2D" type="Sprite2D" parent="Shockwave"]
+z_index = 4096
+material = SubResource("ShaderMaterial_t8goq")
+texture = ExtResource("3_p1kcr")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Shockwave"]
 shape = SubResource("CircleShape2D_378l5")
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Shockwave"]
-modulate = Color(0.172549, 0.376471, 1, 0.478431)
-scale = Vector2(15, 15)
-shape = SubResource("CircleShape2D_r3eit")
 
 [node name="Timer" type="Timer" parent="Shockwave"]
 one_shot = true
