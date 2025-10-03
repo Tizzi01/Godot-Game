@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://bpi2vy2nytph6"]
+[gd_scene load_steps=10 format=3 uid="uid://bpi2vy2nytph6"]
 
 [ext_resource type="Script" uid="uid://10lr1vlg5dbb" path="res://Demo/Scenes/shockwave.gd" id="1_r3eit"]
 [ext_resource type="Shader" uid="uid://b7nqeebf36o3c" path="res://Demo/Scenes/shockdsdwave.gdshader" id="2_uv72l"]
 [ext_resource type="Texture2D" uid="uid://muuftn4ftdf" path="res://Folder/Assets/Sprites/nothing2.png" id="3_p1kcr"]
+[ext_resource type="AudioStream" uid="uid://f4ppumpk4nnl" path="res://Demo/Stuff/music/luffy77.mp3" id="4_p1kcr"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_t8goq"]
 shader = ExtResource("2_uv72l")
@@ -12,12 +13,13 @@ shader_parameter/radius = 0.15
 shader_parameter/aberration = 0.425
 shader_parameter/width = 0.02
 shader_parameter/feather = 0.2
+shader_parameter/opacity = 1.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_378l5"]
 
 [sub_resource type="Animation" id="Animation_xkg6n"]
 resource_name = "expand"
-length = 0.3
+length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -37,10 +39,46 @@ tracks/1/path = NodePath("Sprite2D:material:shader_parameter/radius")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(-2, -2),
 "update": 0,
 "values": [0.0, 0.5]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:material:shader_parameter/feather")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 0.1]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D:material:shader_parameter/opacity")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [1.0, 1.0, 0.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Sprite2D:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
 }
 
 [sub_resource type="Animation" id="Animation_uv72l"]
@@ -69,6 +107,42 @@ tracks/1/keys = {
 "update": 0,
 "values": [0.15]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:material:shader_parameter/feather")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.2]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D:material:shader_parameter/opacity")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Sprite2D:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_p1kcr"]
 _data = {
@@ -83,7 +157,8 @@ collision_mask = 5
 script = ExtResource("1_r3eit")
 
 [node name="Sprite2D" type="Sprite2D" parent="Shockwave"]
-z_index = 4096
+visible = false
+z_index = 5
 material = SubResource("ShaderMaterial_t8goq")
 texture = ExtResource("3_p1kcr")
 
@@ -98,3 +173,12 @@ autostart = true
 libraries = {
 &"": SubResource("AnimationLibrary_p1kcr")
 }
+
+[node name="luffy" type="AudioStreamPlayer2D" parent="Shockwave"]
+stream = ExtResource("4_p1kcr")
+volume_db = -8.0
+
+[node name="ShockwaveTimer" type="Timer" parent="Shockwave"]
+wait_time = 0.3
+
+[connection signal="timeout" from="Shockwave/ShockwaveTimer" to="Shockwave" method="_on_shockwave_timer_timeout"]
