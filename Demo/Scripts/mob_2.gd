@@ -12,7 +12,10 @@ var is_teleporting := false
 @onready var sprites = [ $"0", $"1", $"2" ]
 @onready var hit_flash: AnimationPlayer = $HitFlash
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
-
+var is_slowed := false
+var slow_timer := 0.0
+var original_speed := 150.0  # Will be overwritten by random speed
+var current_speed := 150.0
 var push_velocity := Vector2.ZERO
 var pushback_active := false
 
@@ -28,7 +31,9 @@ func _ready():
 	add_to_group("Mob2")
 
 	var speed_options = [150.0, 200.0, 250.0, 300.0]
-	move_speed = speed_options[randi() % speed_options.size()]
+	move_speed = speed_options[randi() % speed_options.size()] 
+	original_speed = move_speed
+	current_speed = move_speed
 
 	if move_speed == 150.0:
 		health = 60
@@ -43,7 +48,18 @@ func _ready():
 	if game_node:
 		game_node.game_over_triggered.connect(_on_game_over_triggered)
 
-func _physics_process(delta):
+func _physics_process(delta): 
+	
+	if is_slowed:
+		slow_timer -= delta
+		if slow_timer <= 0.0:
+			is_slowed = false
+			current_speed = original_speed
+		else:
+			var t = 1.0 - (slow_timer / 5.0)
+			current_speed = lerp(original_speed * 0.1, original_speed, t)
+	
+	
 	if pushback_active:
 		position += push_velocity * delta
 		return
@@ -55,7 +71,7 @@ func _physics_process(delta):
 	
 	if not is_glitching and not is_teleporting:
 		var direction = global_position.direction_to(player.global_position)
-		velocity = direction * move_speed
+		velocity = direction * current_speed
 		move_and_slide()
 	else:
 		velocity = Vector2.ZERO
@@ -255,3 +271,13 @@ func apply_pushback(force: Vector2):
 func _on_game_over_triggered():
 	print("💥 Mob2 removed on game over:", name)
 	queue_free()
+
+
+func apply_slowdown(duration: float = 5.0, slow_percent: float = 0.1):
+	if is_slowed:
+		return
+
+	is_slowed = true
+	slow_timer = duration
+	original_speed = current_speed
+	current_speed *= slow_percent

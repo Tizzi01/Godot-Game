@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=3 uid="uid://17ihev8gmx8p"]
+[gd_scene load_steps=60 format=3 uid="uid://17ihev8gmx8p"]
 
 [ext_resource type="Script" uid="uid://be05spmmaewml" path="res://Demo/Scripts/game.gd" id="1_naqcg"]
 [ext_resource type="Texture2D" uid="uid://bnmfh85lwxuid" path="res://Demo/Stuff/sprites/world_tileset.png" id="1_wi88m"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://dfw0vsk6x0og7" path="res://Demo/Stuff/sprites/Redy.png" id="2_61t74"]
 [ext_resource type="FontFile" uid="uid://ctp71ddagy2v8" path="res://Demo/Stuff/fonts/Roquen DEMO.otf" id="2_d18qc"]
 [ext_resource type="PackedScene" uid="uid://ctmey75fd8kje" path="res://timer.tscn" id="2_faiuj"]
+[ext_resource type="Shader" uid="uid://hql5yli14hi0" path="res://Folder/Scenes/game.gdshader" id="2_hu3eq"]
 [ext_resource type="Script" uid="uid://dyifq4fcbw2o7" path="res://Demo/Scripts/panel.gd" id="2_pr0nq"]
 [ext_resource type="PackedScene" uid="uid://dikfgaeqdng3d" path="res://Demo/Scenes/player.tscn" id="2_s1uwp"]
 [ext_resource type="PackedScene" uid="uid://dr1fsle17larj" path="res://Folder/Scenes/killzone.tscn" id="3_221o8"]
@@ -30,6 +31,52 @@
 [sub_resource type="Curve" id="Curve_yh3bl"]
 _data = [Vector2(0, 0.22), 0.0, 0.0, 0, 0, Vector2(0.214765, 0.904276), 0.0, 0.0, 0, 0, Vector2(0.535235, 0.383319), 0.0, 0.0, 0, 0, Vector2(1, 0.97791), 0.0, 0.0, 0, 0]
 point_count = 4
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7rqqm"]
+shader = ExtResource("2_hu3eq")
+shader_parameter/strength = 0.08
+shader_parameter/center = Vector2(0.5, 0.5)
+shader_parameter/radius = 0.0
+shader_parameter/aberration = 0.425
+shader_parameter/width = 0.04
+shader_parameter/feather = 0.135
+
+[sub_resource type="Animation" id="Animation_ykc1x"]
+resource_name = "blast"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ShockwaveEffect:material:shader_parameter/radius")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 0,
+"values": [0.0, 0.6]
+}
+
+[sub_resource type="Animation" id="Animation_sq5bw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ShockwaveEffect:material:shader_parameter/radius")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_gn52x"]
+_data = {
+&"RESET": SubResource("Animation_sq5bw"),
+&"blast": SubResource("Animation_ykc1x")
+}
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vonys"]
 texture = ExtResource("2_61t74")
@@ -431,6 +478,22 @@ normal = Vector2(0.0404786, -0.99918)
 script = ExtResource("1_naqcg")
 cooldown_curve = SubResource("Curve_yh3bl")
 metadata/_edit_horizontal_guides_ = [-287.0]
+
+[node name="ShockwaveLayer" type="CanvasLayer" parent="."]
+
+[node name="ShockwaveEffect" type="ColorRect" parent="ShockwaveLayer"]
+material = SubResource("ShaderMaterial_7rqqm")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ShockwaveAnimator" type="AnimationPlayer" parent="ShockwaveLayer"]
+libraries = {
+&"": SubResource("AnimationLibrary_gn52x")
+}
 
 [node name="CanvasLayer4" type="CanvasLayer" parent="."]
 
