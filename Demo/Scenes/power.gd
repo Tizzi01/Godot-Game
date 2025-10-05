@@ -120,25 +120,19 @@ func _on_10s_timeout():
 		return
 
 	animation_player_2.play("close")
-	print("🎞️ Playing 'close' animation from animation_player_2")
 
 	if not pf.stream:
 		print("❌ PF sound stream is missing!")
 	else:
 		pf.play()
-		print("🔊 Playing PF sound")
 
-	print("⏳ Waiting for animation and sound to finish...")
 
 	await animation_player_2.animation_finished
-	print("✅ Close animation finished")
 
 	await pf.finished
-	print("✅ PF sound finished")
 
 	trigger_black_hole_cooldown(cooldown_timer.wait_time)
 
-	print("🧹 Cleaning up black hole")
 	queue_free()
 
 func trigger_black_hole_cooldown(duration: float):
@@ -155,9 +149,7 @@ func trigger_black_hole_cooldown(duration: float):
 		.set_trans(Tween.TRANS_CUBIC) \
 		.set_ease(Tween.EASE_IN)
 
-	print("🌀 Black hole cooldown started for", duration, "seconds")
 
 func _on_cooldown_finished():
 	is_on_cooldown = false
 	cooldown_bar.visible = false
-	print("✅ Black hole cooldown finished")

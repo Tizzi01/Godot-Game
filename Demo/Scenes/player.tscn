@@ -458,9 +458,9 @@ func reset_black_hole_cooldown_bar():
 func _spawn_shockwave():
 	var shockwave_scene = preload(\"res://Demo/Scenes/shockwave.tscn\")
 	var shockwave = shockwave_scene.instantiate()
-	shockwave.global_position = global_position
-	get_tree().current_scene.add_child(shockwave)
-	$Omni.play()  # Optional sound effect
+	add_child(shockwave)  # ✅ Attach shockwave to player
+	shockwave.position = Vector2.ZERO  # ✅ Place it at player's center
+	$Omni.play() 
 "
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wf6if"]

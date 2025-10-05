@@ -1,12 +1,12 @@
-[gd_scene load_steps=10 format=3 uid="uid://bpi2vy2nytph6"]
+[gd_scene load_steps=10 format=3 uid="uid://c33bnbpbtovye"]
 
-[ext_resource type="Script" uid="uid://10lr1vlg5dbb" path="res://Demo/Scenes/shockwave.gd" id="1_r3eit"]
-[ext_resource type="Shader" uid="uid://b7nqeebf36o3c" path="res://Demo/Scenes/shockdsdwave.gdshader" id="2_uv72l"]
-[ext_resource type="Texture2D" uid="uid://muuftn4ftdf" path="res://Folder/Assets/Sprites/nothing2.png" id="3_p1kcr"]
-[ext_resource type="AudioStream" uid="uid://f4ppumpk4nnl" path="res://Demo/Stuff/music/luffy77.mp3" id="4_p1kcr"]
+[ext_resource type="Script" uid="uid://c0lvswcosuksc" path="res://Demo/Scenes/shockwaveblast.gd" id="1_omx60"]
+[ext_resource type="Shader" uid="uid://b7nqeebf36o3c" path="res://Demo/Scenes/shockdsdwave.gdshader" id="2_2o1si"]
+[ext_resource type="Texture2D" uid="uid://muuftn4ftdf" path="res://Folder/Assets/Sprites/nothing2.png" id="3_hjjy5"]
+[ext_resource type="AudioStream" uid="uid://f4ppumpk4nnl" path="res://Demo/Stuff/music/luffy77.mp3" id="4_jylbt"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_t8goq"]
-shader = ExtResource("2_uv72l")
+shader = ExtResource("2_2o1si")
 shader_parameter/strength = 0.04
 shader_parameter/center = Vector2(0.5, 0.5)
 shader_parameter/radius = 0.15
@@ -178,20 +178,19 @@ _data = {
 
 [node name="Shockwave" type="Area2D" parent="."]
 collision_mask = 5
-script = ExtResource("1_r3eit")
+script = ExtResource("1_omx60")
 
 [node name="Sprite2D" type="Sprite2D" parent="Shockwave"]
 visible = false
 z_index = 5
 material = SubResource("ShaderMaterial_t8goq")
-texture = ExtResource("3_p1kcr")
+texture = ExtResource("3_hjjy5")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Shockwave"]
 shape = SubResource("CircleShape2D_378l5")
 
 [node name="Timer" type="Timer" parent="Shockwave"]
 one_shot = true
-autostart = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Shockwave"]
 libraries = {
@@ -199,10 +198,14 @@ libraries = {
 }
 
 [node name="luffy" type="AudioStreamPlayer2D" parent="Shockwave"]
-stream = ExtResource("4_p1kcr")
+stream = ExtResource("4_jylbt")
 volume_db = -8.0
 
 [node name="ShockwaveTimer" type="Timer" parent="Shockwave"]
 wait_time = 0.3
+
+[node name="Timer2" type="Timer" parent="Shockwave"]
+wait_time = 0.5
+one_shot = true
 
 [connection signal="timeout" from="Shockwave/ShockwaveTimer" to="Shockwave" method="_on_shockwave_timer_timeout"]
