@@ -143,7 +143,7 @@ _data = {
 }
 
 [node name="Power" type="Area2D" groups=["black"]]
-z_index = 1
+z_index = 6
 collision_mask = 7
 script = ExtResource("1_me7l1")
 

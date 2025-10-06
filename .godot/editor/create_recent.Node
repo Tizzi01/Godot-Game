@@ -1,11 +1,11 @@
 Timer
+AnimationPlayer
 AudioStreamPlayer2D
 Sprite2D
 TextureRect
 CanvasLayer
 CanvasGroup
 ColorRect
-AnimationPlayer
 Panel
 CollisionShape2D
 Area2D

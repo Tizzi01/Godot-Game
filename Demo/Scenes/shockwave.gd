@@ -3,47 +3,87 @@ extends Area2D
 @export var slow_duration := 5.0
 @export var slow_percent := 0.1
 @export var push_force := 150.0
+@export var delay_curve: Curve  # 🎨 Curve resource for animation timing
 
 @onready var luffy: AudioStreamPlayer2D = $luffy
 @onready var shockwave_timer: Timer = $ShockwaveTimer
-@onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var cleanup_timer: Timer = $Timer
+@onready var animation_sequence_timer: Timer = $AnimationSequenceTimer
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
+# Animation timing control
+var animation_elapsed := 0.0
+var animation_play_count := 0
+const ANIMATION_TOTAL_DURATION := 5.0
+
+# Shockwave control
 var shockwave_count := 0
 var blast_count := 0
 const MAX_BLASTS := 4
 const BLAST_INTERVAL := 0.3
-const LIFETIME := 5.0
+const LIFETIME := 4.5
 
 func _ready():
 	print("🚀 READY: Shockwave node initialized at", global_position)
+
+	# Connect signals
+	connect("body_entered", _on_body_entered)
+	shockwave_timer.timeout.connect(_on_ShockwaveTimer_timeout)
+	animation_sequence_timer.timeout.connect(_on_AnimationSequenceTimer_timeout)
 
 	# Play sound once
 	print("🔊 Playing Luffy sound")
 	luffy.play()
 
+	# Start animation sequence
+	_start_animation_sequence()
+
 	# Trigger first shockwave immediately
 	print("⚡ Triggering first shockwave")
 	trigger_screen_shockwave()
 
-	# Start timer to trigger remaining shockwaves
+	# Start shockwave timer
 	shockwave_timer.wait_time = BLAST_INTERVAL
 	shockwave_timer.start()
 	print("⏱️ Shockwave timer started with interval:", BLAST_INTERVAL)
 
-	# Start cleanup timer (5s lifetime)
+	# Start cleanup timer
 	cleanup_timer.wait_time = LIFETIME
 	cleanup_timer.start()
 	print("🧹 Cleanup timer started with lifetime:", LIFETIME)
 	cleanup_timer.timeout.connect(queue_free)
 
-	# Play visual animation
-	print("🎬 Playing expand animation")
+func _start_animation_sequence():
+	print("🎞️ Playing expand animation #1 (Initial)")
+	animation_player.play("expand")
+	animation_play_count = 1
+	animation_elapsed = 0.0
+
+	# Start timer with initial delay from curve
+	var initial_delay = delay_curve.sample(0.0)
+	animation_sequence_timer.one_shot = true
+	animation_sequence_timer.wait_time = initial_delay
+	animation_sequence_timer.start()
+	print("⏱️ Timer started with initial delay:", initial_delay)
+
+func _on_AnimationSequenceTimer_timeout():
+	animation_elapsed += animation_sequence_timer.wait_time
+	animation_play_count += 1
+
+	if animation_elapsed >= ANIMATION_TOTAL_DURATION:
+		print("🛑 Animation sequence complete at", animation_elapsed, "seconds")
+		return
+
+	print("🎞️ Playing expand animation #", animation_play_count)
 	animation_player.play("expand")
 
-	# Connect signals
-	connect("body_entered", _on_body_entered)
-	shockwave_timer.timeout.connect(_on_ShockwaveTimer_timeout)
+	# Sample next delay from curve
+	var t = animation_elapsed / ANIMATION_TOTAL_DURATION
+	var next_delay = delay_curve.sample(clamp(t, 0.0, 1.0))
+
+	print("⏱️ Next delay from curve:", next_delay)
+	animation_sequence_timer.wait_time = next_delay
+	animation_sequence_timer.start()
 
 func _on_ShockwaveTimer_timeout():
 	shockwave_count += 1
