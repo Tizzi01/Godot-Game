@@ -9,9 +9,7 @@ extends Area2D
 @onready var cleanup_timer: Timer = $Timer
 @onready var animation_sequence_timer: Timer = $AnimationSequenceTimer
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
-
-@onready var shock_timer: Timer = $ShockTimer
-@onready var cooldown_bar: ProgressBar = $ShockwaveCooldownBar
+@onready var out: AudioStreamPlayer = $out
 
 # Animation control
 var animation_play_count := 0
@@ -22,27 +20,36 @@ var shockwave_count := 0
 var blast_count := 0
 const MAX_BLASTS := 4
 const BLAST_INTERVAL := 0.3
-const LIFETIME := 4.5
-
-# Cooldown system
-var is_on_cooldown := false
-var cooldown_remaining := 0.0
 
 func _ready():
+	
+	await get_tree().create_timer(0.5).timeout
+	out.play()
+	await get_tree().create_timer(0.5).timeout
+	out.play()
+	await get_tree().create_timer(0.5).timeout
+	out.play()
+	await get_tree().create_timer(0.5).timeout
+	out.play()
+	await get_tree().create_timer(0.5).timeout
+	out.play()
+	await get_tree().create_timer(0.5).timeout
+	out.play()
+	await get_tree().create_timer(0.7).timeout
+	out.play()
+	
 	print("🚀 READY: Shockwave node initialized at", global_position)
 
 	connect("body_entered", _on_body_entered)
 	shockwave_timer.timeout.connect(_on_ShockwaveTimer_timeout)
 	animation_sequence_timer.timeout.connect(_on_AnimationSequenceTimer_timeout)
-	shock_timer.timeout.connect(_on_shockwave_cooldown_finished)
 
 	luffy.play()
 	animation_player.play("expand")
 	animation_play_count = 1
 	_schedule_next_animation()
 
-	if not is_on_cooldown:
-		trigger_screen_shockwave()
+	trigger_screen_shockwave()
 
 	shockwave_timer.wait_time = BLAST_INTERVAL
 	shockwave_timer.start()
@@ -65,16 +72,12 @@ func _on_AnimationSequenceTimer_timeout():
 
 func _on_ShockwaveTimer_timeout():
 	shockwave_count += 1
-	if shockwave_count < MAX_BLASTS and not is_on_cooldown:
+	if shockwave_count < MAX_BLASTS:
 		trigger_screen_shockwave()
 	else:
 		shockwave_timer.stop()
 
 func _on_body_entered(body):
-	if is_on_cooldown:
-		print("🛑 Shockwave on cooldown —", int(cooldown_remaining), "s left")
-		return
-
 	if body.is_in_group("Mob") or body.is_in_group("Mob2"):
 		var direction = (body.global_position - global_position).normalized()
 
@@ -87,10 +90,6 @@ func _on_body_entered(body):
 		trigger_screen_shockwave()
 
 func trigger_screen_shockwave():
-	if is_on_cooldown:
-		print("🛑 Shockwave on cooldown —", int(cooldown_remaining), "s left")
-		return
-
 	print("🎬 Triggering screen shockwave")
 
 	var layer = get_tree().get_root().get_node("Game/ShockwaveLayer")
@@ -112,36 +111,4 @@ func trigger_screen_shockwave():
 	if animator == null: return
 
 	animator.play("blast")
-	blast_count += 1
-
-	start_shockwave_cooldown(shock_timer.wait_time)
-
-func start_shockwave_cooldown(duration: float):
-	is_on_cooldown = true
-	cooldown_remaining = duration
-	cooldown_bar.visible = true
-	cooldown_bar.max_value = 100
-	cooldown_bar.value = 100
-
-	shock_timer.wait_time = duration
-	shock_timer.start()
-
-	var tween := create_tween()
-	tween.tween_property(cooldown_bar, "value", 0, duration) \
-		.set_trans(Tween.TRANS_CUBIC) \
-		.set_ease(Tween.EASE_IN)
-
-	# Start countdown print loop
-	countdown_tick()
-
-func countdown_tick():
-	if cooldown_remaining > 0:
-		print("⏳ Shockwave cooldown:", int(cooldown_remaining), "s remaining")
-		cooldown_remaining -= 1
-		await get_tree().create_timer(1.0).timeout
-		countdown_tick()
-
-func _on_shockwave_cooldown_finished():
-	is_on_cooldown = false
-	cooldown_bar.visible = false
-	print("✅ Shockwave ready — press R to use")
+	blast_count += 1 

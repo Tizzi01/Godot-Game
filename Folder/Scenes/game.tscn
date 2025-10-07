@@ -600,6 +600,44 @@ horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("11_nq47c")
 
+[node name="SHCD" type="ProgressBar" parent="CanvasLayer3"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -681.0
+offset_top = 381.0
+offset_right = -649.0
+offset_bottom = 622.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 1.5787
+theme_override_styles/background = SubResource("StyleBoxFlat_j32mq")
+theme_override_styles/fill = SubResource("StyleBoxFlat_nq47c")
+step = 0.0
+value = 100.0
+fill_mode = 2
+show_percentage = false
+script = ExtResource("10_va5fx")
+
+[node name="Label" type="Label" parent="CanvasLayer3/SHCD"]
+layout_mode = 0
+offset_left = 2.88098
+offset_top = 237.985
+offset_right = 240.881
+offset_bottom = 267.985
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = -2
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_d18qc")
+text = "Wave"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("11_nq47c")
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="WhiteFlash" type="Panel" parent="CanvasLayer"]
@@ -710,10 +748,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -444.0
+offset_left = -427.0
 offset_top = 464.0
-offset_right = -408.0
-offset_bottom = 942.0
+offset_right = -391.0
+offset_bottom = 959.0
 grow_horizontal = 2
 grow_vertical = 2
 rotation = 1.5787

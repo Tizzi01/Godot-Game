@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://bpi2vy2nytph6"]
+[gd_scene load_steps=11 format=3 uid="uid://bpi2vy2nytph6"]
 
 [ext_resource type="Script" uid="uid://10lr1vlg5dbb" path="res://Demo/Scenes/shockwave.gd" id="1_r3eit"]
 [ext_resource type="Shader" uid="uid://b7nqeebf36o3c" path="res://Demo/Scenes/shockdsdwave.gdshader" id="2_uv72l"]
 [ext_resource type="Texture2D" uid="uid://muuftn4ftdf" path="res://Folder/Assets/Sprites/nothing2.png" id="3_p1kcr"]
 [ext_resource type="AudioStream" uid="uid://f4ppumpk4nnl" path="res://Demo/Stuff/music/luffy77.mp3" id="4_p1kcr"]
+[ext_resource type="AudioStream" uid="uid://7l26svoh3ba4" path="res://Demo/Stuff/music/luffy99.mp3" id="5_t8goq"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_t8goq"]
 shader = ExtResource("2_uv72l")
@@ -210,5 +211,8 @@ wait_time = 0.3
 [node name="ShockTimer" type="Timer" parent="Shockwave"]
 wait_time = 10.0
 one_shot = true
+
+[node name="out" type="AudioStreamPlayer" parent="Shockwave"]
+stream = ExtResource("5_t8goq")
 
 [connection signal="timeout" from="Shockwave/ShockwaveTimer" to="Shockwave" method="_on_shockwave_timer_timeout"]

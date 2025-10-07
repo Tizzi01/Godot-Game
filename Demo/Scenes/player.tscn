@@ -57,14 +57,15 @@ var black_hole_unlocked := false
 var current_weapon: Node = null
 var weapon_index := 0
 var weapon_scenes := [preload(\"res://Folder/Scenes/gun.tscn\"),preload(\"res://Folder/Scenes/gun2.tscn\") ]
-
-
+@onready var shockwave_bar: ProgressBar = get_node(\"/root/Game/CanvasLayer3/SHCD\")
+var has_shockwave := false
 var is_dashing = false
 var dash_start_position = Vector2.ZERO
 var dash_direction = Vector2.ZERO
 var dash_timer = 0.0
 @onready var omni: AudioStreamPlayer = $Omni
-
+@export var shockwave_cooldown := 5.0  # How long the cooldown lasts
+var shockwave_ready := true  # Whether the shockwave can be used
 var was_on_floor = true
 var is_jumping = false
 @export var max_jumps = 99
@@ -123,8 +124,20 @@ var Gun_mouse_pos: Vector2 = Vector2.ZERO
 
 func _physics_process(delta):
 	
-	if Input.is_action_just_pressed(\"shockwave\"):
+	if Input.is_action_just_pressed(\"shockwave\") and shockwave_ready and has_shockwave:
 		_spawn_shockwave()
+		shockwave_ready = false
+		$ShockwaveCooldownTimer.wait_time = shockwave_cooldown
+		$ShockwaveCooldownTimer.start()
+		
+		shockwave_bar.visible = true
+		shockwave_bar.max_value = 100
+		shockwave_bar.value = 100
+
+		var tween = create_tween()
+		tween.tween_property(shockwave_bar, \"value\", 0, shockwave_cooldown) \\
+		.set_trans(Tween.TRANS_CUBIC) \\
+		.set_ease(Tween.EASE_IN)
 	
 	if frozen:
 		return
@@ -471,6 +484,11 @@ func _spawn_shockwave():
 	add_child(shockwave)  # ✅ Attach shockwave to player
 	shockwave.position = Vector2.ZERO  # ✅ Place it at player's center
 	$Omni.play() 
+
+
+func _on_shockwave_cooldown_timer_timeout() -> void:
+	shockwave_ready = true
+	print(\"✅ Shockwave cooldown finished\")
 "
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wf6if"]
@@ -1096,4 +1114,9 @@ scale_amount_curve = SubResource("Curve_yirwm")
 color_ramp = SubResource("Gradient_gf1or")
 script = ExtResource("12_yirwm")
 
+[node name="ShockwaveCooldownTimer" type="Timer" parent="."]
+wait_time = 6.0
+one_shot = true
+
 [connection signal="timeout" from="TeleportCooldownTimer" to="." method="_on_teleport_cooldown_timer_timeout"]
+[connection signal="timeout" from="ShockwaveCooldownTimer" to="." method="_on_shockwave_cooldown_timer_timeout"]

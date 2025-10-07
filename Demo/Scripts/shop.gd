@@ -2,18 +2,21 @@ extends Control
 
 @onready var space_shift_button = $SpaceShift
 @onready var back_button = $Back
-var shop_open = false
+@onready var singularity_button = $Singularity
+@onready var wave: Button = $Wave
+
 @onready var animation_player: AnimationPlayer = $Panel/Sprite2D/AnimationPlayer
 @onready var woosh: AudioStreamPlayer = $woosh
-@onready var singularity_button = $Singularity
-@onready var nop: AudioStreamPlayer = $nop  # 🔊 Add this line
+@onready var nop: AudioStreamPlayer = $nop
 @onready var money: AudioStreamPlayer = $money
 
 const BUZZER_BUTTON_S_08TE_317__SFX_ = preload("res://Demo/Stuff/music/BuzzerButton_S08TE.317 (SFX).mp3")
+
 # 📢 Signals
 signal shop_closed
 signal space_shift_button_pressed
 signal black_hole_button_pressed
+signal shockwave_button_pressed
 
 func _ready() -> void:
 	animation_player.play("ShopIdle")
@@ -37,6 +40,16 @@ func _ready() -> void:
 	else:
 		print("❌ SpaceShift button not found")
 
+	if singularity_button:
+		singularity_button.pressed.connect(_on_singularity_pressed)
+	else:
+		print("❌ Singularity button not found")
+
+	if wave:
+		wave.pressed.connect(_on_wave_pressed)
+	else:
+		print("❌ Wave button not found")
+
 	if back_button:
 		back_button.pressed.connect(_on_back_pressed)
 	else:
@@ -49,6 +62,8 @@ func _ready() -> void:
 			space_shift_button.disabled = true
 		if player.black_hole_unlocked:
 			singularity_button.disabled = true
+		if player.has_shockwave:
+			wave.disabled = true
 
 func _on_space_shift_pressed() -> void:
 	var player_list = get_tree().get_nodes_in_group("player")
@@ -57,24 +72,71 @@ func _on_space_shift_pressed() -> void:
 		return
 
 	var player = player_list[0]
-	print("🔍 Shop: player from group =", player)
-
 	var cost = 5
 	if PointsManager.points >= cost:
 		PointsManager.add_points(-cost)
 		print("🛸 SpaceShift purchased! -5 points")
 
 		player.has_space_shift = true
-		print("🛠️ Shop: has_space_shift set to", player.has_space_shift)
-
 		space_shift_button.disabled = true
 		emit_signal("space_shift_button_pressed")
-		print("📡 Signal emitted: space_shift_button_pressed")
-		money.play()  # 💸 Play success sound
+		money.play()
 	else:
 		print("❌ Not enough money for SpaceShift")
 		if nop:
-			nop.play()  # 🔊 Play fail sound
+			nop.play()
+
+func _on_singularity_pressed() -> void:
+	var player_list = get_tree().get_nodes_in_group("player")
+	if player_list.size() == 0:
+		print("❌ No player found in 'player' group")
+		return
+
+	var player = player_list[0]
+	if player.black_hole_unlocked:
+		singularity_button.disabled = true
+		print("❌ Already purchased — can't buy again")
+		return
+
+	var cost = 5
+	if PointsManager.points >= cost:
+		PointsManager.add_points(-cost)
+		print("🌌 Black Hole purchased! -5 points")
+
+		player._on_black_hole_signal_received()
+		singularity_button.disabled = true
+		emit_signal("black_hole_button_pressed")
+		money.play()
+	else:
+		print("❌ Not enough money for Black Hole")
+		if nop:
+			nop.play()
+
+func _on_wave_pressed() -> void:
+	var player_list = get_tree().get_nodes_in_group("player")
+	if player_list.size() == 0:
+		print("❌ No player found in 'player' group")
+		return
+
+	var player = player_list[0]
+	if player.has_shockwave:
+		wave.disabled = true
+		print("❌ Already purchased — can't buy again")
+		return
+
+	var cost = 5
+	if PointsManager.points >= cost:
+		PointsManager.add_points(-cost)
+		print("💥 Shockwave purchased! -5 points")
+
+		player.has_shockwave = true
+		wave.disabled = true
+		emit_signal("shockwave_button_pressed")
+		money.play()
+	else:
+		print("❌ Not enough money for Shockwave")
+		if nop:
+			nop.play()
 
 func _on_back_pressed() -> void:
 	var camera = get_tree().current_scene.get_node("Camera2D")
@@ -96,33 +158,4 @@ func _on_back_pressed() -> void:
 	await tween.finished
 	await get_tree().create_timer(0.0).timeout
 	emit_signal("shop_closed")
-	queue_free() 
-
-func _on_singularity_pressed() -> void:
-	var player_list = get_tree().get_nodes_in_group("player")
-	if player_list.size() == 0:
-		print("❌ No player found in 'player' group")
-		return
-
-	var player = player_list[0]
-	if player.black_hole_unlocked:
-		singularity_button.disabled = true
-		print("❌ Already purchased — can't buy again")
-		return
-
-	print("🔍 Shop: player from group =", player)
-
-	var cost = 5
-	if PointsManager.points >= cost:
-		PointsManager.add_points(-cost)
-		print("🌌 Black Hole purchased! -5 points")
-
-		player._on_black_hole_signal_received()
-		singularity_button.disabled = true
-		emit_signal("black_hole_button_pressed")
-		print("📡 Signal emitted: black_hole_button_pressed")
-		money.play()  # 💸 Play success sound
-	else:
-		print("❌ Not enough money for Black Hole")
-		if nop:
-			nop.play()  # 🔊 Play fail sound
+	queue_free()
