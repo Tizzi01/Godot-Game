@@ -1,7 +1,7 @@
+Timer
 WorldEnvironment
 PointLight2D
 CPUParticles2D
-Timer
 AnimationPlayer
 AudioStreamPlayer2D
 Sprite2D
@@ -12,4 +12,3 @@ ColorRect
 Panel
 CollisionShape2D
 Area2D
-Node

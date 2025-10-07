@@ -28,7 +28,6 @@ var is_hidden_from_mobs := false
 var has_space_shift := false
 var health = 100.0
 var tp_unlocked := false
-
 @onready var tp_anim_player: AnimationPlayer = $PlayerSprite/HitFlash
 #borders
 var pushback_timer = 0.0

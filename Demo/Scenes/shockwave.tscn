@@ -207,4 +207,8 @@ wait_time = 0.3
 
 [node name="AnimationSequenceTimer" type="Timer" parent="Shockwave"]
 
+[node name="ShockTimer" type="Timer" parent="Shockwave"]
+wait_time = 10.0
+one_shot = true
+
 [connection signal="timeout" from="Shockwave/ShockwaveTimer" to="Shockwave" method="_on_shockwave_timer_timeout"]
