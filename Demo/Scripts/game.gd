@@ -28,11 +28,17 @@ var mob_spawn_timer := 0.0
 var mob2_spawn_timer := 0.0
 const MAX_SLIMES := 500
 const MAX_MOB2 := 50
-var allow_spawning := true
+var allow_spawning := true 
+@onready var shockwave_bar: ProgressBar = $CanvasLayer3/SHCD
+
 @export var cooldown_curve: Curve
 func _ready(): 
 	
-	
+	shockwave_bar.visible = false  # Hide it by default 
+	var shop = get_tree().get_root().get_node("Game/Shop")  # Adjust path if needed
+	if shop:
+		shop.connect("shockwave_button_pressed", _on_shockwave_unlocked)
+
 	
 	
 	tp_bar.visible = false
@@ -372,3 +378,7 @@ func celebrate_special_score(new_value: int) -> void:
 
 		await get_tree().create_timer(0.2).timeout
 		is_milestone_animating = false
+
+func _on_shockwave_unlocked():
+	shockwave_bar.visible = true
+	print("✅ Shockwave unlocked — SHCD bar now visible")

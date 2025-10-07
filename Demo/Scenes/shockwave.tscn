@@ -168,6 +168,20 @@ tracks/5/keys = {
 "update": 1,
 "values": [false, true]
 }
+tracks/6/type = "method"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath(".")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0.0333333),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"_play_out_sound"
+}]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_p1kcr"]
 _data = {
@@ -201,7 +215,10 @@ libraries = {
 
 [node name="luffy" type="AudioStreamPlayer2D" parent="Shockwave"]
 stream = ExtResource("4_p1kcr")
-volume_db = -8.0
+
+[node name="out" type="AudioStreamPlayer" parent="Shockwave"]
+stream = ExtResource("5_t8goq")
+bus = &"SFX"
 
 [node name="ShockwaveTimer" type="Timer" parent="Shockwave"]
 wait_time = 0.3
@@ -211,8 +228,5 @@ wait_time = 0.3
 [node name="ShockTimer" type="Timer" parent="Shockwave"]
 wait_time = 10.0
 one_shot = true
-
-[node name="out" type="AudioStreamPlayer" parent="Shockwave"]
-stream = ExtResource("5_t8goq")
 
 [connection signal="timeout" from="Shockwave/ShockwaveTimer" to="Shockwave" method="_on_shockwave_timer_timeout"]
