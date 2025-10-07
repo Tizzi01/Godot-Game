@@ -1,4 +1,4 @@
-res://Folder/Scenes/game.tscn
+res://Demo/Scenes/player.tscn
 res://Demo/Scenes/glitchy.gdshader
 res://Demo/Scenes/blackhole.gdshader
 res://Demo/Scripts/hitflash.tres
@@ -14,7 +14,7 @@ res://Demo/Scenes/shocdskwave.gdshader
 res://Folder/Scenes/white.tres
 res://Demo/Scenes/Glitch.tres
 res://Folder/Assets/Sprites/Player Animation/idle_right/game.tres
-res://Demo/Scenes/player.tscn
+res://Folder/Scenes/game.tscn
 res://Folder/Scenes/gun.tscn
 res://Folder/Scenes/bullet_v_2.tscn
 res://Folder/Scenes/mob2.tscn
@@ -23,7 +23,3 @@ res://Folder/Scenes/gun2.tscn
 res://Demo/Scenes/power.tscn
 res://Demo/Scenes/shop.tscn
 res://Demo/Scenes/shockwave.tscn
-res://Demo/Scenes/shockwave.gd
-res://Demo/Scenes/power.gd
-res://Demo/Scenes/shockwaveblast.gd
-res://Demo/Scenes/shockwaveblast.tscn

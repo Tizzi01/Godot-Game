@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://dikfgaeqdng3d"]
+[gd_scene load_steps=35 format=3 uid="uid://dikfgaeqdng3d"]
 
 [ext_resource type="Shader" uid="uid://coyggroig6t4b" path="res://Demo/Scenes/glitchy.gdshader" id="1_7ethr"]
 [ext_resource type="Texture2D" uid="uid://canfsqyqpe8qy" path="res://Folder/Assets/Sprites/Player Animation/idle/0.png" id="1_i7wno"]
@@ -17,6 +17,8 @@ script/source = "extends CharacterBody2D
 class_name Player
 signal player_damaged
 @onready var dash_sfx = $DashSFX
+@onready var dash_particles: CPUParticles2D = $DashParticles
+
 var is_hidden_from_mobs := false
 @export var walk_speed = 150.0
 @export var run_speed = 250.0
@@ -181,6 +183,10 @@ func _physics_process(delta):
 		jump_count = 0
 
 	sprite.flip_h = last_facing_dir < 0
+	# Flip dash particle gravity based on facing direction
+	# Make dash particles follow full movement direction
+	var gravity_direction = -velocity.normalized() * 50000.0
+	dash_particles.gravity = gravity_direction
 
 	if Input.is_action_just_pressed(\"dash\") and not is_dashing and dash_timer <= 0:
 		if input_vector.length() > 0.1:
@@ -189,6 +195,7 @@ func _physics_process(delta):
 			dash_direction = input_vector
 			dash_timer = dash_cooldown
 			dash_sfx.play_with_variation()
+			dash_particles.emitting = true
 			if teleporting:
 				teleport_hovering = false
 				teleporting = false
@@ -977,12 +984,26 @@ height = 28.0
 radius = 6.0
 height = 28.0
 
+[sub_resource type="Curve" id="Curve_21cxv"]
+_limits = [-200.0, 200.0, 0.0, 1.0]
+_data = [Vector2(0, 200), 0.0, 0.0, 0, 0, Vector2(0.126689, 36.1563), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_yirwm"]
+_data = [Vector2(0, 1), 0.0, -3.7097, 0, 0, Vector2(0.256757, 0.221557), -0.750739, -0.750739, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_gf1or"]
+colors = PackedColorArray(0, 0.381847, 0.97145, 1, 1, 1, 1, 1)
+
 [node name="Player" type="CharacterBody2D" groups=["player"]]
+z_index = 2
 script = SubResource("GDScript_vxcno")
 
 [node name="PlayerSprite" type="Sprite2D" parent="."]
 light_mask = 5
 visibility_layer = 5
+z_index = 2
 material = SubResource("ShaderMaterial_wf6if")
 scale = Vector2(0.0380787, 0.0380787)
 texture = ExtResource("1_i7wno")
@@ -1051,5 +1072,23 @@ wait_time = 20.0
 one_shot = true
 
 [node name="shockwave" parent="." instance=ExtResource("11_21cxv")]
+
+[node name="DashParticles" type="CPUParticles2D" parent="."]
+z_index = 1
+emitting = false
+amount = 50
+lifetime = 0.5
+one_shot = true
+randomness = 0.46
+draw_order = 1
+emission_shape = 1
+emission_sphere_radius = 13.0
+gravity = Vector2(-50000, 980)
+linear_accel_max = 66.42
+linear_accel_curve = SubResource("Curve_21cxv")
+scale_amount_min = 5.0
+scale_amount_max = 9.0
+scale_amount_curve = SubResource("Curve_yirwm")
+color_ramp = SubResource("Gradient_gf1or")
 
 [connection signal="timeout" from="TeleportCooldownTimer" to="." method="_on_teleport_cooldown_timer_timeout"]

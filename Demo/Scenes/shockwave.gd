@@ -3,7 +3,6 @@ extends Area2D
 @export var slow_duration := 5.0
 @export var slow_percent := 0.1
 @export var push_force := 150.0
-@export var delay_curve: Curve  # 🎨 Curve resource for animation timing
 
 @onready var luffy: AudioStreamPlayer2D = $luffy
 @onready var shockwave_timer: Timer = $ShockwaveTimer
@@ -11,10 +10,9 @@ extends Area2D
 @onready var animation_sequence_timer: Timer = $AnimationSequenceTimer
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
-# Animation timing control
-var animation_elapsed := 0.0
+# Animation control
 var animation_play_count := 0
-const ANIMATION_TOTAL_DURATION := 5.0
+var animation_delays := [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.7,]
 
 # Shockwave control
 var shockwave_count := 0
@@ -35,8 +33,14 @@ func _ready():
 	print("🔊 Playing Luffy sound")
 	luffy.play()
 
-	# Start animation sequence
-	_start_animation_sequence()
+	# Play first animation
+	animation_player.stop()
+	animation_player.play("expand")
+	animation_play_count = 1
+	print("🎞️ Playing expand animation #1")
+
+	# Schedule next animation
+	_schedule_next_animation()
 
 	# Trigger first shockwave immediately
 	print("⚡ Triggering first shockwave")
@@ -48,42 +52,27 @@ func _ready():
 	print("⏱️ Shockwave timer started with interval:", BLAST_INTERVAL)
 
 	# Start cleanup timer
-	cleanup_timer.wait_time = LIFETIME
+	cleanup_timer.wait_time = 7.0
 	cleanup_timer.start()
 	print("🧹 Cleanup timer started with lifetime:", LIFETIME)
 	cleanup_timer.timeout.connect(queue_free)
 
-func _start_animation_sequence():
-	print("🎞️ Playing expand animation #1 (Initial)")
-	animation_player.play("expand")
-	animation_play_count = 1
-	animation_elapsed = 0.0
-
-	# Start timer with initial delay from curve
-	var initial_delay = delay_curve.sample(0.0)
-	animation_sequence_timer.one_shot = true
-	animation_sequence_timer.wait_time = initial_delay
-	animation_sequence_timer.start()
-	print("⏱️ Timer started with initial delay:", initial_delay)
+func _schedule_next_animation():
+	if animation_play_count < animation_delays.size():
+		var delay = animation_delays[animation_play_count]
+		animation_sequence_timer.one_shot = true
+		animation_sequence_timer.wait_time = delay
+		animation_sequence_timer.start()
+		print("⏱️ Timer started for animation #", animation_play_count + 1, "with delay:", delay)
+	else:
+		print("✅ All animations scheduled")
 
 func _on_AnimationSequenceTimer_timeout():
-	animation_elapsed += animation_sequence_timer.wait_time
-	animation_play_count += 1
-
-	if animation_elapsed >= ANIMATION_TOTAL_DURATION:
-		print("🛑 Animation sequence complete at", animation_elapsed, "seconds")
-		return
-
-	print("🎞️ Playing expand animation #", animation_play_count)
+	print("🎞️ Playing expand animation #", animation_play_count + 1)
+	animation_player.stop()
 	animation_player.play("expand")
-
-	# Sample next delay from curve
-	var t = animation_elapsed / ANIMATION_TOTAL_DURATION
-	var next_delay = delay_curve.sample(clamp(t, 0.0, 1.0))
-
-	print("⏱️ Next delay from curve:", next_delay)
-	animation_sequence_timer.wait_time = next_delay
-	animation_sequence_timer.start()
+	animation_play_count += 1
+	_schedule_next_animation()
 
 func _on_ShockwaveTimer_timeout():
 	shockwave_count += 1

@@ -1,13 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://bpi2vy2nytph6"]
+[gd_scene load_steps=10 format=3 uid="uid://bpi2vy2nytph6"]
 
 [ext_resource type="Script" uid="uid://10lr1vlg5dbb" path="res://Demo/Scenes/shockwave.gd" id="1_r3eit"]
 [ext_resource type="Shader" uid="uid://b7nqeebf36o3c" path="res://Demo/Scenes/shockdsdwave.gdshader" id="2_uv72l"]
 [ext_resource type="Texture2D" uid="uid://muuftn4ftdf" path="res://Folder/Assets/Sprites/nothing2.png" id="3_p1kcr"]
 [ext_resource type="AudioStream" uid="uid://f4ppumpk4nnl" path="res://Demo/Stuff/music/luffy77.mp3" id="4_p1kcr"]
-
-[sub_resource type="Curve" id="Curve_p1kcr"]
-_data = [Vector2(0, 0.0821897), 0.0, 0.868512, 0, 0, Vector2(0.144404, 1), 2.13365, 0.0, 0, 0]
-point_count = 2
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_t8goq"]
 shader = ExtResource("2_uv72l")
@@ -83,6 +79,18 @@ tracks/4/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("CollisionShape2D:disabled")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_xkg6n"]
 resource_name = "expand"
@@ -147,6 +155,18 @@ tracks/4/keys = {
 "update": 1,
 "values": [true]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("CollisionShape2D:disabled")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_p1kcr"]
 _data = {
@@ -159,7 +179,6 @@ _data = {
 [node name="Shockwave" type="Area2D" parent="."]
 collision_mask = 7
 script = ExtResource("1_r3eit")
-delay_curve = SubResource("Curve_p1kcr")
 
 [node name="Sprite2D" type="Sprite2D" parent="Shockwave"]
 visible = false

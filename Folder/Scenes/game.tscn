@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=3 uid="uid://17ihev8gmx8p"]
+[gd_scene load_steps=54 format=3 uid="uid://17ihev8gmx8p"]
 
 [ext_resource type="Script" uid="uid://be05spmmaewml" path="res://Demo/Scripts/game.gd" id="1_naqcg"]
 [ext_resource type="Texture2D" uid="uid://bnmfh85lwxuid" path="res://Demo/Stuff/sprites/world_tileset.png" id="1_wi88m"]
@@ -26,10 +26,6 @@
 [ext_resource type="Script" uid="uid://cle76cukwkb63" path="res://Folder/Scenes/label2.gd" id="11_nq47c"]
 [ext_resource type="Script" uid="uid://6jmu2j03dt71" path="res://Demo/Scripts/background_music.gd" id="20_2x3so"]
 [ext_resource type="AudioStream" uid="uid://dg5yucn8p5t8t" path="res://Demo/Stuff/music/Epic.mp3" id="20_66lna"]
-
-[sub_resource type="Curve" id="Curve_yh3bl"]
-_data = [Vector2(0, 0.22), 0.0, 0.0, 0, 0, Vector2(0.214765, 0.904276), 0.0, 0.0, 0, 0, Vector2(0.535235, 0.383319), 0.0, 0.0, 0, 0, Vector2(1, 0.97791), 0.0, 0.0, 0, 0]
-point_count = 4
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vonys"]
 texture = ExtResource("2_61t74")
@@ -429,7 +425,6 @@ normal = Vector2(0.0404786, -0.99918)
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_naqcg")
-cooldown_curve = SubResource("Curve_yh3bl")
 metadata/_edit_horizontal_guides_ = [-287.0]
 
 [node name="CanvasLayer4" type="CanvasLayer" parent="."]
