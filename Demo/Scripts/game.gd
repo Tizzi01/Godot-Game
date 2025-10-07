@@ -13,6 +13,7 @@ var previous_score := 0
 @onready var shop_scene = preload("res://Demo/Scenes/shop.tscn")
 @onready var tp_bar: ProgressBar = $CanvasLayer3/TPCD
 # 💬 Dialog System
+var block_r_key := true
 @onready var text_box_scene = preload("res://Demo/Scenes/text_box.tscn")
 var text_box
 var text_box_position: Vector2
@@ -31,6 +32,13 @@ const MAX_MOB2 := 50
 var allow_spawning := true
 @export var cooldown_curve: Curve
 func _ready(): 
+	
+	
+	await get_tree().create_timer(5.0).timeout
+	block_r_key = false
+	print("✅ R key is now active")
+	
+	
 	
 	
 	tp_bar.visible = false

@@ -3,7 +3,7 @@ extends Area2D
 @export var slow_duration := 5.0
 @export var slow_percent := 0.1
 @export var push_force := 150.0
-
+var shockwave_ready := false
 @onready var luffy: AudioStreamPlayer2D = $luffy
 @onready var shockwave_timer: Timer = $ShockwaveTimer
 @onready var cleanup_timer: Timer = $Timer
@@ -22,6 +22,9 @@ const BLAST_INTERVAL := 0.3
 const LIFETIME := 4.5
 
 func _ready():
+	
+	await get_tree().create_timer(5.0).timeout
+	shockwave_ready = true
 	print("🚀 READY: Shockwave node initialized at", global_position)
 
 	# Connect signals

@@ -1,3 +1,5 @@
+WorldEnvironment
+PointLight2D
 CPUParticles2D
 Timer
 AnimationPlayer
@@ -11,5 +13,3 @@ Panel
 CollisionShape2D
 Area2D
 Node
-AudioStreamPlayer
-AnimationTree
