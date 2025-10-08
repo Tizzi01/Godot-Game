@@ -33,6 +33,8 @@ var allow_spawning := true
 
 @export var cooldown_curve: Curve
 func _ready(): 
+	player.shockwave_cooldown_started.connect(_on_shockwave_cooldown_started)
+	
 	
 	shockwave_bar.visible = false  # Hide it by default 
 	var shop = get_tree().get_root().get_node("Game/Shop")  # Adjust path if needed
@@ -382,3 +384,13 @@ func celebrate_special_score(new_value: int) -> void:
 func _on_shockwave_unlocked():
 	shockwave_bar.visible = true
 	print("✅ Shockwave unlocked — SHCD bar now visible")
+
+func _on_shockwave_cooldown_started(duration: float) -> void:
+	shockwave_bar.visible = true
+	shockwave_bar.max_value = 100
+	shockwave_bar.value = 100
+
+	var tween = create_tween()
+	tween.tween_property(shockwave_bar, "value", 0, duration) \
+		.set_trans(Tween.TRANS_CUBIC) \
+		.set_ease(Tween.EASE_IN)

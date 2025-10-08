@@ -46,7 +46,7 @@ var tp_ready := true
 @export var dash_max_distance = 100.0
 @export var dash_curve : Curve
 @export var dash_cooldown = 1.0
-
+signal shockwave_cooldown_started(duration: float)
 @export var Gun_radius: float = 20.0
 @export var Gun_follow_speed: float = 10.0
 @onready var black_hole_cooldown_timer: Timer = $BlackHoleCooldownTimer
@@ -64,7 +64,7 @@ var dash_start_position = Vector2.ZERO
 var dash_direction = Vector2.ZERO
 var dash_timer = 0.0
 @onready var omni: AudioStreamPlayer = $Omni
-@export var shockwave_cooldown := 5.0  # How long the cooldown lasts
+@export var shockwave_cooldown := 20.0 # How long the cooldown lasts
 var shockwave_ready := true  # Whether the shockwave can be used
 var was_on_floor = true
 var is_jumping = false
@@ -129,7 +129,7 @@ func _physics_process(delta):
 		shockwave_ready = false
 		$ShockwaveCooldownTimer.wait_time = shockwave_cooldown
 		$ShockwaveCooldownTimer.start()
-		
+		emit_signal(\"shockwave_cooldown_started\", shockwave_cooldown)
 		shockwave_bar.visible = true
 		shockwave_bar.max_value = 100
 		shockwave_bar.value = 100
@@ -1084,7 +1084,7 @@ volume_db = -3.0
 script = ExtResource("9_hvqp6")
 
 [node name="TeleportCooldownTimer" type="Timer" parent="."]
-wait_time = 5.0
+wait_time = 10.0
 one_shot = true
 
 [node name="Omni" type="AudioStreamPlayer" parent="."]
@@ -1115,7 +1115,7 @@ color_ramp = SubResource("Gradient_gf1or")
 script = ExtResource("12_yirwm")
 
 [node name="ShockwaveCooldownTimer" type="Timer" parent="."]
-wait_time = 6.0
+wait_time = 20.0
 one_shot = true
 
 [connection signal="timeout" from="TeleportCooldownTimer" to="." method="_on_teleport_cooldown_timer_timeout"]
