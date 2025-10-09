@@ -1,3 +1,7 @@
+Sprite2D
+Panel
+CanvasLayer
+MarginContainer
 AudioStreamPlayer
 AudioStreamPlayer2D
 Timer
@@ -5,10 +9,6 @@ WorldEnvironment
 PointLight2D
 CPUParticles2D
 AnimationPlayer
-Sprite2D
 TextureRect
-CanvasLayer
 CanvasGroup
 ColorRect
-Panel
-CollisionShape2D

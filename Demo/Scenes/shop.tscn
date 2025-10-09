@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://bwc6d4yf3g328"]
+[gd_scene load_steps=30 format=3 uid="uid://bwc6d4yf3g328"]
 
 [ext_resource type="Script" uid="uid://csyxdcof2prv5" path="res://Demo/Scripts/shop.gd" id="1_kwrf6"]
 [ext_resource type="Texture2D" uid="uid://canfsqyqpe8qy" path="res://Folder/Assets/Sprites/Player Animation/idle/0.png" id="2_de8nq"]
@@ -10,7 +10,9 @@
 [ext_resource type="FontFile" uid="uid://ctp71ddagy2v8" path="res://Demo/Stuff/fonts/Roquen DEMO.otf" id="4_x00t5"]
 [ext_resource type="PackedScene" uid="uid://bt1jj0du5ltb8" path="res://Demo/Scenes/powershow.tscn" id="8_nndrg"]
 [ext_resource type="PackedScene" uid="uid://kru21d485jen" path="res://Folder/Scenes/gun2copy.tscn" id="9_xy8dm"]
+[ext_resource type="Texture2D" uid="uid://cbbwhmbfm7pn7" path="res://Demo/Stuff/sprites/surge.png" id="10_yx70n"]
 [ext_resource type="AudioStream" uid="uid://dgi7pj30ch1qe" path="res://Demo/Stuff/music/Woosh1.mp3" id="11_8bmhk"]
+[ext_resource type="PackedScene" uid="uid://cf3aatcgr4fbc" path="res://Demo/Scenes/shockwaveshow.tscn" id="12_c7q3y"]
 [ext_resource type="AudioStream" uid="uid://bl77nb0epay4r" path="res://Demo/Stuff/music/TT.mp3" id="12_loid5"]
 [ext_resource type="AudioStream" uid="uid://bpnxaxggs2xd6" path="res://Demo/Stuff/music/cash.mp3" id="13_vf0om"]
 
@@ -302,6 +304,11 @@ autoplay = "ShopIdle"
 visible = false
 texture = SubResource("GradientTexture2D_t5een")
 
+[node name="Sprite2D5" type="Sprite2D" parent="Panel"]
+position = Vector2(1276, 545)
+scale = Vector2(0.673, 0.673)
+texture = ExtResource("10_yx70n")
+
 [node name="Back" type="Button" parent="Panel"]
 layout_mode = 1
 anchors_preset = 8
@@ -339,9 +346,8 @@ theme_override_constants/shadow_offset_x = -2
 theme_override_constants/shadow_offset_y = 3
 theme_override_constants/outline_size = 8
 theme_override_fonts/font = ExtResource("4_x00t5")
-theme_override_font_sizes/font_size = 22
-text = "You might need to spam click the buttons or stop moving for a second if 
-the buttons arent work. (Sorry about this. I’m working on fixing this bug)"
+theme_override_font_sizes/font_size = 28
+text = "You may need to spam click or stop moving for a moment if the buttons don’t respond. "
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -373,10 +379,10 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -348.0
-offset_top = 801.0
-offset_right = 2207.0
-offset_bottom = 1057.0
+offset_left = -351.0
+offset_top = 803.0
+offset_right = 49.0
+offset_bottom = 1059.0
 grow_horizontal = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -385,14 +391,17 @@ theme_override_constants/shadow_offset_y = 3
 theme_override_constants/outline_size = 8
 theme_override_fonts/font = ExtResource("4_x00t5")
 theme_override_font_sizes/font_size = 22
-text = "Scroll to switch guns, 
-then hold left-click to
- spawn a black hole. 
-Don’t spawn it too close 
-or you’ll get pulled in! 
-If that happens, press 
-Q while moving to dash out."
+text = "Scroll to switch guns
+
+Hold left click  to spawn a
+black hole.
+
+If you get pulled in, press Q
+while moving to dash out."
 vertical_alignment = 1
+
+[node name="shockwaveshow" parent="Panel" instance=ExtResource("12_c7q3y")]
+position = Vector2(1279, 553)
 
 [node name="SpaceShift" type="Button" parent="."]
 layout_mode = 1
@@ -445,10 +454,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 393.0
-offset_top = -166.0
-offset_right = 715.0
-offset_bottom = -90.0
+offset_left = 160.0
+offset_top = 174.0
+offset_right = 482.0
+offset_bottom = 250.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.00454, 1)
@@ -458,8 +467,7 @@ theme_override_font_sizes/font_size = 33
 theme_override_styles/focus = SubResource("StyleBoxEmpty_t5een")
 theme_override_styles/hover = SubResource("StyleBoxFlat_u52t5")
 theme_override_styles/normal = SubResource("StyleBoxFlat_yhb8x")
-text = "Wave
-9 points"
+text = "9 points"
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 1

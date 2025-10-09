@@ -1,0 +1,300 @@
+[gd_scene load_steps=12 format=3 uid="uid://cf3aatcgr4fbc"]
+
+[ext_resource type="Script" uid="uid://dp4br20hyjvo2" path="res://Demo/Scenes/shockwaveshow.gd" id="1_8u0s3"]
+[ext_resource type="Script" uid="uid://2l6d0yln8ad8" path="res://Demo/Scenes/sprite_2d.gd" id="3_8u0s3"]
+[ext_resource type="Texture2D" uid="uid://muuftn4ftdf" path="res://Folder/Assets/Sprites/nothing2.png" id="3_s2txs"]
+[ext_resource type="AudioStream" uid="uid://f4ppumpk4nnl" path="res://Demo/Stuff/music/luffy77.mp3" id="4_rv62g"]
+[ext_resource type="AudioStream" uid="uid://7l26svoh3ba4" path="res://Demo/Stuff/music/luffy99.mp3" id="5_ggv63"]
+
+[sub_resource type="Shader" id="Shader_obaea"]
+code = "shader_type canvas_item;
+
+uniform float strength = 0.04;
+uniform vec2 center = vec2(0.5, 0.5); // Set by GDScript (normalized 0.0-1.0)
+uniform float radius = 0.15;
+uniform float aberration = 0.425;
+uniform float width = 0.005;     
+uniform float feather = 0.05;    
+uniform float opacity = 1.0;     
+
+uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
+
+void fragment() {
+	vec2 st = SCREEN_UV;
+
+	// Calculate the aspect ratio correction factor
+	float aspect_ratio = SCREEN_PIXEL_SIZE.x / SCREEN_PIXEL_SIZE.y;
+	
+	// Apply aspect correction to both the current UV and the center position
+	vec2 corrected_st = vec2(st.x, st.y * aspect_ratio);
+	vec2 corrected_center = vec2(center.x, center.y * aspect_ratio); 
+
+	// Distance from ripple center (calculated in the corrected space)
+	vec2 dist_center = corrected_st - corrected_center;
+	float dist = length(dist_center);
+
+	// Ripple mask with ultra-tight edges
+	// Re-typed and spaced to eliminate hidden character errors
+	float mask = (1.0 - smoothstep(radius - feather, radius, dist)) *
+	             smoothstep(radius - width - feather, radius - width, dist);
+
+	// Inner ring mask (even thinner)
+	// Re-typed and spaced to eliminate hidden character errors
+	float core_mask = (1.0 - smoothstep(radius - feather * 0.3, radius, dist)) *
+	                  smoothstep(radius - width * 0.3 - feather * 0.3, radius - width * 0.3, dist);
+
+	// Ripple distortion offset
+	vec2 offset = normalize(dist_center) * strength * mask * opacity;
+	vec2 biased_st = corrected_st - offset;
+
+	// Chromatic aberration effect
+	vec2 abber_vec = offset * aberration;
+
+	// Final UV blend: Reverse the aspect correction on the sampled UV coordinates
+	vec2 final_st = vec2(biased_st.x, biased_st.y / aspect_ratio);
+	vec4 red = texture(SCREEN_TEXTURE, final_st + abber_vec);
+	vec4 blue = texture(SCREEN_TEXTURE, final_st - abber_vec);
+	vec4 ori = texture(SCREEN_TEXTURE, final_st);
+
+	// Final color composition
+	vec4 distorted = vec4(red.r, ori.g, blue.b, 1.0);
+	vec4 ripple_color = mix(ori, distorted, opacity);
+
+	// Deep purple inner ring
+	vec4 core_purple = vec4(0.3, 0.0, 0.4, 0.0) * core_mask;
+
+	// Light purple outer glow (tight and subtle)
+	vec4 glow = vec4(0.6, 0.3, 0.9, 0.0) * mask * 0.3;
+
+	COLOR = ripple_color + (core_purple + glow) * opacity;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_t8goq"]
+shader = SubResource("Shader_obaea")
+shader_parameter/strength = 0.04
+shader_parameter/center = Vector2(0.5, 0.5)
+shader_parameter/radius = 0.15
+shader_parameter/aberration = 0.425
+shader_parameter/width = 0.02
+shader_parameter/feather = 0.2
+shader_parameter/opacity = 1.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_378l5"]
+
+[sub_resource type="Animation" id="Animation_uv72l"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:material:shader_parameter/radius")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.15]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:material:shader_parameter/feather")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.2]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D:material:shader_parameter/opacity")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Sprite2D:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("CollisionShape2D:disabled")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_xkg6n"]
+resource_name = "expand"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(15, 15)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:material:shader_parameter/radius")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 0,
+"values": [0.0, 0.5]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:material:shader_parameter/feather")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 0.1]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D:material:shader_parameter/opacity")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [1.0, 1.0, 0.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Sprite2D:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("CollisionShape2D:disabled")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/6/type = "method"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath(".")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0.0333333),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"_play_out_sound"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_p1kcr"]
+_data = {
+&"RESET": SubResource("Animation_uv72l"),
+&"expand": SubResource("Animation_xkg6n")
+}
+
+[node name="shockwaveshow" type="Node2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Shockwaveshow" type="Area2D" parent="CanvasLayer"]
+collision_mask = 7
+script = ExtResource("1_8u0s3")
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Shockwaveshow"]
+visible = false
+visibility_layer = 7
+material = SubResource("ShaderMaterial_t8goq")
+position = Vector2(-2276.5, 188.5)
+scale = Vector2(12.3065, 10.6694)
+texture = ExtResource("3_s2txs")
+script = ExtResource("3_8u0s3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/Shockwaveshow"]
+shape = SubResource("CircleShape2D_378l5")
+
+[node name="Timer" type="Timer" parent="CanvasLayer/Shockwaveshow"]
+one_shot = true
+autostart = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/Shockwaveshow"]
+libraries = {
+&"": SubResource("AnimationLibrary_p1kcr")
+}
+
+[node name="luffy" type="AudioStreamPlayer2D" parent="CanvasLayer/Shockwaveshow"]
+stream = ExtResource("4_rv62g")
+
+[node name="out" type="AudioStreamPlayer" parent="CanvasLayer/Shockwaveshow"]
+stream = ExtResource("5_ggv63")
+bus = &"SFX"
+
+[node name="ShockwaveTimer" type="Timer" parent="CanvasLayer/Shockwaveshow"]
+wait_time = 0.3
+
+[node name="AnimationSequenceTimer" type="Timer" parent="CanvasLayer/Shockwaveshow"]
+
+[node name="ShockTimer" type="Timer" parent="CanvasLayer/Shockwaveshow"]
+wait_time = 10.0
+one_shot = true
+
+[connection signal="timeout" from="CanvasLayer/Shockwaveshow/ShockwaveTimer" to="CanvasLayer/Shockwaveshow" method="_on_shockwave_timer_timeout"]
