@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://bwc6d4yf3g328"]
+[gd_scene load_steps=33 format=3 uid="uid://bwc6d4yf3g328"]
 
 [ext_resource type="Script" uid="uid://csyxdcof2prv5" path="res://Demo/Scripts/shop.gd" id="1_kwrf6"]
 [ext_resource type="Texture2D" uid="uid://canfsqyqpe8qy" path="res://Folder/Assets/Sprites/Player Animation/idle/0.png" id="2_de8nq"]
@@ -12,7 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://kru21d485jen" path="res://Folder/Scenes/gun2copy.tscn" id="9_xy8dm"]
 [ext_resource type="Texture2D" uid="uid://cbbwhmbfm7pn7" path="res://Demo/Stuff/sprites/surge.png" id="10_yx70n"]
 [ext_resource type="AudioStream" uid="uid://dgi7pj30ch1qe" path="res://Demo/Stuff/music/Woosh1.mp3" id="11_8bmhk"]
-[ext_resource type="PackedScene" uid="uid://cf3aatcgr4fbc" path="res://Demo/Scenes/shockwaveshow.tscn" id="12_c7q3y"]
+[ext_resource type="Texture2D" uid="uid://c4h8t88i61d67" path="res://Demo/Stuff/sprites/round2.png" id="11_c7q3y"]
 [ext_resource type="AudioStream" uid="uid://bl77nb0epay4r" path="res://Demo/Stuff/music/TT.mp3" id="12_loid5"]
 [ext_resource type="AudioStream" uid="uid://bpnxaxggs2xd6" path="res://Demo/Stuff/music/cash.mp3" id="13_vf0om"]
 
@@ -223,6 +223,116 @@ corner_radius_bottom_left = 22
 shadow_color = Color(0, 0, 0, 0.521569)
 shadow_size = 3
 
+[sub_resource type="Animation" id="Animation_vygv3"]
+resource_name = "idleround"
+length = 1.1
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.6, 1.1),
+"transitions": PackedFloat32Array(0.5, 0.5, 0.5, 0.5),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05), Vector2(0.4, 0.4), Vector2(1e-05, 1e-05), Vector2(0.4, 0.4)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.5, 0.6, 0.9, 1.1),
+"transitions": PackedFloat32Array(0.5, 0.5, 0.5, 0.5, 0.5, 0.5),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../round2:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05), Vector2(1.00136e-05, 1.00136e-05), Vector2(0.4, 0.4)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../round2:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_5brh1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.275, 0.275)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../round2:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.254, 0.254)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../round2:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_badgl"]
+_data = {
+&"RESET": SubResource("Animation_5brh1"),
+&"idleround": SubResource("Animation_vygv3")
+}
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t5een"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u52t5"]
@@ -316,10 +426,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 427.0
-offset_top = 398.0
-offset_right = 885.0
-offset_bottom = 474.0
+offset_left = 653.0
+offset_top = 417.0
+offset_right = 912.0
+offset_bottom = 493.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
@@ -400,8 +510,22 @@ If you get pulled in, press Q
 while moving to dash out."
 vertical_alignment = 1
 
-[node name="shockwaveshow" parent="Panel" instance=ExtResource("12_c7q3y")]
-position = Vector2(1279, 553)
+[node name="round2" type="Sprite2D" parent="Panel"]
+position = Vector2(1277, 565)
+scale = Vector2(0.254, 0.254)
+texture = ExtResource("11_c7q3y")
+
+[node name="round" type="Sprite2D" parent="Panel"]
+position = Vector2(1277, 566)
+scale = Vector2(0.275, 0.275)
+texture = ExtResource("11_c7q3y")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Panel"]
+root_node = NodePath("../round")
+libraries = {
+&"": SubResource("AnimationLibrary_badgl")
+}
+autoplay = "idleround"
 
 [node name="SpaceShift" type="Button" parent="."]
 layout_mode = 1

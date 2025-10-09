@@ -19,11 +19,9 @@ res://Folder/Scenes/game.tscn
 res://Demo/Scenes/player.tscn
 res://Folder/Scenes/gun.tscn
 res://Folder/Scenes/bullet_v_2.tscn
-res://Folder/Scenes/mob2.tscn
-res://Folder/Scenes/mob.tscn
 res://Folder/Scenes/gun2.tscn
 res://Demo/Scenes/power.tscn
 res://Demo/Scenes/shockwave.tscn
-res://Demo/Scenes/shockwaveshow.gd
 res://Demo/Scenes/shockwaveshow.tscn
+res://Demo/Scenes/colosdsr_rect.gd
 res://Demo/Scenes/sprite_2d.gd

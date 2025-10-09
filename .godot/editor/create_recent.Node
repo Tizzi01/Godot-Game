@@ -1,6 +1,8 @@
+AnimationPlayer
 Sprite2D
-Panel
+ColorRect
 CanvasLayer
+Panel
 MarginContainer
 AudioStreamPlayer
 AudioStreamPlayer2D
@@ -8,7 +10,5 @@ Timer
 WorldEnvironment
 PointLight2D
 CPUParticles2D
-AnimationPlayer
 TextureRect
 CanvasGroup
-ColorRect
