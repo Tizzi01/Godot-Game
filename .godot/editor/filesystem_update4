@@ -23,3 +23,4 @@ res://Folder/Scenes/gun2.tscn
 res://Demo/Scenes/power.tscn
 res://Demo/Scenes/shockwave.tscn
 res://Demo/Scenes/shockwaveshow.tscn
+res://Demo/Scripts/dash_particles.gd
