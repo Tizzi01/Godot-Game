@@ -1,4 +1,3 @@
-res://default_bus_layout.tres
 res://Demo/Scenes/player.tscn
 res://Demo/Scenes/glitchy.gdshader
 res://Demo/Scenes/blackhole.gdshader
