@@ -1,3 +1,4 @@
+res://default_bus_layout.tres
 res://Demo/Scenes/player.tscn
 res://Demo/Scenes/glitchy.gdshader
 res://Demo/Scenes/blackhole.gdshader
@@ -23,4 +24,3 @@ res://Demo/Scenes/power.tscn
 res://Demo/Scenes/shockwave.tscn
 res://Demo/Scenes/shop.tscn
 res://Demo/Scenes/shockwaveshow.tscn
-res://Demo/Scenes/dash_particles.gd

@@ -18,9 +18,7 @@ script/source = "extends CharacterBody2D
 class_name Player
 signal player_damaged
 @onready var dash_sfx = $DashSFX
-@onready var dash_particles = $DashParticles as CPUParticles2D
-var dash_fade_tween: Tween = null
-var dash_emission_original := 50  # Match your particle \"Amount\" in Inspector
+@onready var dash_particles: CPUParticles2D = $DashParticles
 
 var is_hidden_from_mobs := false
 @export var walk_speed = 150.0
@@ -48,6 +46,8 @@ var tp_ready := true
 @export var dash_max_distance = 100.0
 @export var dash_curve : Curve
 @export var dash_cooldown = 1.0
+var dash_fade_tween: Tween = null
+var dash_emission_original := 500  # Match your DashParticles \"Amount\" in the Inspector
 signal shockwave_cooldown_started(duration: float)
 @export var Gun_radius: float = 20.0
 @export var Gun_follow_speed: float = 10.0
@@ -213,8 +213,19 @@ func _physics_process(delta):
 			dash_direction = input_vector
 			dash_timer = dash_cooldown
 			dash_sfx.play_with_variation()
-			dash_particles.emitting = true 
-			dash_particles.amount = dash_emission_original
+			# 🧼 Clean up leftover fade
+			if dash_fade_tween:
+				dash_fade_tween.kill()
+				dash_fade_tween = null
+
+# 🧼 Reset particles before starting
+			dash_particles.emitting = false
+			dash_particles.amount = dash_emission_original  # Set to 50
+			dash_particles.modulate.a = 1.0  # Fully visible
+
+# ✅ Start fresh emission
+			dash_particles.emitting = true
+			_fade_out_dash_particles()
 			if teleporting:
 				teleport_hovering = false
 				teleporting = false
@@ -222,12 +233,10 @@ func _physics_process(delta):
 
 	if is_dashing:
 		if dash_direction.length() < 0.1:
-			_fade_out_dash_particles()
 			is_dashing = false
 		else:
 			var current_distance = global_position.distance_to(dash_start_position)
 			if current_distance >= dash_max_distance or is_on_wall():
-				_fade_out_dash_particles()
 				is_dashing = false
 			else:
 				velocity = dash_direction * dash_speed * dash_curve.sample(current_distance / dash_max_distance)
@@ -495,30 +504,27 @@ func _on_shockwave_cooldown_timer_timeout() -> void:
 	shockwave_ready = true
 	print(\"✅ Shockwave cooldown finished\")
 
-
-
-
-	var material: ParticleProcessMaterial = dash_particles.process_material
-	if material:
-		dash_fade_tween = create_tween()
-		dash_fade_tween.tween_property(material, \"emission_rate\", 0.0, 0.5)
-		dash_fade_tween.set_trans(Tween.TRANS_LINEAR)
-		dash_fade_tween.set_ease(Tween.EASE_OUT)
-		dash_fade_tween.tween_callback(Callable(self, \"_stop_dash_particles\"))
-
 func _fade_out_dash_particles():
 	if dash_fade_tween:
 		dash_fade_tween.kill()
 
+	await get_tree().create_timer(0.5).timeout  # Emit full for 0.5s
+
 	dash_fade_tween = create_tween()
-	dash_fade_tween.tween_property(dash_particles, \"amount\", 0, 2.0)
-	dash_fade_tween.set_trans(Tween.TRANS_LINEAR)
+
+	dash_fade_tween.tween_property(dash_particles, \"modulate:a\", 0.0, 0.5)
+	dash_fade_tween.tween_property(dash_particles, \"amount\", 10, 0.5)
+
+	dash_fade_tween.set_trans(Tween.TRANS_CUBIC)
 	dash_fade_tween.set_ease(Tween.EASE_OUT)
+
 	dash_fade_tween.tween_callback(Callable(self, \"_stop_dash_particles\"))
+
 
 func _stop_dash_particles():
 	dash_particles.emitting = false
-	dash_particles.amount = dash_emission_original
+	dash_particles.amount = dash_emission_original  # Reset to 50
+	dash_particles.modulate.a = 1.0  # Reset alpha
 	dash_fade_tween = null
 "
 
@@ -1135,19 +1141,18 @@ one_shot = true
 modulate = Color(1.2, 1, 1, 1)
 z_index = 1
 emitting = false
-amount = 50
+amount = 500
 texture = ExtResource("12_gf1or")
-lifetime = 0.5
 one_shot = true
 randomness = 0.46
 draw_order = 1
 emission_shape = 3
-emission_rect_extents = Vector2(2, 9)
+emission_rect_extents = Vector2(2, 12)
 gravity = Vector2(-50000, 980)
 linear_accel_max = 60.57
 linear_accel_curve = SubResource("Curve_21cxv")
 scale_amount_min = 0.0
-scale_amount_max = 0.05
+scale_amount_max = 0.02
 scale_amount_curve = SubResource("Curve_yirwm")
 color_ramp = SubResource("Gradient_gf1or")
 
