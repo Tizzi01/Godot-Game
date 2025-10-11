@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://dikfgaeqdng3d"]
+[gd_scene load_steps=39 format=3 uid="uid://dikfgaeqdng3d"]
 
 [ext_resource type="Shader" uid="uid://coyggroig6t4b" path="res://Demo/Scenes/glitchy.gdshader" id="1_7ethr"]
 [ext_resource type="Texture2D" uid="uid://canfsqyqpe8qy" path="res://Folder/Assets/Sprites/Player Animation/idle/0.png" id="1_i7wno"]
@@ -12,6 +12,7 @@
 [ext_resource type="AudioStream" uid="uid://c5q50qqifx07u" path="res://Demo/Stuff/music/omni1.mp3" id="10_74cf5"]
 [ext_resource type="PackedScene" uid="uid://bpi2vy2nytph6" path="res://Demo/Scenes/shockwave.tscn" id="11_21cxv"]
 [ext_resource type="Texture2D" uid="uid://x6uiftwlxg0r" path="res://Demo/Stuff/sprites/oct1-removebg-preview.png" id="12_gf1or"]
+[ext_resource type="Shader" uid="uid://dw0mmaifkx7ue" path="res://Demo/Scenes/glowdots.gdshader" id="12_vn77m"]
 
 [sub_resource type="GDScript" id="GDScript_vxcno"]
 script/source = "extends CharacterBody2D
@@ -508,24 +509,22 @@ func _fade_out_dash_particles():
 	if dash_fade_tween:
 		dash_fade_tween.kill()
 
-	await get_tree().create_timer(0.5).timeout  # Emit full for 0.5s
+	await get_tree().create_timer(0.5).timeout  # Wait 0.5s before fading
 
 	dash_fade_tween = create_tween()
+	dash_fade_tween.set_trans(Tween.TRANS_CUBIC)
+	dash_fade_tween.set_ease(Tween.EASE_OUT)
 
-	dash_fade_tween.tween_property(dash_particles, \"modulate:a\", 0.0, 0.5)\\
-		.set_trans(Tween.TRANS_CUBIC)\\
-		.set_ease(Tween.EASE_OUT)
+	# Fade particle alpha from 1 → 0 over 0.5s
+	dash_fade_tween.tween_property(dash_particles, \"modulate:a\", 0.0, 0.5)
 
-	dash_fade_tween.tween_property(dash_particles, \"amount\", 0, 0.5)\\
-		.set_trans(Tween.TRANS_CUBIC)\\
-		.set_ease(Tween.EASE_OUT)
-
+	# Stop emitting after fade
 	dash_fade_tween.tween_callback(Callable(self, \"_stop_dash_particles\"))
 
 
 func _stop_dash_particles():
 	dash_particles.emitting = false
-	dash_particles.modulate.a = 1.0
+	dash_particles.modulate.a = 1.0  # Reset alpha for next dash
 	dash_fade_tween = null
 "
 
@@ -1049,6 +1048,12 @@ height = 28.0
 radius = 6.0
 height = 28.0
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gf1or"]
+shader = ExtResource("12_vn77m")
+shader_parameter/glow_intensity = 1.5
+shader_parameter/glow_tint = Vector3(0.396, 0.686, 1)
+shader_parameter/glow_spread = 1.5
+
 [sub_resource type="Curve" id="Curve_21cxv"]
 _limits = [-200.0, 200.0, 0.0, 1.0]
 _data = [Vector2(0, 200), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
@@ -1146,6 +1151,7 @@ one_shot = true
 [node name="DashParticles" type="CPUParticles2D" parent="."]
 modulate = Color(4, 4, 4, 1)
 z_index = 1
+material = SubResource("ShaderMaterial_gf1or")
 emitting = false
 amount = 500
 texture = ExtResource("12_gf1or")
@@ -1158,7 +1164,7 @@ gravity = Vector2(-50000, 980)
 linear_accel_max = 60.57
 linear_accel_curve = SubResource("Curve_21cxv")
 scale_amount_min = 0.0
-scale_amount_max = 0.02
+scale_amount_max = 0.01
 scale_amount_curve = SubResource("Curve_yirwm")
 color_ramp = SubResource("Gradient_gf1or")
 

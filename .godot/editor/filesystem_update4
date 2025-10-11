@@ -23,3 +23,6 @@ res://Demo/Scenes/power.tscn
 res://Demo/Scenes/shockwave.tscn
 res://Demo/Scenes/shop.tscn
 res://Demo/Scenes/shockwaveshow.tscn
+res://Demo/Scenes/particleglow.gdshader
+res://Demo/Scenes/glowdots.gdshader
+res://Demo/Scenes/GLOWDOTS2.gdshader
