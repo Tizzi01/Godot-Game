@@ -29,6 +29,8 @@ var mob2_spawn_timer := 0.0
 const MAX_SLIMES := 500
 const MAX_MOB2 := 50
 var allow_spawning := true 
+@onready var color_rect: ColorRect = $ColorRect
+
 @onready var shockwave_bar: ProgressBar = $CanvasLayer3/SHCD
 
 @export var cooldown_curve: Curve
@@ -294,7 +296,8 @@ func _on_shop_pressed() -> void:
 	Click.play_ClickSound()
 
 	var shop_instance = shop_scene.instantiate()
-	shop_instance.name = "ShopOverlay"
+	shop_instance.name = "ShopOverlay" 
+	color_rect.visible = true
 
 	# ✅ Connect the signal AFTER shop_instance is created
 	shop_instance.space_shift_button_pressed.connect(player._on_tp_signal_received)
@@ -342,7 +345,8 @@ func _on_shop_pressed() -> void:
 
 func _on_shop_closed() -> void:
 	shop.disabled = false
-	print("✅ Shop closed, button re-enabled") 
+	print("✅ Shop closed, button re-enabled")  
+	color_rect.visible = false
 	
 func _on_teleport_cooldown_started(duration: float) -> void:
 	tp_bar.max_value = 100

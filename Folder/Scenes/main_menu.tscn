@@ -193,7 +193,7 @@ theme_override_font_sizes/font_size = 55
 theme_override_styles/focus = SubResource("StyleBoxEmpty_yuxdu")
 theme_override_styles/hover = SubResource("StyleBoxFlat_43o24")
 theme_override_styles/normal = SubResource("StyleBoxFlat_yuxdu")
-text = "Controls"
+text = "*how to play*"
 
 [node name="Soundx" parent="." instance=ExtResource("4_fm0ht")]
 root_path = NodePath("..")

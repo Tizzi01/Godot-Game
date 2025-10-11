@@ -427,6 +427,12 @@ normal = Vector2(0.0404786, -0.99918)
 script = ExtResource("1_naqcg")
 metadata/_edit_horizontal_guides_ = [-287.0]
 
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+modulate = Color(0, 0, 0, 0.45098)
+offset_right = 1998.0
+offset_bottom = 1104.0
+
 [node name="CanvasLayer4" type="CanvasLayer" parent="."]
 
 [node name="Panel" type="Panel" parent="CanvasLayer4"]

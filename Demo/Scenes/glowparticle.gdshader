@@ -25,27 +25,27 @@ void fragment() {
 	vec2 dist_center = corrected_st - corrected_center;
 	float dist = length(dist_center);
 
-	// ⏱️ Time-based opacity fade
+	// ⏱️ Self-contained 1s fade
 	float opacity = 1.0;
-	if (TIME >= 0.5 && TIME <= 1.0) {
-		float t = (TIME - 0.5) / 0.5; // Normalize to 0 → 1
-		opacity = 1.0 - ease_out_cubic(t);
-	} else if (TIME > 1.0) {
-		opacity = 0.0;
-	}
+	float t = clamp(TIME / 1.0, 0.0, 1.0); // Normalize TIME to 0 → 1
+	opacity = 1.0 - ease_out_cubic(t);
 
+	// Ripple mask
 	float mask = (1.0 - smoothstep(radius - feather, radius, dist)) *
 	             smoothstep(radius - width - feather, radius - width, dist);
 
+	// Core glow mask
 	float core_mask = (1.0 - smoothstep(radius - feather * 0.3, radius, dist)) *
 	                  smoothstep(radius - width * 0.3 - feather * 0.3, radius - width * 0.3, dist);
 
+	// Distortion offset
 	vec2 offset = normalize(dist_center) * strength * mask * opacity;
 	vec2 biased_st = corrected_st - offset;
 
 	vec2 abber_vec = offset * aberration;
 	vec2 final_st = vec2(biased_st.x, biased_st.y / aspect_ratio);
 
+	// RGB channel distortion
 	vec4 red = texture(SCREEN_TEXTURE, final_st + abber_vec);
 	vec4 blue = texture(SCREEN_TEXTURE, final_st - abber_vec);
 	vec4 ori = texture(SCREEN_TEXTURE, final_st);
@@ -53,8 +53,9 @@ void fragment() {
 	vec4 distorted = vec4(red.r, ori.g, blue.b, 1.0);
 	vec4 ripple_color = mix(ori, distorted, opacity);
 
+	// Glow layers
 	vec4 core_purple = vec4(0.3, 0.0, 0.4, 0.0) * core_mask;
 	vec4 glow = vec4(0.6, 0.3, 0.9, 0.0) * mask * 0.3;
 
 	COLOR = ripple_color + (core_purple + glow) * opacity;
-} 
+}

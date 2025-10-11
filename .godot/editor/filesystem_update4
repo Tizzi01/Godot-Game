@@ -26,3 +26,7 @@ res://Demo/Scenes/shockwaveshow.tscn
 res://Demo/Scenes/particleglow.gdshader
 res://Demo/Scenes/glowdots.gdshader
 res://Demo/Scenes/GLOWDOTS2.gdshader
+res://Folder/Scenes/main_menu.tscn
+res://Folder/Scenes/how_to_play.tscn
+res://Demo/Scripts/how_to_play.gd
+res://Demo/Scripts/game.gd

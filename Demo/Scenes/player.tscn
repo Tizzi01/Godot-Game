@@ -219,12 +219,9 @@ func _physics_process(delta):
 				dash_fade_tween.kill()
 				dash_fade_tween = null
 
-# 🧼 Reset particles before starting
 			dash_particles.emitting = false
-			dash_particles.amount = dash_emission_original  # Set to 50
-			dash_particles.modulate.a = 1.0  # Fully visible
-
-# ✅ Start fresh emission
+			dash_particles.amount = dash_emission_original
+			dash_particles.modulate.a = 1.0  # ✅ Reset alpha here only
 			dash_particles.emitting = true
 			_fade_out_dash_particles()
 			if teleporting:
@@ -244,6 +241,9 @@ func _physics_process(delta):
 
 	if dash_timer > 0:
 		dash_timer -= delta
+
+	if dash_timer <= 0 and is_dashing:
+		is_dashing = false
 
 
 
@@ -509,22 +509,18 @@ func _fade_out_dash_particles():
 	if dash_fade_tween:
 		dash_fade_tween.kill()
 
-	await get_tree().create_timer(0.5).timeout  # Wait 0.5s before fading
+	await get_tree().create_timer(0.5).timeout  # Wait before fading
 
 	dash_fade_tween = create_tween()
 	dash_fade_tween.set_trans(Tween.TRANS_CUBIC)
 	dash_fade_tween.set_ease(Tween.EASE_OUT)
 
-	# Fade particle alpha from 1 → 0 over 0.5s
 	dash_fade_tween.tween_property(dash_particles, \"modulate:a\", 0.0, 0.5)
-
-	# Stop emitting after fade
 	dash_fade_tween.tween_callback(Callable(self, \"_stop_dash_particles\"))
 
 
 func _stop_dash_particles():
 	dash_particles.emitting = false
-	dash_particles.modulate.a = 1.0  # Reset alpha for next dash
 	dash_fade_tween = null
 "
 
