@@ -10,10 +10,6 @@ uniform float feather = 0.005;
 
 uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
 
-float ease_out_cubic(float t) {
-	return 1.0 - pow(1.0 - t, 3.0);
-}
-
 void fragment() {
 	vec2 st = SCREEN_UV;
 
@@ -25,11 +21,6 @@ void fragment() {
 	vec2 dist_center = corrected_st - corrected_center;
 	float dist = length(dist_center);
 
-	// ⏱️ Self-contained 1s fade
-	float opacity = 1.0;
-	float t = clamp(TIME / 1.0, 0.0, 1.0); // Normalize TIME to 0 → 1
-	opacity = 1.0 - ease_out_cubic(t);
-
 	// Ripple mask
 	float mask = (1.0 - smoothstep(radius - feather, radius, dist)) *
 	             smoothstep(radius - width - feather, radius - width, dist);
@@ -38,8 +29,8 @@ void fragment() {
 	float core_mask = (1.0 - smoothstep(radius - feather * 0.3, radius, dist)) *
 	                  smoothstep(radius - width * 0.3 - feather * 0.3, radius - width * 0.3, dist);
 
-	// Distortion offset
-	vec2 offset = normalize(dist_center) * strength * mask * opacity;
+	// Distortion offset (no fade)
+	vec2 offset = normalize(dist_center) * strength * mask;
 	vec2 biased_st = corrected_st - offset;
 
 	vec2 abber_vec = offset * aberration;
@@ -51,11 +42,11 @@ void fragment() {
 	vec4 ori = texture(SCREEN_TEXTURE, final_st);
 
 	vec4 distorted = vec4(red.r, ori.g, blue.b, 1.0);
-	vec4 ripple_color = mix(ori, distorted, opacity);
+	vec4 ripple_color = distorted;
 
-	// Glow layers
+	// Glow layers (always visible)
 	vec4 core_purple = vec4(0.3, 0.0, 0.4, 0.0) * core_mask;
 	vec4 glow = vec4(0.6, 0.3, 0.9, 0.0) * mask * 0.3;
 
-	COLOR = ripple_color + (core_purple + glow) * opacity;
+	COLOR = ripple_color + core_purple + glow;
 }

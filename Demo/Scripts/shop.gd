@@ -1,4 +1,5 @@
 extends Control
+@onready var panel: Panel = $Panel
 
 @onready var space_shift_button = $SpaceShift
 @onready var back_button = $Back

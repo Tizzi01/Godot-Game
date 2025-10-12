@@ -532,8 +532,9 @@ text = "Scroll to switch guns
 Hold left click  to spawn a
 black hole.
 
-If you get pulled in, press Q
-while moving to dash out."
+If you get pulled in, press Q OR 
+SPACEBAR while moving 
+to dash out."
 vertical_alignment = 1
 
 [node name="Label4" type="Label" parent="Panel"]
@@ -574,6 +575,7 @@ libraries = {
 autoplay = "idleround"
 
 [node name="SpaceShift" type="Button" parent="."]
+z_index = 1
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -596,6 +598,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_yhb8x")
 text = "6 points"
 
 [node name="Singularity" type="Button" parent="."]
+z_index = 1
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -618,6 +621,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_yhb8x")
 text = "7 points"
 
 [node name="Wave" type="Button" parent="."]
+z_index = 1
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -640,6 +644,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_yhb8x")
 text = "9 points"
 
 [node name="Label" type="Label" parent="."]
+z_index = 1
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
