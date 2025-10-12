@@ -87,7 +87,7 @@ signal teleport_unlocked
 signal health_depleted
 
 func _ready(): 
-	
+	$ShockwaveCooldownTimer.timeout.connect(_on_ShockwaveCooldownTimer_timeout)
 	black_hole_cooldown_timer.timeout.connect(_on_black_hole_cooldown_timer_timeout)
 	black_hole_cooldown_bar.visible = false
 	_spawn_weapon(0)
@@ -510,6 +510,11 @@ func _fade_out_dash_particles():
 	burst_tween.set_trans(Tween.TRANS_SINE)
 	burst_tween.set_ease(Tween.EASE_OUT)
 	burst_tween.tween_property(dash_particles, \"modulate:a\", 0.0, 0.4)
+
+
+func _on_ShockwaveCooldownTimer_timeout():
+	shockwave_ready = true
+	print(\"✅ Shockwave cooldown finished\")
 "
 
 [sub_resource type="Environment" id="Environment_yirwm"]

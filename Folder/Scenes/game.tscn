@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=3 uid="uid://17ihev8gmx8p"]
+[gd_scene load_steps=55 format=3 uid="uid://17ihev8gmx8p"]
 
 [ext_resource type="Script" uid="uid://be05spmmaewml" path="res://Demo/Scripts/game.gd" id="1_naqcg"]
 [ext_resource type="Texture2D" uid="uid://bnmfh85lwxuid" path="res://Demo/Stuff/sprites/world_tileset.png" id="1_wi88m"]
@@ -26,6 +26,7 @@
 [ext_resource type="Script" uid="uid://cle76cukwkb63" path="res://Folder/Scenes/label2.gd" id="11_nq47c"]
 [ext_resource type="Script" uid="uid://6jmu2j03dt71" path="res://Demo/Scripts/background_music.gd" id="20_2x3so"]
 [ext_resource type="AudioStream" uid="uid://dg5yucn8p5t8t" path="res://Demo/Stuff/music/Epic.mp3" id="20_66lna"]
+[ext_resource type="PackedScene" uid="uid://c08vehlnd21f7" path="res://Demo/Scenes/mob_3.tscn" id="27_hu3eq"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vonys"]
 texture = ExtResource("2_61t74")
@@ -968,6 +969,8 @@ volume_db = -35.0
 stream = ExtResource("20_66lna")
 volume_db = -8.5
 bus = &"SFX"
+
+[node name="mob3" parent="." instance=ExtResource("27_hu3eq")]
 
 [connection signal="pressed" from="CanvasLayer4/ShopButton/Shop" to="." method="_on_shop_pressed"]
 [connection signal="pressed" from="CanvasLayer/Game Over/Restart" to="." method="_on_restart_pressed"]

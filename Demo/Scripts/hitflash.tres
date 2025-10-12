@@ -1,4 +1,7 @@
-[gd_resource type="ShaderMaterial" format=3 uid="uid://b1co7iqjlecyp"]
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://b1co7iqjlecyp"]
+
+[ext_resource type="Shader" uid="uid://dp68jk15532nd" path="res://Demo/Scripts/hitflash2.tres" id="1_k781a"]
 
 [resource]
 resource_local_to_scene = true
+shader = ExtResource("1_k781a")

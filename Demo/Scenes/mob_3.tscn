@@ -1,0 +1,73 @@
+[gd_scene load_steps=10 format=3 uid="uid://c08vehlnd21f7"]
+
+[ext_resource type="Script" uid="uid://dbovj23e7vj4y" path="res://mob_3.gd" id="1_iie1t"]
+[ext_resource type="Material" uid="uid://b1co7iqjlecyp" path="res://Demo/Scripts/hitflash.tres" id="2_tmmvt"]
+[ext_resource type="Texture2D" uid="uid://8ulpg6gd3u5s" path="res://Demo/Stuff/sprites/mob3a1.png" id="3_5pf02"]
+[ext_resource type="Texture2D" uid="uid://dmbyn8y8pfaq6" path="res://Demo/Stuff/sprites/mob3a2.png" id="4_2w18o"]
+[ext_resource type="Script" uid="uid://bsatmcrhseoka" path="res://a_2.gd" id="5_m5cjh"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2kw4c"]
+radius = 7.0
+height = 26.0
+
+[sub_resource type="Animation" id="Animation_5m4j5"]
+resource_name = "hitflash"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("a1:material:shader_parameter/flash_on")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_iie1t"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("a1:material:shader_parameter/flash_on")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dy5un"]
+_data = {
+&"RESET": SubResource("Animation_iie1t"),
+&"hitflash": SubResource("Animation_5m4j5")
+}
+
+[node name="mob3" type="CharacterBody2D" groups=["mob3"]]
+script = ExtResource("1_iie1t")
+
+[node name="a1" type="Sprite2D" parent="."]
+material = ExtResource("2_tmmvt")
+scale = Vector2(0.033, 0.033)
+texture = ExtResource("3_5pf02")
+
+[node name="a2" type="Sprite2D" parent="."]
+scale = Vector2(0.033, 0.033)
+texture = ExtResource("4_2w18o")
+script = ExtResource("5_m5cjh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(0, -2)
+shape = SubResource("CapsuleShape2D_2kw4c")
+
+[node name="hitflash" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_dy5un")
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]

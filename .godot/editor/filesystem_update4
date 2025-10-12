@@ -27,3 +27,11 @@ res://Demo/Scenes/power.tscn
 res://Demo/Scenes/shop.tscn
 res://Folder/Scenes/main_menu.tscn
 res://Folder/Scenes/how_to_play.tscn
+res://Folder/Scenes/mob.tscn
+res://Folder/Scenes/mob2.tscn
+res://Demo/Scripts/newhitflash.gdshader
+res://a_2.gd
+res://mob_3.gd
+res://Demo/Scenes/mob_3.tscn
+res://Demo/Scripts/shop.gd
+res://Demo/Scenes/shockwave.tscn

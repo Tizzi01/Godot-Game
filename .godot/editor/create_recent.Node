@@ -1,7 +1,10 @@
+AnimationPlayer
+AnimationTree
+CollisionShape2D
+Sprite2D
+CharacterBody2D
 ColorRect
 WorldEnvironment
-AnimationPlayer
-Sprite2D
 CanvasLayer
 Panel
 MarginContainer
@@ -9,6 +12,3 @@ AudioStreamPlayer
 AudioStreamPlayer2D
 Timer
 PointLight2D
-CPUParticles2D
-TextureRect
-CanvasGroup
