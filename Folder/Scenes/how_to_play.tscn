@@ -164,7 +164,30 @@ theme_override_constants/shadow_offset_y = 3
 theme_override_constants/outline_size = 8
 theme_override_fonts/font = ExtResource("2_pasae")
 theme_override_font_sizes/font_size = 45
-text = "PRESS Q OR SPACEBAR WHILE MOVING TO DASH IN THAT DIRECTION "
+text = "PRESS Q OR SPACEBAR WHILE MOVING TO DASH IN THAT DIRECTION  "
+vertical_alignment = 1
+
+[node name="Label3" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -894.0
+offset_top = 382.0
+offset_right = 658.0
+offset_bottom = 575.0
+grow_horizontal = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = -2
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_pasae")
+theme_override_font_sizes/font_size = 45
+text = "Spamming bullets while switching can bug both the normal 
+and black hole gun. To fix it, stop shooting for a second 
+and switch again.
+"
 vertical_alignment = 1
 
 [connection signal="pressed" from="Back" to="." method="_on_back_pressed"]

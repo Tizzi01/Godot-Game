@@ -48,7 +48,7 @@ var tp_ready := true
 @export var dash_curve : Curve
 @export var dash_cooldown = 1.0
 var dash_fade_tween: Tween = null
-var dash_emission_original := 500  # Match your DashParticles \"Amount\" in the Inspector
+var dash_emission_original := 300  # Match your DashParticles \"Amount\" in the Inspector
 signal shockwave_cooldown_started(duration: float)
 @export var Gun_radius: float = 20.0
 @export var Gun_follow_speed: float = 10.0
@@ -500,28 +500,16 @@ func _spawn_shockwave():
 	shockwave.position = Vector2.ZERO  # ✅ Place it at player's center
 	$Omni.play() 
 
-
-func _on_shockwave_cooldown_timer_timeout() -> void:
-	shockwave_ready = true
-	print(\"✅ Shockwave cooldown finished\")
-
+@onready var dash_burst_particles = $DashBurstParticles
 func _fade_out_dash_particles():
-	if dash_fade_tween:
-		dash_fade_tween.kill()
+	dash_particles.restart()
+	dash_particles.emitting = true
+	dash_particles.modulate.a = 1.0
 
-	await get_tree().create_timer(0.5).timeout  # Wait before fading
-
-	dash_fade_tween = create_tween()
-	dash_fade_tween.set_trans(Tween.TRANS_CUBIC)
-	dash_fade_tween.set_ease(Tween.EASE_OUT)
-
-	dash_fade_tween.tween_property(dash_particles, \"modulate:a\", 0.0, 0.5)
-	dash_fade_tween.tween_callback(Callable(self, \"_stop_dash_particles\"))
-
-
-func _stop_dash_particles():
-	dash_particles.emitting = false
-	dash_fade_tween = null
+	var burst_tween = create_tween()
+	burst_tween.set_trans(Tween.TRANS_SINE)
+	burst_tween.set_ease(Tween.EASE_OUT)
+	burst_tween.tween_property(dash_particles, \"modulate:a\", 0.0, 0.4)
 "
 
 [sub_resource type="Environment" id="Environment_yirwm"]
@@ -1145,12 +1133,13 @@ one_shot = true
 [node name="shockwave" parent="." instance=ExtResource("11_21cxv")]
 
 [node name="DashParticles" type="CPUParticles2D" parent="."]
-modulate = Color(4, 4, 4, 1)
+modulate = Color(1.5, 1.5, 4, 1)
 z_index = 1
 material = SubResource("ShaderMaterial_gf1or")
 emitting = false
 amount = 500
 texture = ExtResource("12_gf1or")
+lifetime = 0.5
 one_shot = true
 randomness = 0.46
 draw_order = 1
