@@ -1,81 +1,352 @@
 extends CharacterBody2D
 
+# State Management
+enum State { NORMAL, ZIGZAG_SETUP, DASHING }
+var current_state: State = State.NORMAL
+# Cache baked ImageTextures by original texture RID to avoid rebaking
+var _afterimage_bake_cache: Dictionary = {}
 # Core Stats
 var health: int = 70
 var is_being_pulled: bool = false
 var last_known_direction: Vector2 = Vector2.ZERO
 
-# Particles (safe lookup)
-@onready var dash_particles_node := $DashParticles
-var dash_particles: CPUParticles2D = null
-var dash_emission_original: int = 300
-var dash_particle_lifetime: float = 1.5
-
-# Floaty movement
+# Movement & Dash Tuning
 var base_speed: float = 66.0
 var current_speed: float = base_speed
 var float_offset: Vector2 = Vector2.ZERO
 var float_timer: float = 0.0
 
-# Zig-zag dash system
-var zigzag_active: bool = false
+const DASH_DISTANCE_MULTIPLIER: float = 0.85
+const DASH_MAX_TRIES_TO_FIT_CAMERA: int = 8
+var dash_duration: float = 0.3
+
+# Zig-Zag State Variables
 var zigzag_interval: float = randf_range(3.0, 5.0)
 var zigzag_timer: float = 0.0
 var zigzag_count: int = 0
 var zigzag_max: int = 0
 var zigzag_dash_delay: float = 0.07
 var zigzag_dash_timer: float = 0.0
-var dash_duration: float = 0.3
 var dash_timer: float = 0.0
-var is_dashing: bool = false
 var dash_start: Vector2 = Vector2.ZERO
 var dash_target: Vector2 = Vector2.ZERO
 var last_dash_direction: Vector2 = Vector2.ZERO
-var has_emitted_dash_particles: bool = false
 
-# Dash tuning
-const DASH_DISTANCE_MULTIPLIER: float = 0.85  # reduce dash distance by 15%
-const DASH_MAX_TRIES_TO_FIT_CAMERA: int = 8   # iterative reduction attempts
-const EMITTER_OFFSET_DISTANCE: float = 10.0   # how far behind the mob the emitter sits while dashing
-
-# Scene connections
+# Scene References & visuals
 @onready var player: Node2D = get_node("/root/Game/Player")
 @onready var camera: Camera2D = get_viewport().get_camera_2d()
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
-@onready var sprites: Array = []
 @onready var hitflash: AnimationPlayer = $hitflash
-
+var sprites: Array = []
 signal died
+
+# ====================
+# AFTERIMAGE CONFIG (single master control)
+# ====================
+
+# Master density control: 0.0 = sparse, 1.0 = dense
+var afterimage_density: float = 0.7
+
+# Internal mapping bounds (you normally won't change these)
+var _afterimage_min_interval: float = 0.01   # smallest interval between spawns (dense)
+var _afterimage_max_interval: float = 0.14   # largest interval between spawns (sparse)
+var _afterimage_max_burst: int = 8           # max burst size at slow parts
+var _afterimage_min_burst: int = 1           # min burst at fast parts
+
+# Afterimage visuals
+var afterimage_enabled: bool = true
+var afterimage_life: float = 0.45
+var afterimage_start_alpha: float = 0.35
+var afterimage_scale: float = 1.0
+
+# timers and tracking
+var afterimage_timer: float = 0.0
+var prev_eased_t: float = 0.0
+
 
 func _ready() -> void:
 	add_to_group("Mob3")
 	randomize()
 
-	# particles safe lookup and basic setup
-	if dash_particles_node and dash_particles_node is CPUParticles2D:
-		dash_particles = dash_particles_node as CPUParticles2D
-	if dash_particles:
-		dash_emission_original = dash_particles.amount
-		dash_particles.local_coords = false   # world-space trail
-		dash_particle_lifetime = dash_particles.lifetime
-		dash_particles.emitting = false
-
-	# sprite lookup (try names then fallback to Sprite2D children)
+	# Sprite Lookup
 	for name in ["0", "1", "2"]:
-		if has_node(name):
-			var s = get_node_or_null(name)
-			if s:
-				sprites.append(s)
+		var s = get_node_or_null(name)
+		if s:
+			sprites.append(s)
 	if sprites.is_empty():
 		for child in get_children():
 			if child is Sprite2D:
 				sprites.append(child)
 
+	# Game Over Signal Connection
 	var game_node = get_tree().get_root().get_node("Game")
 	if game_node:
 		game_node.game_over_triggered.connect(_on_game_over_triggered)
 
-# Helper: compute viewport rect size taking Camera2D.zoom being float or Vector2 into account
+	current_state = State.NORMAL
+
+# ====================
+# CORE PHYSICS LOOP
+# ====================
+
+func _physics_process(delta: float) -> void:
+	if is_being_pulled:
+		return
+
+	_update_floaty_offset(delta)
+	var move_direction: Vector2 = _get_move_direction()
+	var should_flip: bool = _update_sprite_flip()
+
+	match current_state:
+		State.NORMAL:
+			_state_normal(delta, move_direction)
+		State.ZIGZAG_SETUP:
+			_state_zigzag_setup(delta, move_direction, should_flip)
+		State.DASHING:
+			_state_dashing(delta, should_flip)
+
+	_update_animation()
+
+func _update_floaty_offset(delta: float) -> void:
+	float_timer += delta
+	float_offset = Vector2(sin(float_timer * 2.5), cos(float_timer * 2.0)) * 18.0
+
+func _get_move_direction() -> Vector2:
+	if not player.is_hidden_from_mobs:
+		var dir = global_position.direction_to(player.global_position)
+		last_known_direction = dir
+		return dir
+	return last_known_direction
+
+func _update_sprite_flip() -> bool:
+	var should_flip: bool = player.global_position.x < global_position.x
+	for s in sprites:
+		if s and "flip_h" in s:
+			s.flip_h = should_flip
+	return should_flip
+
+# ====================
+# STATE FUNCTIONS
+# ====================
+
+func _state_normal(delta: float, move_direction: Vector2) -> void:
+	velocity = (move_direction * current_speed) + float_offset
+	move_and_slide()
+	velocity = Vector2.ZERO
+
+	zigzag_timer += delta
+	if zigzag_timer >= zigzag_interval:
+		current_state = State.ZIGZAG_SETUP
+		zigzag_timer = 0.0
+		zigzag_count = 0
+		zigzag_max = randi() % 3 + 3
+		zigzag_dash_timer = 0.0
+		zigzag_interval = randf_range(3.0, 5.0)
+		afterimage_timer = 0.0
+		prev_eased_t = 0.0
+
+func _state_zigzag_setup(delta: float, move_direction: Vector2, should_flip: bool) -> void:
+	zigzag_dash_timer += delta
+	if zigzag_dash_timer < zigzag_dash_delay:
+		return
+	zigzag_dash_timer = 0.0
+
+	if zigzag_count >= zigzag_max:
+		current_state = State.NORMAL
+		return
+
+	var dash_dir: Vector2 = _get_safe_dash_direction(move_direction)
+	if dash_dir == Vector2.ZERO:
+		return
+
+	var desired_distance: float = current_speed * 4.0 * DASH_DISTANCE_MULTIPLIER
+	var future_pos: Vector2 = global_position + dash_dir.normalized() * desired_distance
+	var attempts: int = 0
+
+	while attempts < DASH_MAX_TRIES_TO_FIT_CAMERA and not is_position_in_camera(future_pos):
+		desired_distance *= 0.8
+		future_pos = global_position + dash_dir.normalized() * desired_distance
+		attempts += 1
+
+	if desired_distance < 8.0:
+		return
+
+	dash_start = global_position
+	dash_target = future_pos
+	last_dash_direction = dash_dir.normalized()
+	dash_timer = dash_duration
+	zigzag_count += 1
+	current_state = State.DASHING
+
+	prev_eased_t = 0.0
+	afterimage_timer = 0.0
+
+func _state_dashing(delta: float, should_flip: bool) -> void:
+	# Movement (local easing)
+	dash_timer -= delta
+	var raw_t: float = clamp(1.0 - (dash_timer / dash_duration), 0.0, 1.0)
+	var eased_t: float = ease_in_out(raw_t)
+	global_position = dash_start.lerp(dash_target, eased_t)
+
+	# derivative-based speed factor (0 slow/start/end → 1 fast/mid)
+	var deriv: float = 6.0 * eased_t * (1.0 - eased_t)
+	var speed_factor: float = clamp(deriv / 1.5, 0.0, 1.0)
+
+	# Map master density to interval and burst ranges
+	var mapped_interval: float = lerp(_afterimage_max_interval, _afterimage_min_interval, clamp(afterimage_density, 0.0, 1.0))
+	var burst_min_f: float = lerp(float(_afterimage_min_burst), float(_afterimage_max_burst), clamp(afterimage_density, 0.0, 1.0))
+	var burst_max_f: float = lerp(float(_afterimage_min_burst), float(_afterimage_max_burst), clamp(afterimage_density, 0.0, 1.0))
+
+	# Choose burst size: more when slow (speed_factor small)
+	var burst_count: int = int(round(lerp(burst_max_f, burst_min_f, speed_factor)))
+	burst_count = max(1, burst_count)
+
+	# Guarantee at least N images through the dash depending on density
+	var guarantee_images_mid: int = max(1, int(round(lerp(1.0, 6.0, clamp(afterimage_density, 0.0, 1.0)))))
+	var min_interval_for_mid_images: float = dash_duration / float(guarantee_images_mid)
+	var effective_interval: float = min(mapped_interval, min_interval_for_mid_images)
+
+	# Spawn afterimages using adaptive interval and bursts
+	if afterimage_enabled:
+		afterimage_timer += delta
+		if afterimage_timer >= effective_interval:
+			afterimage_timer = 0.0
+			for i in range(burst_count):
+				_spawn_afterimage()
+
+	# Transition Check
+	if dash_timer <= 0.0:
+		if zigzag_count >= zigzag_max:
+			current_state = State.NORMAL
+		else:
+			current_state = State.ZIGZAG_SETUP
+
+	prev_eased_t = eased_t
+
+# ====================
+# HELPER FUNCTIONS
+# ====================
+
+func _get_safe_dash_direction(move_direction: Vector2) -> Vector2:
+	var tries: int = 0
+	while tries < 10:
+		var angle_offset: float = deg_to_rad(randf_range(-60, 60))
+		var candidate: Vector2 = move_direction.rotated(angle_offset)
+		if last_dash_direction != Vector2.ZERO:
+			var dot: float = candidate.dot(-last_dash_direction)
+			if dot > 0.7:
+				tries += 1
+				continue
+
+		var dist: float = global_position.distance_to(player.global_position)
+		if dist < 100:
+			return -candidate
+		return candidate
+	return Vector2.ZERO
+
+func _update_animation() -> void:
+	var is_moving: bool = current_state == State.DASHING or velocity.length() > 0.1
+	var current_anim = animation_player.current_animation
+	if is_moving and current_anim != "walk":
+		animation_player.play("walk")
+	elif not is_moving and current_anim != "idle":
+		animation_player.play("idle")
+
+func take_damage(amount: int = 10) -> void:
+	health -= amount
+	if hitflash and hitflash.has_animation("hitflash"):
+		hitflash.play("hitflash")
+	if health <= 0:
+		died.emit()
+		queue_free()
+		const SMOKE_SCENE := preload("res://smoke_explosion/smoke_explosion.tscn")
+		var smoke := SMOKE_SCENE.instantiate()
+		get_parent().add_child(smoke)
+		smoke.global_position = global_position
+
+func _on_game_over_triggered() -> void:
+	queue_free()
+
+# ====================
+# AFTERIMAGE SPAWNING
+# ====================
+
+func _spawn_afterimage() -> void:
+	# pick first Sprite2D child as visual source
+	var src: Sprite2D = null
+	for c in sprites:
+		if c and c is Sprite2D:
+			src = c as Sprite2D
+			break
+	if src == null:
+		return
+
+	# create afterimage sprite and copy transform/flip/scale/z
+	var ai: Sprite2D = Sprite2D.new()
+	ai.global_position = global_position
+	ai.z_index = src.z_index - 1
+	ai.flip_h = src.flip_h if "flip_h" in src else false
+	ai.scale = src.scale * afterimage_scale
+
+	# Attempt to bake a texture from the source texture's Image (fast path when supported)
+	var baked_tex: Texture2D = null
+	var tex := src.texture if src.texture is Texture2D else null
+	if tex != null:
+		var rid_key = tex.get_rid()
+		if _afterimage_bake_cache.has(rid_key):
+			baked_tex = _afterimage_bake_cache[rid_key]
+		else:
+			# try to get an Image from common methods
+			var img: Image = null
+			if "get_image" in tex:
+				img = tex.get_image()
+			elif "get_data" in tex:
+				img = tex.get_data()
+			# If we obtained an Image, bake desired start alpha into it
+			if img:
+				img = img.duplicate()
+				# ensure format with alpha
+				img.convert(Image.FORMAT_RGBA8)
+				var rect: Rect2 = img.get_used_rect()
+				var a_factor: float = clamp(afterimage_start_alpha, 0.0, 1.0)
+				for y in range(int(rect.position.y), int(rect.position.y + rect.size.y)):
+					for x in range(int(rect.position.x), int(rect.position.x + rect.size.x)):
+						var c: Color = img.get_pixel(x, y)
+						c.a = c.a * a_factor
+						img.set_pixel(x, y, c)
+				var it: ImageTexture = ImageTexture.create_from_image(img)
+				baked_tex = it
+				_afterimage_bake_cache[rid_key] = baked_tex
+				print("Afterimage: BAKED for texture RID ", rid_key)
+
+	# assign texture and initial modulate
+	if baked_tex != null:
+		ai.texture = baked_tex
+		ai.modulate = Color(1, 1, 1, 1)  # texture already has baked alpha; keep rgb neutral
+	else:
+		# fallback: use source texture and set sprite modulate alpha (may be affected by source shader/material)
+		ai.texture = src.texture
+		var base_col: Color = Color(1, 1, 1, 1)
+		if typeof(src.modulate) == TYPE_COLOR:
+			base_col = src.modulate
+		ai.modulate = Color(base_col.r, base_col.g, base_col.b, afterimage_start_alpha)
+		print("Afterimage: FALLBACK modulate (texture type may not expose image)")
+
+	# Ensure no material interferes on afterimage so modulate works
+	ai.material = null
+
+	get_parent().add_child(ai)
+
+	# Enforce start alpha (covers baked and fallback cases)
+	ai.modulate = Color(ai.modulate.r, ai.modulate.g, ai.modulate.b, afterimage_start_alpha)
+
+	# fade alpha to zero and free
+	var tw := create_tween()
+	tw.tween_property(ai, "modulate:a", 0.0, afterimage_life).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	await get_tree().create_timer(afterimage_life).timeout
+	if is_instance_valid(ai) and ai.is_inside_tree():
+		ai.queue_free()
+
 func _screen_rect_size() -> Vector2:
 	if camera == null:
 		return Vector2.ZERO
@@ -97,202 +368,3 @@ func is_position_in_camera(pos: Vector2) -> bool:
 
 func ease_in_out(t: float) -> float:
 	return t * t * (3.0 - 2.0 * t)
-
-# Place and configure emitter for a dash. emitter will be positioned slightly behind the mob
-# so particles spawn trailing the path. This is updated every frame while dashing.
-func _position_and_bias_emitter(dash_dir: Vector2, should_flip: bool) -> void:
-	if dash_particles == null:
-		return
-	# dash_dir is normalized; if zero, fallback to facing direction
-	var dir: Vector2 = Vector2.ZERO
-	if should_flip:
-		dir = Vector2(-1, 0)
-	else:
-		dir = Vector2(1, 0)
-
-	# place emitter slightly behind mob along dash_dir so particles spawn trailing the mob
-	var emitter_pos := global_position - dir * EMITTER_OFFSET_DISTANCE
-	# set emitter global position (so new particles spawn at correct world point)
-	dash_particles.global_position = emitter_pos
-
-	# bias gravity opposite to dash direction so particles drift behind and form a trail
-	dash_particles.gravity = -dir * 2000.0
-
-	# If vertical dash (dominant y), nudge emitter to emit from top/bottom edge:
-	if abs(dir.y) > abs(dir.x):
-		# if moving down (dir.y > 0), put emitter slightly above the mob so particles spawn from top
-		if dir.y > 0:
-			dash_particles.global_position = global_position - Vector2(0, EMITTER_OFFSET_DISTANCE * 1.2)
-		else:
-			# moving up: place emitter below mob so particles appear from bottom
-			dash_particles.global_position = global_position + Vector2(0, EMITTER_OFFSET_DISTANCE * 1.2)
-
-	# ensure node-level lifetime/amount are reasonable (don't stomp other inspector settings)
-	dash_particles.amount = int(dash_emission_original * 0.6)
-	dash_particles.lifetime = dash_particle_lifetime
-
-	# If the particle node uses a ParticleProcessMaterial and you want direction control,
-	# set its direction vector so initial particle velocities favor dash_dir.
-	if dash_particles.process_material and dash_particles.process_material is ParticleProcessMaterial:
-		var pm := dash_particles.process_material as ParticleProcessMaterial
-		pm.direction = Vector3(dir.x, dir.y, 0)   # favors dash direction
-		# leave other pm values set in inspector for visual fidelity
-
-func _start_dash_particles_for(dash_dir: Vector2, should_flip: bool) -> void:
-	if dash_particles == null:
-		return
-	_position_and_bias_emitter(dash_dir, should_flip)
-	dash_particles.restart()
-	dash_particles.emitting = true
-
-func _stop_dash_particles() -> void:
-	if dash_particles == null:
-		return
-	dash_particles.emitting = false
-
-func _physics_process(delta: float) -> void:
-	if is_being_pulled:
-		return
-
-	# Floaty offset
-	float_timer += delta
-	float_offset = Vector2(sin(float_timer * 2.5), cos(float_timer * 2.0)) * 18.0
-
-	# Movement direction (toward player or last known)
-	var move_direction: Vector2 = Vector2.ZERO
-	if not player.is_hidden_from_mobs:
-		move_direction = global_position.direction_to(player.global_position)
-		last_known_direction = move_direction
-	else:
-		move_direction = last_known_direction
-
-	# Flip sprites every frame (same logic as your Mob)
-	var should_flip: bool = player.global_position.x < global_position.x
-	for s in sprites:
-		if s and "flip_h" in s:
-			s.flip_h = should_flip
-
-	# Dash trigger
-	zigzag_timer += delta
-	if not zigzag_active and zigzag_timer >= zigzag_interval:
-		zigzag_active = true
-		zigzag_timer = 0.0
-		zigzag_count = 0
-		zigzag_max = randi() % 3 + 3
-		zigzag_dash_timer = 0.0
-		zigzag_interval = randf_range(3.0, 5.0)
-		has_emitted_dash_particles = false
-
-	# Dash execution
-	if zigzag_active:
-		if not is_dashing:
-			zigzag_dash_timer += delta
-			if zigzag_dash_timer >= zigzag_dash_delay:
-				zigzag_dash_timer = 0.0
-				if zigzag_count < zigzag_max:
-					# pick a dash direction with some random angle
-					var dash_dir: Vector2 = Vector2.ZERO
-					var tries: int = 0
-					while tries < 10:
-						var angle_offset: float = deg_to_rad(randf_range(-60, 60))
-						var candidate: Vector2 = move_direction.rotated(angle_offset)
-						if last_dash_direction != Vector2.ZERO:
-							var dot: float = candidate.dot(-last_dash_direction)
-							if dot > 0.7:
-								tries += 1
-								continue
-						dash_dir = candidate
-						break
-
-					# if too close, dash backward to create separation
-					var dist: float = global_position.distance_to(player.global_position)
-					if dist < 100:
-						dash_dir = -dash_dir
-
-					# desired dash distance with multiplier
-					var desired_distance: float = current_speed * 4.0 * DASH_DISTANCE_MULTIPLIER
-					# try to shrink until it fits camera
-					var attempts: int = 0
-					var future_pos: Vector2 = global_position + dash_dir.normalized() * desired_distance
-					while attempts < DASH_MAX_TRIES_TO_FIT_CAMERA and not is_position_in_camera(future_pos):
-						desired_distance *= 0.8
-						future_pos = global_position + dash_dir.normalized() * desired_distance
-						attempts += 1
-
-					# if tiny, skip this dash attempt this frame
-					if desired_distance < 8.0:
-						pass
-					else:
-						# start dash with reduced distance if necessary
-						dash_start = global_position
-						dash_target = future_pos
-						last_dash_direction = dash_dir.normalized()
-						dash_timer = dash_duration
-						is_dashing = true
-						zigzag_count += 1
-
-						# start particles using the actual dash direction; emitter will be positioned behind
-						if dash_particles and not has_emitted_dash_particles:
-							_start_dash_particles_for(last_dash_direction, should_flip)
-							has_emitted_dash_particles = true
-
-						# ensure flip just before dash
-						for s in sprites:
-							if s and "flip_h" in s:
-								s.flip_h = should_flip
-				else:
-					# sequence finished: stop emitting and reset
-					zigzag_active = false
-					is_dashing = false
-					has_emitted_dash_particles = false
-					_stop_dash_particles()
-		else:
-			# performing dash movement
-			# update emitter position and gravity every frame so new particles spawn along path (creates smooth bend)
-			if last_dash_direction != Vector2.ZERO and dash_particles:
-				_position_and_bias_emitter(last_dash_direction, should_flip)
-
-			dash_timer -= delta
-			var t: float = clamp(1.0 - (dash_timer / dash_duration), 0.0, 1.0)
-			var eased: float = ease_in_out(t)
-			global_position = dash_start.lerp(dash_target, eased)
-			if dash_timer <= 0.0:
-				is_dashing = false
-				# After each dash, if we've reached the sequence max, stop particles
-				if zigzag_count >= zigzag_max:
-					has_emitted_dash_particles = false
-					_stop_dash_particles()
-				# re-face player
-				var should_flip_after: bool = player.global_position.x < global_position.x
-				for s in sprites:
-					if s and "flip_h" in s:
-						s.flip_h = should_flip_after
-	else:
-		# Resume normal movement when not dashing
-		if not is_dashing:
-			velocity = (move_direction * current_speed) + float_offset
-			move_and_slide()
-			velocity = Vector2.ZERO
-
-	# Play animation
-	var is_moving: bool = velocity.length() > 0.1
-	var current_anim = animation_player.current_animation
-	if is_moving and current_anim != "walk":
-		animation_player.play("walk")
-	elif not is_moving and current_anim != "idle":
-		animation_player.play("idle")
-
-func take_damage(amount: int = 10) -> void:
-	health -= amount
-	if hitflash and hitflash.has_animation("hitflash"):
-		hitflash.play("hitflash")
-	if health <= 0:
-		died.emit()
-		queue_free()
-		const SMOKE_SCENE := preload("res://smoke_explosion/smoke_explosion.tscn")
-		var smoke := SMOKE_SCENE.instantiate()
-		get_parent().add_child(smoke)
-		smoke.global_position = global_position
-
-func _on_game_over_triggered() -> void:
-	queue_free()
