@@ -908,12 +908,12 @@ _data = {
 &"run_left": SubResource("Animation_83akb")
 }
 
-[sub_resource type="Gradient" id="Gradient_7ethr"]
+[sub_resource type="Gradient" id="Gradient_vn77m"]
 offsets = PackedFloat32Array(0, 0.451243, 1)
 colors = PackedColorArray(1, 1, 1, 1, 0.228527, 0.62113, 1, 1, 0.0352941, 0.0352941, 0.0352941, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_7k0jb"]
-gradient = SubResource("Gradient_7ethr")
+gradient = SubResource("Gradient_vn77m")
 width = 1
 height = 1
 fill = 1

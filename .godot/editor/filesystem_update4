@@ -1,4 +1,4 @@
-res://Folder/Scenes/game.tscn
+res://Demo/Scenes/player.tscn
 res://Demo/Scenes/glitchy.gdshader
 res://Demo/Scenes/blackhole.gdshader
 res://Demo/Scripts/hitflash2.tres
@@ -19,10 +19,12 @@ res://Demo/Scripts/newhitflash.gdshader
 res://Folder/Scenes/white.tres
 res://Demo/Scenes/Glitch.tres
 res://Folder/Assets/Sprites/Player Animation/idle_right/game.tres
-res://Demo/Scenes/player.tscn
+res://Demo/Scenes/mob_3.tscn
+res://mob_3.gd
+res://Folder/Scenes/game.tscn
 res://Folder/Scenes/gun.tscn
 res://Folder/Scenes/bullet_v_2.tscn
 res://Folder/Scenes/gun2.tscn
 res://Folder/Scenes/mob.tscn
-res://Demo/Scenes/mob_3.tscn
 res://Folder/Scenes/how_to_play.tscn
+res://Demo/Scripts/mob.gd

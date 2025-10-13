@@ -9,7 +9,7 @@ void fragment() {
         // Override with solid white while preserving alpha
         COLOR = vec4(1.0, 1.0, 1.0, tex_color.a);
     } else {
-        // Normal rendering
-        COLOR = tex_color * COLOR;
+        // Render the original texture color without modulate interference
+        COLOR = tex_color;
     }
 }
