@@ -9,7 +9,7 @@ var _afterimage_bake_cache: Dictionary = {}
 var health: int = 70
 var is_being_pulled: bool = false
 var last_known_direction: Vector2 = Vector2.ZERO
-
+var dash_disabled_timer: float = 0.0
 # Movement & Dash Tuning
 var base_speed: float = 66.0
 var current_speed: float = base_speed
@@ -65,6 +65,7 @@ var prev_eased_t: float = 0.0
 
 
 func _ready() -> void:
+	
 	add_to_group("Mob3")
 	randomize()
 
@@ -85,25 +86,38 @@ func _ready() -> void:
 
 	current_state = State.NORMAL
 
-# ====================
-# CORE PHYSICS LOOP
-# ====================
+var push_velocity: Vector2 = Vector2.ZERO
+var pushback_active: bool = false
 
 func _physics_process(delta: float) -> void:
+	
+	if pushback_active:
+		velocity = push_velocity
+		move_and_slide()
+		velocity = Vector2.ZERO
+		return
+	if dash_disabled_timer > 0.0:
+		dash_disabled_timer -= delta
+		current_state = State.NORMAL
 	if is_being_pulled:
+		move_and_slide()
 		return
 
 	_update_floaty_offset(delta)
 	var move_direction: Vector2 = _get_move_direction()
 	var should_flip: bool = _update_sprite_flip()
 
-	match current_state:
-		State.NORMAL:
-			_state_normal(delta, move_direction)
-		State.ZIGZAG_SETUP:
-			_state_zigzag_setup(delta, move_direction, should_flip)
-		State.DASHING:
-			_state_dashing(delta, should_flip)
+	if dash_disabled_timer > 0.0:
+		dash_disabled_timer -= delta
+		_state_normal(delta, move_direction)
+	else:
+		match current_state:
+			State.NORMAL:
+				_state_normal(delta, move_direction)
+			State.ZIGZAG_SETUP:
+				_state_zigzag_setup(delta, move_direction, should_flip)
+			State.DASHING:
+				_state_dashing(delta, should_flip)
 
 	_update_animation()
 
@@ -124,10 +138,6 @@ func _update_sprite_flip() -> bool:
 		if s and "flip_h" in s:
 			s.flip_h = should_flip
 	return should_flip
-
-# ====================
-# STATE FUNCTIONS
-# ====================
 
 func _state_normal(delta: float, move_direction: Vector2) -> void:
 	velocity = (move_direction * current_speed) + float_offset
@@ -174,7 +184,7 @@ func _state_zigzag_setup(delta: float, move_direction: Vector2, should_flip: boo
 	dash_start = global_position
 	dash_target = future_pos
 	last_dash_direction = dash_dir.normalized()
-	dash_timer = dash_duration
+	dash_timer = dash_duration * (base_speed / current_speed)
 	zigzag_count += 1
 	current_state = State.DASHING
 
@@ -223,9 +233,7 @@ func _state_dashing(delta: float, should_flip: bool) -> void:
 
 	prev_eased_t = eased_t
 
-# ====================
-# HELPER FUNCTIONS
-# ====================
+
 
 func _get_safe_dash_direction(move_direction: Vector2) -> Vector2:
 	var tries: int = 0
@@ -266,10 +274,6 @@ func take_damage(amount: int = 10) -> void:
 
 func _on_game_over_triggered() -> void:
 	queue_free()
-
-# ====================
-# AFTERIMAGE SPAWNING
-# ====================
 
 func _spawn_afterimage() -> void:
 	# pick first Sprite2D child as visual source
@@ -367,4 +371,31 @@ func is_position_in_camera(pos: Vector2) -> bool:
 	return screen_rect.has_point(pos)
 
 func ease_in_out(t: float) -> float:
-	return t * t * (3.0 - 2.0 * t)
+	var p = t - 1.0
+	return 1.0 - p * p * p * p
+	
+func apply_slowdown(duration: float = 5.0, slow_percent: float = 0.1) -> void:
+	dash_disabled_timer = 8.0
+	current_speed *= slow_percent
+	await get_tree().create_timer(duration).timeout
+	current_speed = base_speed
+
+func apply_pushback(force: Vector2) -> void:
+	if force.length() > 150.0:
+		push_velocity = force.normalized() * 150.0
+	else:
+		push_velocity = force
+
+	pushback_active = true
+
+	var tween = create_tween()
+	tween.tween_property(self, "push_velocity", Vector2.ZERO, 0.4)\
+		.set_trans(Tween.TRANS_SINE)\
+		.set_ease(Tween.EASE_OUT)
+
+	tween.finished.connect(_on_pushback_finished)  
+	
+func _on_pushback_finished() -> void:
+	pushback_active = false
+	
+	

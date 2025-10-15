@@ -56,7 +56,7 @@ func _on_AnimationSequenceTimer_timeout():
 
 func _on_body_entered(body):
 	print("👾 Body entered:", body.name)
-	if body.is_in_group("Mob") or body.is_in_group("Mob2"):
+	if body.is_in_group("Mob") or body.is_in_group("Mob2") or body.is_in_group("Mob3"): 
 		var direction = (body.global_position - global_position).normalized()
 
 		if body.has_method("apply_slowdown"):

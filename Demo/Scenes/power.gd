@@ -56,20 +56,22 @@ func _on_damage_zone_entered(body):
 		body.take_damage(30, "blackhole")
 	elif body.is_in_group("player") and body.has_method("take_damage"):
 		body.take_damage(5)
+	elif body.is_in_group("Mob3") and body.has_method("take_damage"):
+		body.take_damage(10)  # or whatever amount you want 
 
 func _on_pull_zone_entered(body):
 	if is_on_cooldown:
 		print("🛑 Black hole on cooldown — no pull applied")
 		return
 
-	if body.is_in_group("Mob") or body.is_in_group("Mob2"):
+	if body.is_in_group("Mob") or body.is_in_group("Mob2") or body.is_in_group("Mob3"):
 		body.is_being_pulled = true
 		affected_mobs.append(body)
 	elif body.is_in_group("player"):
 		affected_player = body
 
 func _on_pull_zone_exited(body):
-	if body.is_in_group("Mob") or body.is_in_group("Mob2"):
+	if body.is_in_group("Mob") or body.is_in_group("Mob2") or body.is_in_group("Mob3"):
 		body.is_being_pulled = false
 		affected_mobs.erase(body)
 	elif body.is_in_group("player"):

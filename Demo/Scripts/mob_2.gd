@@ -280,4 +280,4 @@ func apply_slowdown(duration: float = 5.0, slow_percent: float = 0.1):
 	is_slowed = true
 	slow_timer = duration
 	original_speed = current_speed
-	current_speed *= slow_percent
+	current_speed *= slow_percent 

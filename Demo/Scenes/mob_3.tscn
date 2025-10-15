@@ -47,17 +47,20 @@ _data = {
 &"hitflash": SubResource("Animation_5m4j5")
 }
 
-[node name="mob3" type="CharacterBody2D" groups=["mob3"]]
+[node name="mob3" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 5
 script = ExtResource("1_iie1t")
 
 [node name="a1" type="Sprite2D" parent="."]
 z_index = 1
 material = ExtResource("2_tmmvt")
-scale = Vector2(0.033, 0.033)
+scale = Vector2(-0.033, 0.033)
 texture = ExtResource("3_5pf02")
 
-[node name="a2" type="Sprite2D" parent="a1"]
+[node name="a2" type="Sprite2D" parent="."]
 z_index = 1
+scale = Vector2(-0.033, 0.033)
 texture = ExtResource("4_2w18o")
 script = ExtResource("5_m5cjh")
 
