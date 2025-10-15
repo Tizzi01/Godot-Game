@@ -24,6 +24,7 @@ TeleportManager="*res://TeleportManager.tscn"
 DialogManager="*res://Demo/Scripts/DialogManager.gd"
 Beepy="*res://Demo/scenes/beepy.tscn"
 PointsManager="*res://Demo/Scripts/PointsManager.gd"
+DashManager="*res://Demo/Scripts/DashManager.gd"
 
 [display]
 

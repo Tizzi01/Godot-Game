@@ -66,13 +66,15 @@ func _on_pull_zone_entered(body):
 
 	if body.is_in_group("Mob") or body.is_in_group("Mob2") or body.is_in_group("Mob3"):
 		body.is_being_pulled = true
+		_set_mob_collision_enabled(body, false)  # 🔒 Disable collision
 		affected_mobs.append(body)
 	elif body.is_in_group("player"):
 		affected_player = body
-
+		
 func _on_pull_zone_exited(body):
 	if body.is_in_group("Mob") or body.is_in_group("Mob2") or body.is_in_group("Mob3"):
 		body.is_being_pulled = false
+		_set_mob_collision_enabled(body, true)  # 🔓 Re-enable collision
 		affected_mobs.erase(body)
 	elif body.is_in_group("player"):
 		affected_player = null
@@ -82,11 +84,19 @@ func _physics_process(delta: float) -> void:
 		return
 
 	var max_range: float = 500.0
+	var kill_radius: float = 30.0  # 👈 Mobs die when closer than this
 
 	for mob in affected_mobs:
 		if mob and mob.is_inside_tree():
-			var direction = (global_position - mob.global_position).normalized()
 			var distance = global_position.distance_to(mob.global_position)
+
+			# 💀 Kill mob if close enough to the core
+			if distance < kill_radius:
+				if mob.has_method("take_damage"):
+					mob.take_damage(9999)
+				continue  # Skip pulling this mob — it's dying
+
+			var direction = (global_position - mob.global_position).normalized()
 			var t = clamp(1.0 - (distance / max_range), 0.0, 1.0)
 			var suction_strength = lerp(10000.0, 20000.0, pow(t, 2.5))
 			mob.velocity += direction * suction_strength * delta
@@ -155,3 +165,9 @@ func trigger_black_hole_cooldown(duration: float):
 func _on_cooldown_finished():
 	is_on_cooldown = false
 	cooldown_bar.visible = false
+	
+func _set_mob_collision_enabled(mob: Node, enabled: bool) -> void:
+	if mob.has_node("CollisionShape2D"):
+		var shape = mob.get_node("CollisionShape2D")
+		if shape is CollisionShape2D:
+			shape.disabled = not enabled

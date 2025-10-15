@@ -526,10 +526,11 @@ func _on_ShockwaveCooldownTimer_timeout():
 	print(\"✅ Shockwave cooldown finished\")
 
 func _on_mob3_died():
-	print(\"🎯 Mob3 died signal received!\")
-	kill_count += 3
-	PointsManager.add_points(3)
-	print(\"🏆 +3 points added. Kill count:\", kill_count)
+	var reward := randi() % 5 + 3  # Random number from 3 to 7
+	print(\"🎯 Mob3 died signal received! Reward:\", reward)
+	kill_count += reward
+	PointsManager.add_points(reward)
+	print(\"🏆 +\" + str(reward) + \" points added. Kill count:\", kill_count)
 "
 
 [sub_resource type="Environment" id="Environment_yirwm"]

@@ -8,6 +8,10 @@ var previous_score := 0
 @onready var game_over_screen = %"Game Over"
 @onready var music: AudioStreamPlayer = $Music
 @onready var path_follow = %PathFollow2D
+
+
+
+var game_time := 0.0  # Tracks time since scene started
 @onready var score: Label = $CanvasLayer4/Score
 @onready var animation_player: AnimationPlayer = $CanvasLayer4/Score/AnimationPlayer
 @onready var shop_scene = preload("res://Demo/Scenes/shop.tscn")
@@ -29,7 +33,11 @@ var mob2_spawn_timer := 0.0
 const MAX_SLIMES := 500
 const MAX_MOB2 := 50
 var allow_spawning := true 
-@onready var color_rect: ColorRect = $ColorRect
+@onready var color_rect: ColorRect = $ColorRect 
+
+var mob3_spawn_timer := 0.0
+var mob3_spawn_interval := 0.5  # 25% slower than 0.4
+var mob3_spawning_enabled := false
 
 @onready var shockwave_bar: ProgressBar = $CanvasLayer3/SHCD
 
@@ -89,14 +97,19 @@ func _process(delta):
 	if not allow_spawning:
 		return
 
+	# ⏱️ Track time since scene started
+	game_time += delta
+
+	# 🧟 Normal Mob logic
 	mob_spawn_timer += delta
+	if game_time < 97.0:
+		if mob_spawn_timer >= mob_spawn_interval:
+			mob_spawn_timer = 0.0
+			if get_tree().get_nodes_in_group("Mob").size() < MAX_SLIMES:
+				spawn_mob()
+
+	# 👾 Mob2 logic
 	mob2_spawn_timer += delta
-
-	if mob_spawn_timer >= mob_spawn_interval:
-		mob_spawn_timer = 0.0
-		if get_tree().get_nodes_in_group("Mob").size() < MAX_SLIMES:
-			spawn_mob()
-
 	if mob2_spawn_block_time > 0.0:
 		mob2_spawn_block_time -= delta
 	else:
@@ -104,6 +117,13 @@ func _process(delta):
 			mob2_spawn_timer = 0.0
 			if get_tree().get_nodes_in_group("Mob2").size() < MAX_MOB2:
 				spawn_mob2()
+
+	# 👽 Mob3 logic (starts at 2:00)
+	if game_time >= 1.0: #find me here
+		mob3_spawn_timer += delta
+		if mob3_spawn_timer >= mob3_spawn_interval:
+			mob3_spawn_timer = 0.0
+			spawn_mob3()
 
 func spawn_mob():
 	var new_mob = preload("res://Folder/Scenes/mob.tscn").instantiate()
@@ -401,3 +421,12 @@ func _on_shockwave_cooldown_started(duration: float) -> void:
 	tween.tween_property(shockwave_bar, "value", 0, duration) \
 		.set_trans(Tween.TRANS_CUBIC) \
 		.set_ease(Tween.EASE_IN)
+
+func spawn_mob3():
+	var new_mob3 = preload("res://Demo/Scenes/mob_3.tscn").instantiate()
+	path_follow.progress_ratio = randf()
+	new_mob3.global_position = path_follow.global_position
+	add_child(new_mob3)
+	new_mob3.add_to_group("Mob3")
+	new_mob3.died.connect(player._on_mob3_died)
+	print("👽 Spawned Mob3")

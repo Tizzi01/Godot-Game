@@ -19,7 +19,6 @@ var float_timer: float = 0.0
 const DASH_DISTANCE_MULTIPLIER: float = 0.85
 const DASH_MAX_TRIES_TO_FIT_CAMERA: int = 8
 var dash_duration: float = 0.3
-
 # Zig-Zag State Variables
 var zigzag_interval: float = randf_range(3.0, 5.0)
 var zigzag_timer: float = 0.0
@@ -31,7 +30,7 @@ var dash_timer: float = 0.0
 var dash_start: Vector2 = Vector2.ZERO
 var dash_target: Vector2 = Vector2.ZERO
 var last_dash_direction: Vector2 = Vector2.ZERO
-
+var is_registered_dasher := false
 # Scene References & visuals
 @onready var player: Node2D = get_node("/root/Game/Player")
 @onready var camera: Camera2D = get_viewport().get_camera_2d()
@@ -163,7 +162,13 @@ func _state_zigzag_setup(delta: float, move_direction: Vector2, should_flip: boo
 
 	if zigzag_count >= zigzag_max:
 		current_state = State.NORMAL
-		return
+		return 
+		
+	if not is_registered_dasher:
+		if DashManager.register_dasher(self):
+			is_registered_dasher = true
+		else:
+			return  # ❌ Too many dashers — wait
 
 	var dash_dir: Vector2 = _get_safe_dash_direction(move_direction)
 	if dash_dir == Vector2.ZERO:
@@ -229,7 +234,11 @@ func _state_dashing(delta: float, should_flip: bool) -> void:
 		if zigzag_count >= zigzag_max:
 			current_state = State.NORMAL
 		else:
-			current_state = State.ZIGZAG_SETUP
+			current_state = State.ZIGZAG_SETUP 
+			
+	if is_registered_dasher:
+		DashManager.release_dasher(self)
+		is_registered_dasher = false
 
 	prev_eased_t = eased_t
 
@@ -270,6 +279,9 @@ func take_damage(amount: int = 10) -> void:
 	if health <= 0:
 		print("☠️ Mob3 health <= 0. Emitting 'died' signal.")
 		died.emit()
+		if is_registered_dasher:
+			DashManager.release_dasher(self)
+			is_registered_dasher = false
 		queue_free()
 
 		const SMOKE_SCENE := preload("res://smoke_explosion/smoke_explosion.tscn")
