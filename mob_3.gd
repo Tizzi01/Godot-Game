@@ -65,8 +65,8 @@ var prev_eased_t: float = 0.0
 
 
 func _ready() -> void:
-	
 	add_to_group("Mob3")
+	print("✅ Mob3 added to group 'Mob3'") 
 	randomize()
 
 	# Sprite Lookup
@@ -262,11 +262,16 @@ func _update_animation() -> void:
 
 func take_damage(amount: int = 10) -> void:
 	health -= amount
+	print("💥 Mob3 took damage. Health now:", health)
+
 	if hitflash and hitflash.has_animation("hitflash"):
 		hitflash.play("hitflash")
+
 	if health <= 0:
+		print("☠️ Mob3 health <= 0. Emitting 'died' signal.")
 		died.emit()
 		queue_free()
+
 		const SMOKE_SCENE := preload("res://smoke_explosion/smoke_explosion.tscn")
 		var smoke := SMOKE_SCENE.instantiate()
 		get_parent().add_child(smoke)

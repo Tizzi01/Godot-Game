@@ -86,7 +86,13 @@ signal teleport_unlocked
 # damage
 signal health_depleted
 
-func _ready(): 
+func _ready():
+	var mob3s = get_tree().get_nodes_in_group(\"Mob3\")
+	print(\"🔍 Found Mob3s at start:\", mob3s.size())
+
+	for mob3 in mob3s:
+		print(\"🔗 Connecting Mob3 signal for:\", mob3.name)
+		mob3.died.connect(_on_mob3_died)
 	$ShockwaveCooldownTimer.timeout.connect(_on_ShockwaveCooldownTimer_timeout)
 	black_hole_cooldown_timer.timeout.connect(_on_black_hole_cooldown_timer_timeout)
 	black_hole_cooldown_bar.visible = false
@@ -97,7 +103,10 @@ func _ready():
 		mob.died.connect(_on_mob_died)
 
 	for mob2 in get_tree().get_nodes_in_group(\"Mob2\"):
-		mob2.died.connect(_on_mob2_died)
+		mob2.died.connect(_on_mob2_died) 
+		
+	for mob3 in get_tree().get_nodes_in_group(\"Mob3\"):
+		mob3.died.connect(_on_mob3_died)
 	
 	anim_player.play(\"Idle\")
 
@@ -515,6 +524,12 @@ func _fade_out_dash_particles():
 func _on_ShockwaveCooldownTimer_timeout():
 	shockwave_ready = true
 	print(\"✅ Shockwave cooldown finished\")
+
+func _on_mob3_died():
+	print(\"🎯 Mob3 died signal received!\")
+	kill_count += 3
+	PointsManager.add_points(3)
+	print(\"🏆 +3 points added. Kill count:\", kill_count)
 "
 
 [sub_resource type="Environment" id="Environment_yirwm"]

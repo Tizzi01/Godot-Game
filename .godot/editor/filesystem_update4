@@ -33,3 +33,4 @@ res://Demo/Scenes/shockwave.tscn
 res://Demo/Scripts/mob_2.gd
 res://Demo/Scenes/power.gd
 res://Demo/Scenes/power.tscn
+res://Demo/Scripts/game.gd

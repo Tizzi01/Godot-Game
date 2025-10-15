@@ -34,7 +34,10 @@ var allow_spawning := true
 @onready var shockwave_bar: ProgressBar = $CanvasLayer3/SHCD
 
 @export var cooldown_curve: Curve
-func _ready(): 
+func _ready():
+	for mob3 in get_tree().get_nodes_in_group("Mob3"):
+		print("🔗 [Game] Connecting Mob3 signal for:", mob3.name)
+		mob3.died.connect(player._on_mob3_died)
 	player.shockwave_cooldown_started.connect(_on_shockwave_cooldown_started)
 	
 	

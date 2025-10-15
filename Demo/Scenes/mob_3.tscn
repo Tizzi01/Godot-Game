@@ -47,7 +47,7 @@ _data = {
 &"hitflash": SubResource("Animation_5m4j5")
 }
 
-[node name="mob3" type="CharacterBody2D"]
+[node name="mob3" type="CharacterBody2D" groups=["mob3"]]
 collision_layer = 4
 collision_mask = 5
 script = ExtResource("1_iie1t")
