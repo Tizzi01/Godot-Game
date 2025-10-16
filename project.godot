@@ -17,6 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+DashManager="*res://Demo/Scripts/DashManager.gd"
 Click="*res://Folder/Scenes/clicky.tscn"
 IntroMusic1="*res://Folder/Scenes/intro_music.tscn"
 AnimeShine="*res://Folder/Scenes/anime_shine.tscn"
@@ -24,7 +25,6 @@ TeleportManager="*res://TeleportManager.tscn"
 DialogManager="*res://Demo/Scripts/DialogManager.gd"
 Beepy="*res://Demo/scenes/beepy.tscn"
 PointsManager="*res://Demo/Scripts/PointsManager.gd"
-DashManager="*res://Demo/Scripts/DashManager.gd"
 
 [display]
 

@@ -118,7 +118,7 @@ func _process(delta):
 			if get_tree().get_nodes_in_group("Mob2").size() < MAX_MOB2:
 				spawn_mob2()
 
-	# 👽 Mob3 logic (starts at 2:00)
+	
 	if game_time >= 1.0: #find me here
 		mob3_spawn_timer += delta
 		if mob3_spawn_timer >= mob3_spawn_interval:
