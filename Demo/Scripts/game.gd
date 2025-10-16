@@ -102,7 +102,7 @@ func _process(delta):
 
 	# 🧟 Normal Mob logic
 	mob_spawn_timer += delta
-	if game_time < 97.0:
+	if game_time < 2700.0:
 		if mob_spawn_timer >= mob_spawn_interval:
 			mob_spawn_timer = 0.0
 			if get_tree().get_nodes_in_group("Mob").size() < MAX_SLIMES:
@@ -119,7 +119,7 @@ func _process(delta):
 				spawn_mob2()
 
 	
-	if game_time >= 1.0: #find me here
+	if game_time >= 999.0: #find me here
 		mob3_spawn_timer += delta
 		if mob3_spawn_timer >= mob3_spawn_interval:
 			mob3_spawn_timer = 0.0

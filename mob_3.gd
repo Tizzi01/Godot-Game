@@ -163,24 +163,20 @@ func _state_zigzag_setup(delta: float, move_direction: Vector2, should_flip: boo
 
 	if zigzag_count >= zigzag_max:
 		current_state = State.NORMAL
-		return
-
-	# Request dash permission
+		return 
+		
 	if not dash_permission_granted:
-		if DashManager.register_dasher(self):
-			dash_permission_granted = true
-			print("⚡ Dash granted to:", name)
-		else:
-			return  # ❌ Denied — wait until a slot opens
+		var game = get_tree().get_root().get_node("Game")
+		if game and game.has_method("request_mob3_dash"):
+			if game.request_mob3_dash(self):
+				dash_permission_granted = true
+			else:
+				return  # ❌ Denied — wait until a slot opens
 
-	# Get safe dash direction
 	var dash_dir: Vector2 = _get_safe_dash_direction(move_direction)
 	if dash_dir == Vector2.ZERO:
-		print("❌", name, "failed to find dash direction. Resetting to NORMAL.")
-		current_state = State.NORMAL
 		return
 
-	# Calculate dash target
 	var desired_distance: float = current_speed * 4.0 * DASH_DISTANCE_MULTIPLIER
 	var future_pos: Vector2 = global_position + dash_dir.normalized() * desired_distance
 	var attempts: int = 0
@@ -191,42 +187,6 @@ func _state_zigzag_setup(delta: float, move_direction: Vector2, should_flip: boo
 		attempts += 1
 
 	if desired_distance < 8.0:
-		print("❌", name, "dash distance too small. Resetting to NORMAL.")
-		current_state = State.NORMAL
-		return
-
-	# Begin dash
-	dash_start = global_position
-	dash_target = future_pos
-	last_dash_direction = dash_dir.normalized()
-	dash_timer = dash_duration * (base_speed / current_speed)
-	zigzag_count += 1
-	current_state = State.DASHING
-
-	prev_eased_t = 0.0
-	afterimage_timer = 0.0
-		
-	if not dash_permission_granted:
-		if DashManager.register_dasher(self):
-			dash_permission_granted = true
-			print("⚡ Dash granted to:", name)
-		else:
-			return
-			
-
-	if dash_dir == Vector2.ZERO:
-		current_state = State.NORMAL
-		return
-
-
-
-	while attempts < DASH_MAX_TRIES_TO_FIT_CAMERA and not is_position_in_camera(future_pos):
-		desired_distance *= 0.8
-		future_pos = global_position + dash_dir.normalized() * desired_distance
-		attempts += 1
-
-	if desired_distance < 8.0:
-		current_state = State.NORMAL
 		return
 
 	dash_start = global_position
@@ -277,8 +237,7 @@ func _state_dashing(delta: float, should_flip: bool) -> void:
 		if zigzag_count >= zigzag_max:
 			current_state = State.NORMAL
 		else:
-			current_state = State.ZIGZAG_SETUP 
-		velocity = Vector2.ZERO
+			current_state = State.ZIGZAG_SETUP
 
 	prev_eased_t = eased_t
 
@@ -319,11 +278,6 @@ func take_damage(amount: int = 10) -> void:
 	if health <= 0:
 		print("☠️ Mob3 health <= 0. Emitting 'died' signal.")
 		died.emit()
-
-		if dash_permission_granted:
-			print("🧹 Releasing dash from:", name)
-			DashManager.release_dasher(self)
-
 		queue_free()
 
 		const SMOKE_SCENE := preload("res://smoke_explosion/smoke_explosion.tscn")
@@ -332,10 +286,6 @@ func take_damage(amount: int = 10) -> void:
 		smoke.global_position = global_position
 
 func _on_game_over_triggered() -> void:
-	if dash_permission_granted:
-		print("🧹 Releasing dash from:", name)
-
-		DashManager.release_dasher(self)
 	queue_free()
 
 func _spawn_afterimage() -> void:
@@ -438,11 +388,6 @@ func ease_in_out(t: float) -> float:
 	return 1.0 - p * p * p * p
 	
 func apply_slowdown(duration: float = 5.0, slow_percent: float = 0.1) -> void:
-	if dash_permission_granted:
-		print("🧹 Releasing dash from:", name)
-		DashManager.release_dasher(self)
-		dash_permission_granted = false
-
 	dash_disabled_timer = 8.0
 	current_speed *= slow_percent
 	await get_tree().create_timer(duration).timeout
