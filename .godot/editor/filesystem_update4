@@ -1,3 +1,4 @@
+res://default_bus_layout.tres
 res://Folder/Scenes/game.tscn
 res://Demo/Scenes/glitchy.gdshader
 res://Demo/Scenes/blackhole.gdshader
@@ -16,7 +17,7 @@ res://Demo/Scenes/shocdskwave.gdshader
 res://Demo/Scenes/glowparticle.gdshader
 res://Demo/Scenes/particleglow.gdshader
 res://Demo/Scenes/GLOWDOTS2.gdshader
+res://Demo/Scripts/GameManager.gd
 res://Folder/Scenes/white.tres
 res://Demo/Scenes/Glitch.tres
 res://Folder/Assets/Sprites/Player Animation/idle_right/game.tres
-res://Demo/Scripts/DashManager.gd
