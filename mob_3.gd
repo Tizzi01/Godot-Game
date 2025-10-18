@@ -278,6 +278,15 @@ func take_damage(amount: int = 10) -> void:
 	if health <= 0:
 		print("☠️ Mob3 health <= 0. Emitting 'died' signal.")
 		died.emit()
+
+		# 🧹 Release dash powers if this mob was the dasher
+		if dash_permission_granted:
+			print("🧹 [Mob3] Releasing dash on death:", name, "| ID:", get_instance_id())
+
+			var manager = get_node("/root/DashManager")
+			if manager and manager.has_method("release_dasher"):
+				manager.release_dasher(self)
+
 		queue_free()
 
 		const SMOKE_SCENE := preload("res://smoke_explosion/smoke_explosion.tscn")
@@ -286,6 +295,11 @@ func take_damage(amount: int = 10) -> void:
 		smoke.global_position = global_position
 
 func _on_game_over_triggered() -> void:
+	if dash_permission_granted:
+		var manager = get_node("/root/DashManager")
+		if manager and manager.has_method("release_dasher"):
+			manager.release_dasher(self)
+
 	queue_free()
 
 func _spawn_afterimage() -> void:
@@ -411,4 +425,16 @@ func apply_pushback(force: Vector2) -> void:
 func _on_pushback_finished() -> void:
 	pushback_active = false
 	
-	
+func try_become_dasher() -> void:
+	if dash_permission_granted:
+		print("⚠️ Already has dash permission:", name)
+		return
+
+	var manager = get_node("/root/DashManager")
+	if manager and manager.has_method("register_dasher"):
+		var success = manager.register_dasher(self)
+		if success:
+			dash_permission_granted = true
+			print("✅ Dash permission granted to:", name)
+		else:
+			print("❌ Dash permission denied to:", name)

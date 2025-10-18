@@ -119,7 +119,7 @@ func _process(delta):
 				spawn_mob2()
 
 	
-	if game_time >= 999.0: #find me here
+	if game_time >= 1.0: #find me here
 		mob3_spawn_timer += delta
 		if mob3_spawn_timer >= mob3_spawn_interval:
 			mob3_spawn_timer = 0.0
@@ -430,3 +430,7 @@ func spawn_mob3():
 	new_mob3.add_to_group("Mob3")
 	new_mob3.died.connect(player._on_mob3_died)
 	print("👽 Spawned Mob3")
+
+	# 🧠 Try to become the dasher
+	if new_mob3.has_method("try_become_dasher"):
+		new_mob3.try_become_dasher()

@@ -13,7 +13,8 @@ func can_dash() -> bool:
 	return is_allowed
 
 func register_dasher(mob3: Node) -> bool:
-	print("🚀 [register_dasher] Attempting to register:", mob3.name)
+	print("🚀 [register_dasher] Attempting to register:", mob3.name, "| ID:", mob3.get_instance_id())
+
 	if not mob3:
 		print("❗ [register_dasher] ERROR: Provided node is null!")
 		return false
@@ -27,12 +28,17 @@ func register_dasher(mob3: Node) -> bool:
 		active_dashers[id] = mob3
 		print("✅ [register_dasher] Dasher registered:", mob3.name, "| ID:", id)
 		print("📈 [register_dasher] Total active dashers:", active_dashers.size())
+		print("🧠 [register_dasher] Current dashers:")
+		for key in active_dashers.keys():
+			var dasher = active_dashers[key]
+			print("   -", dasher.name, "| ID:", key)
 		return true
 	else:
 		print("❌ [register_dasher] Dash denied for", mob3.name, "| Active:", active_dashers.size())
 		return false
 
 func release_dasher(mob3: Node) -> void:
+	print("🔄 [release_dasher] Attempting to release:", mob3.name, "| ID:", mob3.get_instance_id())
 	print("🔄 [release_dasher] Attempting to release:", mob3.name)
 	if not mob3:
 		print("❗ [release_dasher] ERROR: Provided node is null!")
@@ -43,5 +49,15 @@ func release_dasher(mob3: Node) -> void:
 		active_dashers.erase(id)
 		print("🔓 [release_dasher] Dasher released:", mob3.name, "| ID:", id)
 		print("📉 [release_dasher] Remaining dashers:", active_dashers.size())
+
+		# 🧠 Try to assign a new dasher
+		var mobs := get_tree().get_nodes_in_group("Mob3")
+		mobs.shuffle()
+		for mob in mobs:
+			if not active_dashers.has(mob.get_instance_id()):
+				if mob.has_method("try_become_dasher"):
+					print("🎯 [release_dasher] Assigning new dasher:", mob.name)
+					mob.try_become_dasher()
+					break
 	else:
 		print("❌ [release_dasher] Dasher not found:", mob3.name, "| ID:", id)

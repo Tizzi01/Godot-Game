@@ -17,7 +17,17 @@ res://Demo/Scenes/shocdskwave.gdshader
 res://Demo/Scenes/glowparticle.gdshader
 res://Demo/Scenes/particleglow.gdshader
 res://Demo/Scenes/GLOWDOTS2.gdshader
-res://Demo/Scripts/GameManager.gd
 res://Folder/Scenes/white.tres
 res://Demo/Scenes/Glitch.tres
 res://Folder/Assets/Sprites/Player Animation/idle_right/game.tres
+res://Demo/Scripts/DashManager.gd
+res://Demo/Scripts/game.gd
+res://mob_3.gd
+res://Demo/Scenes/player.tscn
+res://Folder/Scenes/gun.tscn
+res://Folder/Scenes/bullet_v_2.tscn
+res://Folder/Scenes/gun2.tscn
+res://Folder/Scenes/mob.tscn
+res://Folder/Scenes/mob2.tscn
+res://Demo/Scenes/mob_3.tscn
+res://Demo/Scenes/power.tscn
