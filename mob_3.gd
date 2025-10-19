@@ -6,7 +6,7 @@ var current_state: State = State.NORMAL
 # Cache baked ImageTextures by original texture RID to avoid rebaking
 var _afterimage_bake_cache: Dictionary = {}
 # Core Stats
-var health: int = 70
+var health: int = 10
 var is_being_pulled: bool = false
 var last_known_direction: Vector2 = Vector2.ZERO
 var dash_disabled_timer: float = 0.0
@@ -19,7 +19,7 @@ var float_timer: float = 0.0
 const DASH_DISTANCE_MULTIPLIER: float = 0.85
 const DASH_MAX_TRIES_TO_FIT_CAMERA: int = 8
 var dash_duration: float = 0.3
-var dash_permission_granted: bool = false
+
 # Zig-Zag State Variables
 var zigzag_interval: float = randf_range(3.0, 5.0)
 var zigzag_timer: float = 0.0
@@ -163,18 +163,22 @@ func _state_zigzag_setup(delta: float, move_direction: Vector2, should_flip: boo
 
 	if zigzag_count >= zigzag_max:
 		current_state = State.NORMAL
-		return 
-		
-	if not dash_permission_granted:
-		var game = get_tree().get_root().get_node("Game")
-		if game and game.has_method("request_mob3_dash"):
-			if game.request_mob3_dash(self):
-				dash_permission_granted = true
-			else:
-				return  # ❌ Denied — wait until a slot opens
+		return
+
+	var manager = get_node("/root/DashManager")
+	if not manager or not manager.has_method("register_dasher"):
+		print("❌ [Mob3] DashManager missing or broken")
+		current_state = State.NORMAL
+		return
+
+	var success = manager.register_dasher(self)
+	if not success:
+		current_state = State.NORMAL
+		return
 
 	var dash_dir: Vector2 = _get_safe_dash_direction(move_direction)
 	if dash_dir == Vector2.ZERO:
+		current_state = State.NORMAL
 		return
 
 	var desired_distance: float = current_speed * 4.0 * DASH_DISTANCE_MULTIPLIER
@@ -187,6 +191,7 @@ func _state_zigzag_setup(delta: float, move_direction: Vector2, should_flip: boo
 		attempts += 1
 
 	if desired_distance < 8.0:
+		current_state = State.NORMAL
 		return
 
 	dash_start = global_position
@@ -195,11 +200,14 @@ func _state_zigzag_setup(delta: float, move_direction: Vector2, should_flip: boo
 	dash_timer = dash_duration * (base_speed / current_speed)
 	zigzag_count += 1
 	current_state = State.DASHING
-
 	prev_eased_t = 0.0
 	afterimage_timer = 0.0
 
 func _state_dashing(delta: float, should_flip: bool) -> void:
+	if not DashManager.can_dash:
+		print("🚫 [Mob3] In DASHING state without permission:", name)
+		current_state = State.NORMAL
+		return
 	# Movement (local easing)
 	dash_timer -= delta
 	var raw_t: float = clamp(1.0 - (dash_timer / dash_duration), 0.0, 1.0)
@@ -280,7 +288,7 @@ func take_damage(amount: int = 10) -> void:
 		died.emit()
 
 		# 🧹 Release dash powers if this mob was the dasher
-		if dash_permission_granted:
+		if DashManager.can_dash:
 			print("🧹 [Mob3] Releasing dash on death:", name, "| ID:", get_instance_id())
 
 			var manager = get_node("/root/DashManager")
@@ -295,7 +303,7 @@ func take_damage(amount: int = 10) -> void:
 		smoke.global_position = global_position
 
 func _on_game_over_triggered() -> void:
-	if dash_permission_granted:
+	if DashManager.can_dash:
 		var manager = get_node("/root/DashManager")
 		if manager and manager.has_method("release_dasher"):
 			manager.release_dasher(self)
@@ -366,7 +374,11 @@ func _spawn_afterimage() -> void:
 	# Ensure no material interferes on afterimage so modulate works
 	ai.material = null
 
-	get_parent().add_child(ai)
+	var container := get_tree().get_root().get_node("Game/AfterimageContainer")
+	if container:
+		container.add_child(ai)
+	else:
+		print("❌ AfterimageContainer not found!")
 
 	# Enforce start alpha (covers baked and fallback cases)
 	ai.modulate = Color(ai.modulate.r, ai.modulate.g, ai.modulate.b, afterimage_start_alpha)
@@ -426,7 +438,7 @@ func _on_pushback_finished() -> void:
 	pushback_active = false
 	
 func try_become_dasher() -> void:
-	if dash_permission_granted:
+	if DashManager.can_dash:
 		print("⚠️ Already has dash permission:", name)
 		return
 
@@ -434,7 +446,6 @@ func try_become_dasher() -> void:
 	if manager and manager.has_method("register_dasher"):
 		var success = manager.register_dasher(self)
 		if success:
-			dash_permission_granted = true
 			print("✅ Dash permission granted to:", name)
 		else:
 			print("❌ Dash permission denied to:", name)

@@ -976,6 +976,8 @@ bus = &"SFX"
 [node name="DashManager" type="Node" parent="."]
 script = ExtResource("28_7rqqm")
 
+[node name="AfterimageContainer" type="Node2D" parent="."]
+
 [connection signal="pressed" from="CanvasLayer4/ShopButton/Shop" to="." method="_on_shop_pressed"]
 [connection signal="pressed" from="CanvasLayer/Game Over/Restart" to="." method="_on_restart_pressed"]
 [connection signal="pressed" from="CanvasLayer/Game Over/Main Menu" to="." method="_on_main_menu_pressed"]
