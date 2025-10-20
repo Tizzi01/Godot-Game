@@ -39,7 +39,6 @@ var last_dash_direction: Vector2 = Vector2.ZERO
 @onready var hitflash: AnimationPlayer = $hitflash
 var sprites: Array = []
 signal died
-@onready var dash_11: AudioStreamPlayer2D = $Dash11
 
 # ====================
 # AFTERIMAGE CONFIG (single master control)
@@ -209,15 +208,7 @@ func _state_dashing(delta: float, should_flip: bool) -> void:
 		print("🚫 [Mob3] In DASHING state without permission:", name)
 		current_state = State.NORMAL
 		return
-
-	# 🔊 Play dash sound once at the start of each dash with distance-based volume
-	if dash_timer == dash_duration * (base_speed / current_speed):
-		if dash_11 and player:
-			var distance = global_position.distance_to(player.global_position)
-			var audio_t = clamp(1.0 - ((distance - 0.0) / (888.0 - 0.0)), 0.0, 1.0)
-			dash_11.volume_db = lerp(-40.0, 0.0, audio_t)
-			dash_11.play()
-
+	# Movement (local easing)
 	dash_timer -= delta
 	var raw_t: float = clamp(1.0 - (dash_timer / dash_duration), 0.0, 1.0)
 	var eased_t: float = ease_in_out(raw_t)
