@@ -15,7 +15,7 @@ var base_speed: float = 66.0
 var current_speed: float = base_speed
 var float_offset: Vector2 = Vector2.ZERO
 var float_timer: float = 0.0
-
+var is_cleaning_up: bool = false
 const DASH_DISTANCE_MULTIPLIER: float = 0.85
 const DASH_MAX_TRIES_TO_FIT_CAMERA: int = 8
 var dash_duration: float = 0.3
@@ -39,6 +39,7 @@ var last_dash_direction: Vector2 = Vector2.ZERO
 @onready var hitflash: AnimationPlayer = $hitflash
 var sprites: Array = []
 signal died
+@onready var dash_11: AudioStreamPlayer2D = $Dash11
 
 # ====================
 # AFTERIMAGE CONFIG (single master control)
@@ -208,7 +209,15 @@ func _state_dashing(delta: float, should_flip: bool) -> void:
 		print("🚫 [Mob3] In DASHING state without permission:", name)
 		current_state = State.NORMAL
 		return
-	# Movement (local easing)
+
+	# 🔊 Play dash sound once at the start of each dash with distance-based volume
+	if dash_timer == dash_duration * (base_speed / current_speed):
+		if dash_11 and player:
+			var distance = global_position.distance_to(player.global_position)
+			var audio_t = clamp(1.0 - ((distance - 0.0) / (888.0 - 0.0)), 0.0, 1.0)
+			dash_11.volume_db = lerp(-40.0, 0.0, audio_t)
+			dash_11.play()
+
 	dash_timer -= delta
 	var raw_t: float = clamp(1.0 - (dash_timer / dash_duration), 0.0, 1.0)
 	var eased_t: float = ease_in_out(raw_t)
@@ -295,7 +304,7 @@ func take_damage(amount: int = 10) -> void:
 			if manager and manager.has_method("release_dasher"):
 				manager.release_dasher(self)
 
-		queue_free()
+		delayed_cleanup()
 
 		const SMOKE_SCENE := preload("res://smoke_explosion/smoke_explosion.tscn")
 		var smoke := SMOKE_SCENE.instantiate()
@@ -374,11 +383,7 @@ func _spawn_afterimage() -> void:
 	# Ensure no material interferes on afterimage so modulate works
 	ai.material = null
 
-	var container := get_tree().get_root().get_node("Game/AfterimageContainer")
-	if container:
-		container.add_child(ai)
-	else:
-		print("❌ AfterimageContainer not found!")
+	get_parent().add_child(ai)
 
 	# Enforce start alpha (covers baked and fallback cases)
 	ai.modulate = Color(ai.modulate.r, ai.modulate.g, ai.modulate.b, afterimage_start_alpha)
@@ -448,4 +453,33 @@ func try_become_dasher() -> void:
 		if success:
 			print("✅ Dash permission granted to:", name)
 		else:
-			print("❌ Dash permission denied to:", name)
+			print("❌ Dash permission denied to:", name) 
+			
+			
+func delayed_cleanup() -> void: 
+	
+	if is_cleaning_up:
+		return
+	is_cleaning_up = true
+	# Disable visibility
+	visible = false
+
+	# Stop physics
+	set_physics_process(false)
+
+	# Disable collision layers and masks
+	set_collision_layer(0)
+	set_collision_mask(0)
+
+	# Disable all CollisionShape2D children
+	for child in get_children():
+		if child is CollisionShape2D:
+			child.disabled = true
+
+	# Optional: stop animations
+	if animation_player:
+		animation_player.stop()
+
+	# Wait 3 seconds before freeing
+	await get_tree().create_timer(3.0).timeout
+	queue_free()

@@ -11,7 +11,7 @@ func can_dash(mob3: Node) -> bool:
 	var id := mob3.get_instance_id()
 	if active_dashers.has(id):
 		print("🔁 [can_dash] Already registered — continuing dash cycle:", mob3.name)
-		return true
+		return true 
 
 	var current_count := active_dashers.size()
 	var is_allowed := current_count < max_dashers

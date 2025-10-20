@@ -1,3 +1,5 @@
+AudioStreamPlayer2D
+AudioStreamPlayer
 Node2D
 Node
 Sprite2D
@@ -10,6 +12,3 @@ WorldEnvironment
 CanvasLayer
 Panel
 MarginContainer
-AudioStreamPlayer
-AudioStreamPlayer2D
-Timer

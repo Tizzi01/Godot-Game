@@ -88,7 +88,6 @@ signal health_depleted
 
 func _ready():
 	var mob3s = get_tree().get_nodes_in_group(\"Mob3\")
-	print(\"🔍 Found Mob3s at start:\", mob3s.size())
 
 	for mob3 in mob3s:
 		print(\"🔗 Connecting Mob3 signal for:\", mob3.name)
@@ -523,14 +522,11 @@ func _fade_out_dash_particles():
 
 func _on_ShockwaveCooldownTimer_timeout():
 	shockwave_ready = true
-	print(\"✅ Shockwave cooldown finished\")
 
 func _on_mob3_died():
-	var reward := randi() % 5 + 3  # Random number from 3 to 7
-	print(\"🎯 Mob3 died signal received! Reward:\", reward)
+	var reward := randi() % 1 + 1  # Random number from 3 to 7
 	kill_count += reward
 	PointsManager.add_points(reward)
-	print(\"🏆 +\" + str(reward) + \" points added. Kill count:\", kill_count)
 "
 
 [sub_resource type="Environment" id="Environment_yirwm"]

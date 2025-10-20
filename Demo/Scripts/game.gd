@@ -8,6 +8,7 @@ var previous_score := 0
 @onready var game_over_screen = %"Game Over"
 @onready var music: AudioStreamPlayer = $Music
 @onready var path_follow = %PathFollow2D
+@onready var dash_11: AudioStreamPlayer = $Dash11
 
 
 
